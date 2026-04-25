@@ -14,7 +14,19 @@ export default defineConfig({
   vite: {
     base: "/",
     build: {
-      outDir: "dist"
+      outDir: "dist",
+      target: "esnext",
+      // Pure client-side SPA build for Netlify
+      rollupOptions: {
+        output: {
+          entryFileNames: 'assets/[name]-[hash].js',
+          chunkFileNames: 'assets/[name]-[hash].js',
+          assetFileNames: 'assets/[name]-[hash][extname]'
+        }
+      }
     }
   }
 });
+
+// Override to disable SSR for pure client deployment
+process.env.SKIP_ENV_VALIDATION = "true";

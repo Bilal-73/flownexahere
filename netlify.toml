@@ -1,21 +1,17 @@
-# Netlify configuration for FlowNexa
-
 [build]
   command = "npm run build"
-  publish = "dist"
+  publish = "dist/client"
 
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
 
-# Prevent caching of index.html
 [[headers]]
   for = "/index.html"
   [headers.values]
-    Cache-Control = "max-age=0, must-revalidate"
+    Cache-Control = "max-age=0, no-cache, no-store, must-revalidate"
 
-# Enable caching for static assets
 [[headers]]
   for = "/assets/*"
   [headers.values]
