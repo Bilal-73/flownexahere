@@ -158,10 +158,52 @@ export function TeamsSlider() {
         </button>
       </div>
 
-      {/* Demo Link Note */}
-      <div className="text-center text-sm text-muted-foreground">
-        <p> Pakistan — <span className="text-accent">🇵🇰</span></p>
-      </div>
+      {/* Closing message */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.45 }}
+        className="glass-strong relative overflow-hidden rounded-2xl border border-accent/20 p-6 text-center"
+      >
+        <div className="pointer-events-none absolute -top-16 left-1/2 h-32 w-32 -translate-x-1/2 rounded-full bg-accent/20 blur-2xl" />
+
+        <p className="text-xs font-semibold tracking-[0.18em] text-accent uppercase">
+          FlowNexa Vision
+        </p>
+
+        <p className="mt-3 text-base font-semibold text-foreground md:text-lg">
+          Build with purpose. Stay grounded. Move as one team.
+        </p>
+
+        <p className="mt-2 text-sm text-muted-foreground">
+          Proudly built in Pakistan <span className="text-accent">🇵🇰</span>, delivering globally.
+        </p>
+
+        <div className="mx-auto mt-5 h-px w-20 bg-gradient-to-r from-transparent via-accent/70 to-transparent" />
+
+        <div className="mt-5 grid gap-3 text-left md:grid-cols-2">
+          <div className="rounded-xl border border-accent/25 bg-background/40 p-4">
+            <p className="text-[11px] font-semibold tracking-[0.16em] text-accent uppercase">
+              Founder&apos;s Note • Bilal Imran
+            </p>
+            <p className="mt-2 text-sm leading-relaxed text-foreground/90">
+              Stay on the ground, stay close to the team, and lead from the front in every project.
+            </p>
+          </div>
+
+          <div className="rounded-xl border border-primary/25 bg-background/40 p-4">
+            <p className="text-[11px] font-semibold tracking-[0.16em] text-primary uppercase">
+              Message From Team FlowNexa
+            </p>
+            <p className="mt-2 text-sm leading-relaxed font-medium text-foreground">
+              Client satisfaction is our highest priority. We always choose quality over quantity.
+            </p>
+          </div>
+        </div>
+      </motion.div>
+
+
     </div>
   );
 }
