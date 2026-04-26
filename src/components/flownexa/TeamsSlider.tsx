@@ -160,7 +160,7 @@ export function TeamsSlider() {
 
       {/* Demo Link Note */}
       <div className="text-center text-sm text-muted-foreground">
-        <p>🚀 Demo data placeholder — <span className="text-accent">Replace with actual team information manually</span></p>
+        <p> Pakistan — <span className="text-accent">🇵🇰</span></p>
       </div>
     </div>
   );
