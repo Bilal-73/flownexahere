@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { TeamCard } from "./TeamCard";
+import bilalImage from "../../assets/a/Bilal.jpg";
+import sattiImage from "../../assets/a/Satti.jpeg";
 
 interface TeamMember {
   id: string;
@@ -23,7 +25,7 @@ const teamMembers: TeamMember[] = [
     id: "1",
     name: "Bilal Imran",
     title: "Founder | AI Engineer",
-    image: "bilal_pic.jpg",
+    image: bilalImage,
     email: "acc.bilalimran@gmail.com",
     phone: "+92 (317) 410-0973",
     instagram: "https://instagram.com/bilalimran45",
@@ -36,7 +38,7 @@ const teamMembers: TeamMember[] = [
     id: "2",
     name: "Ijtaba Satti",
     title: "Co-Founder | Full Stack AI Developer",
-    image: "satti_pic.jpeg",
+    image: sattiImage,
     email: "iijtaba.hasan@gmail.com",
     phone: "+92 (333) 064-3251",
     instagram: "https://instagram",
