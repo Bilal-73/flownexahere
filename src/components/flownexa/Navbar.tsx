@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Menu, X, Sparkles } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Link } from "@tanstack/react-router";
+import logo from "../../assets/a/FlowNexalogo.png";
 
 const links = [
   { label: "Home", to: "/" },
@@ -37,7 +38,7 @@ export function Navbar() {
         }`}>
           <Link to="/" className="flex items-center gap-2 font-display text-xl font-bold tracking-wider">
               <img 
-                src="FlowNexaLogo-removebg-preview (1).png" 
+                src={logo} 
                 alt="FlowNexa Logo"
                 className="h-9 w-9 rounded-lg object-contain"
               />
