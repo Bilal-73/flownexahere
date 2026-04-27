@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { TeamCard } from "./TeamCard";
-import bilalImage from "../../assets/a/Bilal.png";
+import bilalImage from "../../assets/a/Bilal.jpg";
 import sattiImage from "../../assets/a/Satti.jpeg";
 
 interface TeamMember {
