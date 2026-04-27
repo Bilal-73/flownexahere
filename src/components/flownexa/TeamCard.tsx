@@ -36,7 +36,7 @@ export function TeamCard({ member, index }: TeamCardProps) {
             <img
               src={member.image}
               alt={member.name}
-              className="h-full w-full object-cover"
+              className="h-full w-full object-cover object-center"
             />
           ) : (
             <div className="h-full w-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-4xl font-bold text-white">
