@@ -146,15 +146,7 @@ export const Route = createFileRoute("/portfolio")({
 });
 
 const projects = [
-  { 
-    title: "AI Resume Screener & Job Matcher", 
-    tag: "NLP / ML", 
-    desc: "AI resume classification API that predicts job category and extracts contact details from uploaded resumes.",
-    gradient: "from-primary/40 to-accent/40",
-    image: resumePreview,
-    href: "/portfolio/resume-screener",
-  },
-  { 
+    { 
     title: "SalesMint", 
     tag: "AI POS System", 
     desc: "AI-powered POS and billing platform with inventory, sales tracking, and intelligent business insights.", 
@@ -162,21 +154,25 @@ const projects = [
     image: salesmintPreview,
     href: "/portfolio/salesmint",
   },
-  { 
-    title: "AIPHA", 
-    tag: "AI Healthcare Assistant", 
-    desc: "AI fitness and nutrition assistant that turns user goals into workout plans, meal suggestions, and chat-based guidance.",
-    gradient: "from-primary/30 to-accent/50",
-    image: aiphaPreview,
-    href: "/portfolio/aipha",
+   { 
+    title: "NeuroSymbolic VQA", 
+    tag: "Neuro-Symbolic AI", 
+    desc: "Visual question answering system combining deep learning perception with symbolic reasoning.", 
+    gradient: "from-primary/30 to-accent/50" 
+  },
+   { 
+    title: "MediTranscribe", 
+    tag: "Speech-to-Text AI", 
+    desc: "Doctor-patient conversation transcription system converting medical discussions into structured notes.", 
+    gradient: "from-primary/40 to-accent/40" 
   },
   { 
-    title: "AI Virtual Fashion Stylist", 
-    tag: "Computer Vision", 
-    desc: "Fashion recommendation system analyzing clothing items using computer vision to suggest personalized outfits.", 
-    gradient: "from-accent/50 to-primary/30",
-    image: fashionPreview,
-    href: "/portfolio/fashion-stylist",
+    title: "AI Resume Screener & Job Matcher", 
+    tag: "NLP / ML", 
+    desc: "AI resume classification API that predicts job category and extracts contact details from uploaded resumes.",
+    gradient: "from-primary/40 to-accent/40",
+    image: resumePreview,
+    href: "/portfolio/resume-screener",
   },
   { 
     title: "Clinify", 
@@ -194,12 +190,7 @@ const projects = [
     image: ticketAutomationPreview,
     href: "/portfolio/ticket-automation",
   },
-  { 
-    title: "MediTranscribe", 
-    tag: "Speech-to-Text AI", 
-    desc: "Doctor-patient conversation transcription system converting medical discussions into structured notes.", 
-    gradient: "from-primary/40 to-accent/40" 
-  },
+ 
   { 
     title: "AuditX", 
     tag: "Call Auditing AI", 
@@ -207,11 +198,23 @@ const projects = [
     gradient: "from-accent/40 to-primary/40" 
   },
   { 
-    title: "NeuroSymbolic VQA", 
-    tag: "Neuro-Symbolic AI", 
-    desc: "Visual question answering system combining deep learning perception with symbolic reasoning.", 
-    gradient: "from-primary/30 to-accent/50" 
-  }
+    title: "AIPHA", 
+    tag: "AI Healthcare Assistant", 
+    desc: "AI fitness and nutrition assistant that turns user goals into workout plans, meal suggestions, and chat-based guidance.",
+    gradient: "from-primary/30 to-accent/50",
+    image: aiphaPreview,
+    href: "/portfolio/aipha",
+  },
+  { 
+    title: "AI Virtual Fashion Stylist", 
+    tag: "Computer Vision", 
+    desc: "Fashion recommendation system analyzing clothing items using computer vision to suggest personalized outfits.", 
+    gradient: "from-accent/50 to-primary/30",
+    image: fashionPreview,
+    href: "/portfolio/fashion-stylist",
+  },
+
+ 
 ];
 
 
