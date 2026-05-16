@@ -1,6 +1,4 @@
-import { Resend } from "resend";
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+import nodemailer from "nodemailer";
 
 interface ContactFormData {
   name: string;
@@ -8,6 +6,15 @@ interface ContactFormData {
   service: string;
   message: string;
 }
+
+// Create transporter
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_PASSWORD,
+  },
+});
 
 export default async (request: Request) => {
   if (request.method !== "POST") {
@@ -27,8 +34,8 @@ export default async (request: Request) => {
     }
 
     // Send email to FlowNexa
-    await resend.emails.send({
-      from: "noreply@flownexaai.com",
+    await transporter.sendMail({
+      from: process.env.GMAIL_USER,
       to: "flownexahere@gmail.com",
       replyTo: email,
       subject: `New Contact Form Submission - ${service}`,
@@ -43,8 +50,8 @@ export default async (request: Request) => {
     });
 
     // Send confirmation email to user
-    await resend.emails.send({
-      from: "noreply@flownexaai.com",
+    await transporter.sendMail({
+      from: process.env.GMAIL_USER,
       to: email,
       subject: "We received your message - FlowNexa",
       html: `
