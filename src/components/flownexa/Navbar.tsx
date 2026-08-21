@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { Link } from "@tanstack/react-router";
-import logo from "../../assets/a/FlowNexalogo.png";
+import { Logo } from "./Logo";
 
 const links = [
   { label: "Home", to: "/" },
@@ -32,18 +32,15 @@ export function Navbar() {
         scrolled ? "py-3" : "py-5"
       }`}
     >
-      <div className={`mx-auto max-w-7xl px-6 transition-all ${scrolled ? "" : ""}`}>
+      <div className="mx-auto max-w-7xl px-6">
         <div className={`flex items-center justify-between rounded-2xl px-6 py-3 transition-all ${
-          scrolled ? "glass-strong" : "glass"
+          scrolled
+            ? "bg-card/95 border border-border shadow-sm backdrop-blur-sm"
+            : "bg-transparent"
         }`}>
-          <Link to="/" className="flex items-center gap-2 font-display text-xl font-bold tracking-wider">
-              <img 
-                src={logo} 
-                alt="FlowNexa Logo"
-                className="h-9 w-9 rounded-lg object-contain"
-              />
-
-            <span className="text-gradient">FlowNexa</span>
+          <Link to="/" className="flex items-center gap-3 font-display text-xl font-bold tracking-tight">
+            <Logo className="h-9 w-9" />
+            <span className="text-foreground">FlowNexa</span>
           </Link>
 
           <nav className="hidden items-center gap-8 md:flex">
@@ -51,8 +48,8 @@ export function Navbar() {
               <Link
                 key={l.to}
                 to={l.to}
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-accent"
-                activeProps={{ className: "text-accent" }}
+                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                activeProps={{ className: "text-foreground" }}
               >
                 {l.label}
               </Link>
@@ -61,7 +58,7 @@ export function Navbar() {
 
           <Link
             to="/contact"
-            className="hidden rounded-full bg-gradient-to-r from-primary to-accent px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-primary/30 transition-all hover:shadow-primary/60 hover:scale-105 md:inline-block"
+            className="hidden rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground transition-all hover:opacity-90 md:inline-block"
           >
             Book Free Call
           </Link>
@@ -79,7 +76,7 @@ export function Navbar() {
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="glass-strong mt-2 rounded-2xl p-6 md:hidden"
+            className="mt-2 rounded-2xl border border-border bg-card p-6 shadow-md md:hidden"
           >
             <div className="flex flex-col gap-4">
               {links.map((l) => (
@@ -87,7 +84,7 @@ export function Navbar() {
                   key={l.to}
                   to={l.to}
                   onClick={() => setOpen(false)}
-                  className="text-sm font-medium text-muted-foreground hover:text-accent"
+                  className="text-sm font-medium text-muted-foreground hover:text-foreground"
                 >
                   {l.label}
                 </Link>
@@ -95,7 +92,7 @@ export function Navbar() {
               <Link
                 to="/contact"
                 onClick={() => setOpen(false)}
-                className="rounded-full bg-gradient-to-r from-primary to-accent px-5 py-2.5 text-center text-sm font-semibold text-white"
+                className="rounded-full bg-accent px-5 py-2.5 text-center text-sm font-semibold text-accent-foreground"
               >
                 Book Free Call
               </Link>

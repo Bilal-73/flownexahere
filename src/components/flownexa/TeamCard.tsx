@@ -27,24 +27,23 @@ export function TeamCard({ member, index }: TeamCardProps) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.1 }}
-      className="glass-strong rounded-2xl p-8 flex flex-col items-center text-center hover-glow group"
+      className="card-surface hover-lift rounded-2xl p-8 flex flex-col items-center text-center group h-full"
     >
-      {/* Profile Picture - Circular */}
+      {/* Profile Picture - Circular with subtle warm sepia tint */}
       <div className="relative mb-6">
-        <div className="h-32 w-32 rounded-full bg-gradient-to-br from-primary/30 to-accent/30 flex items-center justify-center overflow-hidden">
+        <div className="h-32 w-32 rounded-full bg-muted flex items-center justify-center overflow-hidden border border-border shadow-sm">
           {member.image ? (
             <img
               src={member.image}
               alt={member.name}
-              className="h-full w-full object-cover object-center"
+              className="h-full w-full object-cover object-center transition-all duration-500 sepia-[0.25] contrast-[0.95] group-hover:sepia-0 group-hover:scale-105"
             />
           ) : (
-            <div className="h-full w-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-4xl font-bold text-white">
+            <div className="h-full w-full bg-accent/15 flex items-center justify-center font-display text-4xl font-bold text-accent">
               {member.name.charAt(0)}
             </div>
           )}
         </div>
-        <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-accent/10" />
       </div>
 
       {/* Social Icons and Contact Info */}

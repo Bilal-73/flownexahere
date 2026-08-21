@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import { Resend } from "resend";
 
 interface ContactFormData {
   name: string;
@@ -7,18 +8,12 @@ interface ContactFormData {
   message: string;
 }
 
-// Create transporter
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_PASSWORD,
-  },
-});
-
 export default async (request: Request) => {
   if (request.method !== "POST") {
-    return new Response("Method not allowed", { status: 405 });
+    return new Response(JSON.stringify({ error: "Method not allowed" }), {
+      status: 405,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 
   try {
@@ -28,59 +23,82 @@ export default async (request: Request) => {
     // Validate inputs
     if (!name || !email || !service || !message) {
       return new Response(
-        JSON.stringify({ error: "Missing required fields" }),
+        JSON.stringify({ error: "Missing required fields: name, email, service, and message" }),
         { status: 400, headers: { "Content-Type": "application/json" } }
       );
     }
 
-    // Send email to FlowNexa
-    await transporter.sendMail({
-      from: process.env.GMAIL_USER,
-      to: "flownexahere@gmail.com",
-      replyTo: email,
-      subject: `New Contact Form Submission - ${service}`,
-      html: `
-        <h2>New Contact Form Submission</h2>
+    const recipient = "flownexahere@gmail.com";
+    const subject = `[FlowNexa Inquiry] ${service} — ${name}`;
+    const htmlBody = `
+      <div style="font-family: Arial, sans-serif; padding: 20px; color: #1A1A1A;">
+        <h2 style="color: #B4491C;">New FlowNexa Contact Form Submission</h2>
+        <hr style="border: 0; border-top: 1px solid #D6CFC6; margin: 15px 0;" />
         <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Service:</strong> ${service}</p>
-        <p><strong>Message:</strong></p>
-        <p>${message.replace(/\n/g, "<br>")}</p>
-      `,
-    });
+        <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
+        <p><strong>Service Scope:</strong> ${service}</p>
+        <p><strong>Project Details:</strong></p>
+        <blockquote style="background: #F5F0EB; padding: 15px; border-left: 4px solid #B4491C; margin: 10px 0;">
+          ${message.replace(/\n/g, "<br>")}
+        </blockquote>
+      </div>
+    `;
 
-    // Send confirmation email to user
-    await transporter.sendMail({
-      from: process.env.GMAIL_USER,
-      to: email,
-      subject: "We received your message - FlowNexa",
-      html: `
-        <h2>Thank you for reaching out, ${name}!</h2>
-        <p>We've received your message and will get back to you within 24 hours.</p>
-        <p>Our team is excited to learn more about your project and how we can help.</p>
-        <br>
-        <p>Best regards,<br>The FlowNexa Team</p>
-      `,
-    });
+    // Strategy 1: Use Resend if API key is provided
+    if (process.env.RESEND_API_KEY) {
+      const resend = new Resend(process.env.RESEND_API_KEY);
+      await resend.emails.send({
+        from: "FlowNexa Inquiry <onboarding@resend.dev>",
+        to: recipient,
+        replyTo: email,
+        subject,
+        html: htmlBody,
+      });
+
+      return new Response(
+        JSON.stringify({ success: true, provider: "Resend", message: "Email sent successfully" }),
+        { status: 200, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
+    // Strategy 2: Use Nodemailer Gmail if GMAIL_USER & GMAIL_PASSWORD are provided
+    if (process.env.GMAIL_USER && process.env.GMAIL_PASSWORD) {
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.GMAIL_USER,
+          pass: process.env.GMAIL_PASSWORD,
+        },
+      });
+
+      await transporter.sendMail({
+        from: process.env.GMAIL_USER,
+        to: recipient,
+        replyTo: email,
+        subject,
+        html: htmlBody,
+      });
+
+      return new Response(
+        JSON.stringify({ success: true, provider: "Nodemailer", message: "Email sent successfully" }),
+        { status: 200, headers: { "Content-Type": "application/json" } }
+      );
+    }
 
     return new Response(
-      JSON.stringify({ success: true, message: "Email sent successfully" }),
-      {
-        status: 200,
-        headers: { "Content-Type": "application/json" },
-      }
+      JSON.stringify({
+        error: "Server email environment variables (RESEND_API_KEY or GMAIL_USER/GMAIL_PASSWORD) not configured.",
+      }),
+      { status: 500, headers: { "Content-Type": "application/json" } }
     );
   } catch (error) {
-    console.error("Email error:", error);
+    console.error("Email processing error:", error);
     return new Response(
       JSON.stringify({
         error: "Failed to send email",
         details: error instanceof Error ? error.message : "Unknown error",
       }),
-      {
-        status: 500,
-        headers: { "Content-Type": "application/json" },
-      }
+      { status: 500, headers: { "Content-Type": "application/json" } }
     );
   }
 };

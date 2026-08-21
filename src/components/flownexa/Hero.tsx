@@ -1,109 +1,77 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Play, Cpu, Zap, Brain, Code2 } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 export function Hero() {
   return (
-    <section id="home" className="relative pt-32 pb-20 md:pt-40 md:pb-32">
+    <section id="home" className="relative pt-32 pb-20 md:pt-44 md:pb-32">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="grid items-center gap-12 lg:grid-cols-2">
+        <div className="grid items-start gap-12 lg:grid-cols-[1.1fr_0.9fr]">
+          {/* Left — Copy */}
           <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
           >
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="mb-6 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/5 px-4 py-1.5 text-xs font-medium text-accent"
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
-              </span>
-              Next-Gen AI Solutions
-            </motion.div>
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-1.5 text-xs font-medium tracking-wide text-muted-foreground uppercase">
+              <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+              AI Automation Agency
+            </div>
 
-            <h1 className="font-display text-5xl font-bold leading-[1.05] tracking-tight md:text-6xl lg:text-7xl">
-              We Build <span className="text-gradient animate-gradient bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">AI</span> That
-              <br />Works For You
+            <h1 className="font-display text-5xl font-semibold leading-[1.08] tracking-tight md:text-6xl lg:text-[4.5rem]">
+              We build chatbots,{" "}
+              <br className="hidden md:block" />
+              workflow engines,{" "}
+              <br className="hidden md:block" />
+              and custom{" "}
+              <span className="text-accent">AI tools</span>{" "}
+              <br className="hidden md:block" />
+              that actually ship.
             </h1>
 
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
-              AI automation, chatbots, and intelligent systems engineered for modern businesses ready to scale beyond limits.
+            <p className="mt-6 max-w-lg text-lg leading-relaxed text-muted-foreground">
+              From WhatsApp bots to full LLM pipelines — we design, build, and
+              deploy production AI for businesses that need it working, not just
+              demoed.
             </p>
 
             <div className="mt-10 flex flex-wrap gap-4">
               <a
                 href="/contact"
-                className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-accent px-7 py-3.5 font-semibold text-white shadow-lg shadow-primary/40 transition-all hover:shadow-primary/70 hover:scale-105"
+                className="group inline-flex items-center gap-2 rounded-full bg-accent px-7 py-3.5 font-semibold text-accent-foreground transition-all hover:opacity-90"
               >
-                Start a Project
+                Start a project
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </a>
               <a
                 href="/portfolio"
-                className="group inline-flex items-center gap-2 rounded-full border border-border glass px-7 py-3.5 font-semibold text-foreground transition-all hover:border-accent/50 hover:bg-accent/5"
+                className="inline-flex items-center gap-2 rounded-full border border-foreground/20 px-7 py-3.5 font-semibold text-foreground transition-all hover:border-foreground/40 hover:bg-foreground/5"
               >
-                <Play className="h-4 w-4" />
-                View Our Work
+                View our work
               </a>
             </div>
           </motion.div>
 
+          {/* Right — Typographic lockup */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.3 }}
-            className="relative h-[400px] md:h-[500px]"
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="relative hidden items-center justify-center lg:flex"
           >
-            <div className="absolute inset-0 flex items-center justify-center">
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-                className="absolute h-80 w-80 rounded-full border border-primary/30 md:h-96 md:w-96"
-              />
-              <motion.div
-                animate={{ rotate: -360 }}
-                transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-                className="absolute h-64 w-64 rounded-full border border-accent/30 md:h-72 md:w-72"
-              />
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                className="absolute h-48 w-48 rounded-full border border-primary/20"
-              />
-
-              <div className="relative flex h-40 w-40 animate-pulse-glow items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent">
-                <Brain className="h-20 w-20 text-white" strokeWidth={1.5} />
-              </div>
-
-              {[
-                { Icon: Cpu, x: -180, y: -80, delay: 0 },
-                { Icon: Zap, x: 180, y: -60, delay: 0.5 },
-                { Icon: Code2, x: -160, y: 100, delay: 1 },
-                { Icon: Brain, x: 170, y: 110, delay: 1.5 },
-              ].map(({ Icon, x, y, delay }, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{
-                    opacity: 1,
-                    scale: 1,
-                    x: [x, x + 10, x],
-                    y: [y, y - 10, y],
-                  }}
-                  transition={{
-                    opacity: { delay: 0.5 + delay },
-                    scale: { delay: 0.5 + delay },
-                    x: { duration: 4, repeat: Infinity, ease: "easeInOut", delay },
-                    y: { duration: 4, repeat: Infinity, ease: "easeInOut", delay },
-                  }}
-                  className="absolute flex h-14 w-14 items-center justify-center rounded-2xl glass-strong glow-purple"
-                >
-                  <Icon className="h-6 w-6 text-accent" />
-                </motion.div>
-              ))}
+            <div className="relative select-none">
+              {/* Large typographic "AI" */}
+              <span
+                className="font-display block text-[12rem] font-bold leading-none tracking-tighter text-accent/10"
+                aria-hidden="true"
+              >
+                AI
+              </span>
+              {/* Overlapping accent bar */}
+              <div className="absolute bottom-8 left-0 h-2 w-24 rounded-full bg-accent" />
+              {/* Small descriptor */}
+              <p className="absolute -bottom-2 left-0 text-sm font-medium tracking-widest text-muted-foreground uppercase">
+                Built to ship
+              </p>
             </div>
           </motion.div>
         </div>

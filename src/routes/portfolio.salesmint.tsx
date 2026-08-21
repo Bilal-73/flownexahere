@@ -145,7 +145,7 @@ function SalesMintCaseStudyPage() {
               initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="glass-strong overflow-hidden rounded-2xl"
+              className="card-surface overflow-hidden rounded-2xl"
             >
               <img
                 src={salesmintProduct}
@@ -205,7 +205,7 @@ function SalesMintCaseStudyPage() {
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="glass-strong rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent/40"
+                    className="card-surface hover-lift rounded-2xl p-6"
                   >
                     <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-accent/15 text-accent">
                       <Icon className="h-5 w-5" />

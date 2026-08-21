@@ -2,15 +2,15 @@ import { createFileRoute } from "@tanstack/react-router";
 import { AnimatedBackground } from "@/components/flownexa/Background";
 import { Navbar } from "@/components/flownexa/Navbar";
 import { Hero } from "@/components/flownexa/Hero";
-import { Stats } from "@/components/flownexa/Stats";
+import { Footer } from "@/components/flownexa/Footer";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "FlowNexa — AI Automation & Intelligent Systems" },
-      { name: "description", content: "FlowNexa builds AI automation, chatbots, and intelligent systems for modern businesses ready to scale." },
+      { name: "description", content: "FlowNexa builds production AI — chatbots, workflow automation, and custom LLM tools for businesses that need it working, not just demoed." },
       { property: "og:title", content: "FlowNexa — AI Automation & Intelligent Systems" },
-      { property: "og:description", content: "AI automation, chatbots, and intelligent systems engineered for modern businesses." },
+      { property: "og:description", content: "Production AI: chatbots, workflow engines, and custom LLM pipelines." },
     ],
   }),
   component: Index,
@@ -18,16 +18,13 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <div className="relative min-h-screen text-foreground">
+    <div className="relative min-h-screen text-foreground flex flex-col justify-between">
       <AnimatedBackground />
       <Navbar />
       <main>
         <Hero />
-        <Stats />
       </main>
-      <footer className="border-t border-border/40 py-10 text-center text-sm text-muted-foreground">
-        © 2025 FlowNexa. All rights reserved.
-      </footer>
+      <Footer />
     </div>
   );
 }

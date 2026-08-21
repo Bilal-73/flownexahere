@@ -3,7 +3,8 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { AnimatedBackground } from "@/components/flownexa/Background";
 import { Navbar } from "@/components/flownexa/Navbar";
-import { Mail, MessageCircle, Send } from "lucide-react";
+import { Footer } from "@/components/flownexa/Footer";
+import { Mail, MessageCircle, Send, ArrowRight, CheckCircle2 } from "lucide-react";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -24,7 +25,7 @@ function ContactPage() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    service: "AI Chatbot",
+    service: "AI Chatbot & Conversational Agent",
     message: "",
   });
 
@@ -34,134 +35,227 @@ function ContactPage() {
     setError("");
 
     try {
-      // For local development, simulate success
-      if (import.meta.env.DEV) {
-        await new Promise((resolve) => setTimeout(resolve, 1500));
+      // Step 1: Attempt Netlify serverless endpoint
+      let netlifySuccess = false;
+      try {
+        const response = await fetch("/.netlify/functions/send-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        });
+
+        if (response.ok) {
+          netlifySuccess = true;
+        }
+      } catch (err) {
+        console.warn("Netlify function endpoint not reachable, attempting direct email gateway...", err);
+      }
+
+      if (netlifySuccess) {
         setSent(true);
-        setFormData({ name: "", email: "", service: "AI Chatbot", message: "" });
-        setTimeout(() => setSent(false), 5000);
-        setLoading(false);
-        console.log("📧 Demo mode - Message logged:", formData);
+        setFormData({ name: "", email: "", service: "AI Chatbot & Conversational Agent", message: "" });
+        setTimeout(() => setSent(false), 6000);
         return;
       }
 
-      // For production, use Netlify function
-      const response = await fetch("/.netlify/functions/send-email", {
+      // Step 2: Fallback to direct FormSubmit email gateway to flownexahere@gmail.com
+      const formSubmitResponse = await fetch("https://formsubmit.co/ajax/flownexahere@gmail.com", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        headers: { 
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          _subject: `[FlowNexa Inquiry] ${formData.service} — ${formData.name}`,
+          name: formData.name,
+          email: formData.email,
+          service: formData.service,
+          message: formData.message,
+          _template: "table"
+        }),
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
+      if (formSubmitResponse.ok) {
         setSent(true);
-        setFormData({ name: "", email: "", service: "AI Chatbot", message: "" });
-        setTimeout(() => setSent(false), 5000);
+        setFormData({ name: "", email: "", service: "AI Chatbot & Conversational Agent", message: "" });
+        setTimeout(() => setSent(false), 6000);
       } else {
-        setError(data.error || "Failed to send message");
+        const data = await formSubmitResponse.json();
+        setError(data.message || "Failed to deliver email. Please reach us at flownexahere@gmail.com.");
       }
     } catch (err) {
-      setError("Network error. Please try again.");
-      console.error(err);
+      setError("Network error sending inquiry. Please email flownexahere@gmail.com directly.");
+      console.error("Email submission error:", err);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="relative min-h-screen text-foreground">
+    <div className="relative min-h-screen text-foreground flex flex-col justify-between">
       <AnimatedBackground />
       <Navbar />
-      <main className="mx-auto max-w-6xl px-6 pt-32 pb-20">
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="font-display text-5xl font-bold md:text-6xl"
-        >
-          Let's <span className="text-gradient">Talk</span>
-        </motion.h1>
-        <p className="mt-6 max-w-2xl text-lg text-muted-foreground">
-          Tell us about your project. We reply within 24 hours.
-        </p>
 
-        <div className="mt-14 grid gap-8 lg:grid-cols-3">
-          <motion.form
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            onSubmit={handleSubmit}
-            className="glass-strong rounded-2xl p-8 lg:col-span-2"
+      <main className="mx-auto max-w-7xl px-6 pt-32 pb-24 w-full">
+        <div className="grid gap-16 lg:grid-cols-12 lg:items-start">
+          {/* Left Column — Title & Direct Details */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="lg:col-span-5"
           >
-            <div className="grid gap-5 md:grid-cols-2">
-              <input 
-                required 
-                placeholder="Your name" 
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="rounded-lg border border-border/60 bg-background/40 px-4 py-3 outline-none focus:border-accent" 
-              />
-              <input 
-                required 
-                type="email" 
-                placeholder="Email" 
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="rounded-lg border border-border/60 bg-background/40 px-4 py-3 outline-none focus:border-accent" 
-              />
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-1.5 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+              <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+              Get In Touch
             </div>
-            <select 
-              value={formData.service}
-              onChange={(e) => setFormData({ ...formData, service: e.target.value })}
-              className="mt-5 w-full rounded-lg border border-border/60 bg-background/40 px-4 py-3 outline-none focus:border-accent"
-            >
-              <option>AI Chatbot</option>
-              <option>Workflow Automation</option>
-              <option>Custom LLM Solution</option>
-              <option>AI Strategy & Consulting</option>
-              <option>Other</option>
-            </select>
-            <textarea 
-              required 
-              rows={6} 
-              placeholder="Tell us about your project…" 
-              value={formData.message}
-              onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-              className="mt-5 w-full rounded-lg border border-border/60 bg-background/40 px-4 py-3 outline-none focus:border-accent" 
-            />
-            {error && <p className="mt-3 text-sm text-red-500">{error}</p>}
-            <button 
-              type="submit" 
-              disabled={loading || sent}
-              className="mt-6 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-accent px-7 py-3.5 font-semibold text-white shadow-lg shadow-primary/40 transition-all hover:shadow-primary/70 hover:scale-105 disabled:opacity-75 disabled:cursor-not-allowed"
-            >
-              <Send className="h-4 w-4" />
-              {sent ? "✓ Message sent!" : loading ? "Sending..." : "Send Message"}
-            </button>
-          </motion.form>
+            <h1 className="font-display text-5xl font-semibold leading-tight md:text-6xl lg:text-7xl">
+              Let's build <br />
+              something <br />
+              <span className="text-accent">that scales.</span>
+            </h1>
+            <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+              Have an AI project, workflow automation, or custom LLM requirement? Send us a message and we'll reply within 24 hours.
+            </p>
 
-          <div className="space-y-4">
-            <a href="mailto:hello@flownexa.ai" className="glass-strong flex items-start gap-4 rounded-2xl p-6 transition-all hover:border-accent/50">
-              <div className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-primary/30 to-accent/30">
-                <Mail className="h-5 w-5 text-accent" />
+            <div className="mt-12 space-y-6">
+              <a 
+                href="mailto:flownexahere@gmail.com" 
+                className="group flex items-center gap-4 rounded-xl border border-border bg-card p-4 transition-all hover:border-accent"
+              >
+                <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-accent/10 text-accent">
+                  <Mail className="h-5 w-5" />
+                </div>
+                <div>
+                  <div className="text-xs uppercase tracking-wider text-muted-foreground">Direct Email</div>
+                  <div className="font-medium text-foreground group-hover:text-accent transition-colors">flownexahere@gmail.com</div>
+                </div>
+              </a>
+
+              <a 
+                href="https://wa.me/03174100973" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center gap-4 rounded-xl border border-border bg-card p-4 transition-all hover:border-accent"
+              >
+                <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-accent/10 text-accent">
+                  <MessageCircle className="h-5 w-5" />
+                </div>
+                <div>
+                  <div className="text-xs uppercase tracking-wider text-muted-foreground">WhatsApp Chat</div>
+                  <div className="font-medium text-foreground group-hover:text-accent transition-colors">+92 (317) 410-0973</div>
+                </div>
+              </a>
+            </div>
+          </motion.div>
+
+          {/* Right Column — Minimalist Form */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+            className="lg:col-span-7"
+          >
+            {sent && (
+              <div className="mb-6 flex items-center gap-3 rounded-xl border border-accent/30 bg-accent/10 p-4 text-accent">
+                <CheckCircle2 className="h-5 w-5 shrink-0" />
+                <div>
+                  <p className="font-semibold text-sm">Inquiry Received!</p>
+                  <p className="text-xs text-foreground/80">Thank you. Your message has been sent to flownexahere@gmail.com. We'll reply within 24 hours.</p>
+                </div>
               </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-8">
+              <div className="grid gap-8 md:grid-cols-2">
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">
+                    Your Name *
+                  </label>
+                  <input 
+                    required 
+                    type="text"
+                    placeholder="Jane Doe" 
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    className="w-full border-b-2 border-border bg-transparent py-3 text-base text-foreground outline-none transition-colors focus:border-accent placeholder:text-muted-foreground/40" 
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">
+                    Work Email *
+                  </label>
+                  <input 
+                    required 
+                    type="email" 
+                    placeholder="jane@company.com" 
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    className="w-full border-b-2 border-border bg-transparent py-3 text-base text-foreground outline-none transition-colors focus:border-accent placeholder:text-muted-foreground/40" 
+                  />
+                </div>
+              </div>
+
               <div>
-                <div className="font-semibold">Email</div>
-                <div className="text-sm text-muted-foreground">flownexahere@gmail.com</div>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">
+                  Service Scope
+                </label>
+                <select 
+                  value={formData.service}
+                  onChange={(e) => setFormData({ ...formData, service: e.target.value })}
+                  className="w-full border-b-2 border-border bg-transparent py-3 text-base text-foreground outline-none transition-colors focus:border-accent"
+                >
+                  <option value="AI Chatbot & Conversational Agent" className="bg-card text-foreground">AI Chatbot & Conversational Agent</option>
+                  <option value="Workflow & Process Automation" className="bg-card text-foreground">Workflow & Process Automation</option>
+                  <option value="Custom LLM Solutions & Fine-Tuning" className="bg-card text-foreground">Custom LLM Solutions & Fine-Tuning</option>
+                  <option value="Voice & Audio Intelligence" className="bg-card text-foreground">Voice & Audio Intelligence</option>
+                  <option value="AI Strategy & Consulting" className="bg-card text-foreground">AI Strategy & Consulting</option>
+                  <option value="Other Custom Requirement" className="bg-card text-foreground">Other Custom Requirement</option>
+                </select>
               </div>
-            </a>
-            <a href="https://wa.me/03174100973" className="glass-strong flex items-start gap-4 rounded-2xl p-6 transition-all hover:border-accent/50">
-              <div className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-primary/30 to-accent/30">
-                <MessageCircle className="h-5 w-5 text-accent" />
-              </div>
+
               <div>
-                <div className="font-semibold">WhatsApp</div>
-                <div className="text-sm text-muted-foreground">Chat with our team</div>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">
+                  Project Details *
+                </label>
+                <textarea 
+                  required 
+                  rows={4} 
+                  placeholder="Tell us about your current workflow, system stack, or goals…" 
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  className="w-full border-b-2 border-border bg-transparent py-3 text-base text-foreground outline-none transition-colors focus:border-accent placeholder:text-muted-foreground/40" 
+                />
               </div>
-            </a>
-          </div>
+
+              {error && <p className="text-sm font-medium text-red-600">{error}</p>}
+
+              <div>
+                <button 
+                  type="submit" 
+                  disabled={loading || sent}
+                  className="inline-flex items-center gap-3 rounded-full bg-accent px-8 py-4 font-semibold text-accent-foreground transition-all hover:opacity-90 disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                  {loading ? (
+                    <>
+                      <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                      <span>Sending inquiry...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Send className="h-4 w-4" />
+                      <span>{sent ? "Message Sent!" : "Submit Inquiry"}</span>
+                      <ArrowRight className="h-4 w-4" />
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          </motion.div>
         </div>
       </main>
+
+      <Footer />
     </div>
   );
 }

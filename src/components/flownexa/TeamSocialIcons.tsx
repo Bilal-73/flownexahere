@@ -24,32 +24,34 @@ export function TeamSocialIcons({
   github,
 }: TeamSocialIconsProps) {
   const socialLinks = [
-    { icon: Instagram, href: instagram, label: "Instagram", color: "hover:text-pink-400" },
-    { icon: Linkedin, href: linkedin, label: "LinkedIn", color: "hover:text-blue-400" },
-    { icon: Github, href: github, label: "GitHub", color: "hover:text-purple-400" },
-    { icon: Globe, href: website, label: "Website", color: "hover:text-cyan-400" },
-    { icon: Facebook, href: facebook, label: "Facebook", color: "hover:text-blue-600" },
-    { icon: Phone, href: phone ? `tel:${phone}` : "#", label: "Phone", color: "hover:text-green-400" },
-    { icon: Mail, href: email ? `mailto:${email}` : "#", label: "Email", color: "hover:text-red-400" },
+    { icon: Instagram, href: instagram, label: "Instagram" },
+    { icon: Linkedin, href: linkedin, label: "LinkedIn" },
+    { icon: Github, href: github, label: "GitHub" },
+    { icon: Globe, href: website, label: "Website" },
+    { icon: Facebook, href: facebook, label: "Facebook" },
+    { icon: Phone, href: phone ? `tel:${phone}` : "#", label: "Phone" },
+    { icon: Mail, href: email ? `mailto:${email}` : "#", label: "Email" },
   ];
 
   return (
     <div className="mt-4 space-y-3">
       <div>
-        <h4 className="font-display font-semibold text-base">{name}</h4>
+        <h4 className="font-display font-semibold text-lg">{name}</h4>
         <p className="text-sm text-muted-foreground">{title}</p>
       </div>
 
-      <div className="flex gap-3 flex-wrap">
-        {socialLinks.map(({ icon: Icon, href, label, color }) => (
+      <div className="flex gap-2 flex-wrap justify-center">
+        {socialLinks.map(({ icon: Icon, href, label }) => (
           <a
             key={label}
             href={href && href !== "#" ? href : "#"}
             target={href && !href.startsWith("tel:") && !href.startsWith("mailto:") ? "_blank" : undefined}
             rel={href && !href.startsWith("tel:") && !href.startsWith("mailto:") ? "noopener noreferrer" : undefined}
             aria-label={label}
-            className={`inline-flex h-9 w-9 items-center justify-center rounded-full bg-background/50 border border-accent/20 transition-all duration-300 ${color} ${
-              href && href !== "#" ? "cursor-pointer hover:bg-background/80 hover:border-accent/50" : "opacity-50 cursor-not-allowed"
+            className={`inline-flex h-9 w-9 items-center justify-center rounded-full bg-muted border border-border text-foreground transition-all duration-300 ${
+              href && href !== "#" 
+                ? "cursor-pointer hover:bg-accent hover:text-accent-foreground hover:border-accent" 
+                : "opacity-40 cursor-not-allowed"
             }`}
             onClick={(e) => {
               if (!href || href === "#") {
