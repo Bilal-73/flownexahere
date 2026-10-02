@@ -13,6 +13,8 @@ import {
 } from "lucide-react";
 import { AnimatedBackground } from "@/components/flownexa/Background";
 import { Navbar } from "@/components/flownexa/Navbar";
+import { Footer } from "@/components/flownexa/Footer";
+import { NextCaseStudy } from "@/components/flownexa/NextCaseStudy";
 import fashionBanner from "@/assets/Ai fashion Assistant/Ai-fashionbanner-clean.png";
 import fashionProduct from "@/assets/Ai fashion Assistant/Ai-fashion-clean.png";
 
@@ -90,7 +92,7 @@ function FashionStylistCaseStudyPage() {
       <AnimatedBackground />
       <Navbar />
 
-      <main className="pb-20">
+      <main>
         <section className="relative overflow-hidden pt-28">
           <div className="mx-auto max-w-7xl px-6">
             <Link
@@ -253,6 +255,9 @@ function FashionStylistCaseStudyPage() {
           </CaseSection>
         </div>
       </main>
+
+      <NextCaseStudy current="fashion-stylist" />
+      <Footer />
     </div>
   );
 }

@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { AnimatedBackground } from "@/components/flownexa/Background";
 import { Navbar } from "@/components/flownexa/Navbar";
 import { Footer } from "@/components/flownexa/Footer";
+import { PageHeader } from "@/components/flownexa/PageHeader";
+import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/services")({
@@ -99,24 +101,15 @@ function ServicesPage() {
       <AnimatedBackground />
       <Navbar />
 
-      <main className="mx-auto max-w-7xl px-6 pt-32 pb-24 w-full">
+      <main className="mx-auto max-w-7xl px-6 pt-36 pb-24 w-full">
         {/* Page Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="max-w-3xl"
+        <PageHeader
+          eyebrow="Core Capabilities"
+          title={"Engineering capabilities\n& services."}
+          accent={["services"]}
         >
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-1.5 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-            Core Capabilities
-          </div>
-          <h1 className="font-display text-5xl font-semibold leading-tight md:text-6xl lg:text-7xl">
-            Engineering Capabilities & <span className="text-accent">Services</span>
-          </h1>
-          <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-            We don't deliver generic advice. We build, ship, and maintain custom AI software tailored to your technology stack.
-          </p>
-        </motion.div>
+          We don't deliver generic advice. We build, ship, and maintain custom AI software tailored to your technology stack.
+        </PageHeader>
 
         {/* Numbered Editorial List */}
         <div className="mt-20 border-t border-border">
@@ -127,19 +120,21 @@ function ServicesPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.05 }}
-              className="group border-b border-border py-12 transition-colors hover:bg-card/40"
+              className="group relative border-b border-border py-12"
             >
+              {/* Accent rule that draws across on hover */}
+              <span className="absolute -bottom-px left-0 h-px w-full origin-left scale-x-0 bg-accent transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100" />
               <div className="grid gap-8 lg:grid-cols-12 lg:items-start">
                 {/* Numeral */}
                 <div className="lg:col-span-2">
-                  <span className="font-display text-5xl font-semibold text-accent/80 transition-colors group-hover:text-accent md:text-6xl">
+                  <span className="inline-block font-display text-5xl font-semibold text-accent/30 transition-all duration-500 group-hover:-translate-y-1 group-hover:text-accent md:text-6xl">
                     {service.num}
                   </span>
                 </div>
 
                 {/* Service Overview */}
                 <div className="lg:col-span-5">
-                  <h2 className="font-display text-2xl font-semibold leading-tight md:text-3xl">
+                  <h2 className="font-display text-2xl font-semibold leading-tight transition-transform duration-500 group-hover:translate-x-1 md:text-3xl">
                     {service.title}
                   </h2>
                   <p className="mt-4 text-base leading-relaxed text-muted-foreground">
@@ -179,13 +174,13 @@ function ServicesPage() {
               We frequently architect bespoke AI pipelines that cross multiple domains. Let's discuss your specific infrastructure needs.
             </p>
           </div>
-          <a
-            href="/contact"
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-8 py-4 font-semibold text-accent-foreground transition-all hover:opacity-90 shrink-0"
+          <Link
+            to="/contact"
+            className="group inline-flex items-center justify-center gap-2 rounded-full bg-accent px-8 py-4 font-semibold text-accent-foreground transition-colors hover:bg-foreground shrink-0"
           >
             Schedule Technical Call
-            <ArrowRight className="h-4 w-4" />
-          </a>
+            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+          </Link>
         </motion.div>
       </main>
 

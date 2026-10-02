@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { AnimatedBackground } from "@/components/flownexa/Background";
 import { Navbar } from "@/components/flownexa/Navbar";
 import { Footer } from "@/components/flownexa/Footer";
+import { PageHeader } from "@/components/flownexa/PageHeader";
+import { Link } from "@tanstack/react-router";
 import { ArrowRight, Code2, ShieldCheck, Zap } from "lucide-react";
 
 export const Route = createFileRoute("/about")({
@@ -23,22 +25,13 @@ export function AboutPage() {
       <AnimatedBackground />
       <Navbar />
 
-      <main className="mx-auto max-w-7xl px-6 pt-32 pb-24 w-full">
+      <main className="mx-auto max-w-7xl px-6 pt-36 pb-24 w-full">
         {/* Editorial Title */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="max-w-3xl"
-        >
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-1.5 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-            Agency Manifesto
-          </div>
-          <h1 className="font-display text-5xl font-semibold leading-tight md:text-6xl lg:text-7xl">
-            Built for execution. <br />
-            <span className="text-accent">Grounded in craft.</span>
-          </h1>
-        </motion.div>
+        <PageHeader
+          eyebrow="Agency Manifesto"
+          title={"Built for execution.\nGrounded in craft."}
+          accent={["Grounded", "in", "craft"]}
+        />
 
         {/* Large Manifesto Pull-Quote Block */}
         <motion.div
@@ -95,10 +88,10 @@ export function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="card-surface hover-lift p-8 rounded-2xl flex flex-col justify-between"
+                className="card-surface hover-lift group p-8 rounded-2xl flex flex-col justify-between"
               >
                 <div>
-                  <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 text-accent">
+                  <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 text-accent transition-all duration-500 group-hover:-rotate-6 group-hover:bg-accent group-hover:text-accent-foreground">
                     <pillar.icon className="h-6 w-6 stroke-[1.75]" />
                   </div>
                   <h3 className="font-display text-2xl font-semibold">{pillar.title}</h3>
@@ -134,13 +127,13 @@ export function AboutPage() {
               We believe the future belongs to teams that leverage AI co-workers for repetitive tasks while focusing their human creative energy on high-value strategy.
             </p>
             <div className="pt-4">
-              <a
-                href="/team"
-                className="inline-flex items-center gap-2 font-semibold text-accent hover:underline"
+              <Link
+                to="/team"
+                className="group inline-flex items-center gap-2 font-semibold text-accent"
               >
                 Meet the engineering team
-                <ArrowRight className="h-4 w-4" />
-              </a>
+                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
             </div>
           </div>
         </motion.div>

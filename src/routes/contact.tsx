@@ -1,9 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { AnimatedBackground } from "@/components/flownexa/Background";
 import { Navbar } from "@/components/flownexa/Navbar";
 import { Footer } from "@/components/flownexa/Footer";
+import { Eyebrow, SplitText } from "@/components/flownexa/motion";
 import { Mail, MessageCircle, Send, ArrowRight, CheckCircle2 } from "lucide-react";
 
 export const Route = createFileRoute("/contact")({
@@ -96,7 +97,7 @@ function ContactPage() {
       <AnimatedBackground />
       <Navbar />
 
-      <main className="mx-auto max-w-7xl px-6 pt-32 pb-24 w-full">
+      <main className="mx-auto max-w-7xl px-6 pt-36 pb-24 w-full">
         <div className="grid gap-16 lg:grid-cols-12 lg:items-start">
           {/* Left Column — Title & Direct Details */}
           <motion.div
@@ -104,14 +105,9 @@ function ContactPage() {
             animate={{ opacity: 1, y: 0 }}
             className="lg:col-span-5"
           >
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-1.5 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-              <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-              Get In Touch
-            </div>
-            <h1 className="font-display text-5xl font-semibold leading-tight md:text-6xl lg:text-7xl">
-              Let's build <br />
-              something <br />
-              <span className="text-accent">that scales.</span>
+            <Eyebrow>Get In Touch</Eyebrow>
+            <h1 className="font-display text-5xl font-semibold leading-[1.02] tracking-[-0.03em] md:text-6xl lg:text-7xl">
+              <SplitText text={"Let's build\nsomething\nthat scales."} accentWords={["that", "scales"]} delay={0.1} />
             </h1>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
               Have an AI project, workflow automation, or custom LLM requirement? Send us a message and we'll reply within 24 hours.
@@ -132,7 +128,7 @@ function ContactPage() {
               </a>
 
               <a 
-                href="https://wa.me/03174100973" 
+                href="https://wa.me/923174100973" 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex items-center gap-4 rounded-xl border border-border bg-card p-4 transition-all hover:border-accent"
@@ -155,15 +151,22 @@ function ContactPage() {
             transition={{ delay: 0.15 }}
             className="lg:col-span-7"
           >
+            <AnimatePresence>
             {sent && (
-              <div className="mb-6 flex items-center gap-3 rounded-xl border border-accent/30 bg-accent/10 p-4 text-accent">
+              <motion.div
+                initial={{ opacity: 0, y: -8, height: 0 }}
+                animate={{ opacity: 1, y: 0, height: "auto" }}
+                exit={{ opacity: 0, y: -8, height: 0 }}
+                className="mb-6 flex items-center gap-3 overflow-hidden rounded-xl border border-accent/30 bg-accent/10 p-4 text-accent"
+              >
                 <CheckCircle2 className="h-5 w-5 shrink-0" />
                 <div>
                   <p className="font-semibold text-sm">Inquiry Received!</p>
                   <p className="text-xs text-foreground/80">Thank you. Your message has been sent to flownexahere@gmail.com. We'll reply within 24 hours.</p>
                 </div>
-              </div>
+              </motion.div>
             )}
+            </AnimatePresence>
 
             <form onSubmit={handleSubmit} className="space-y-8">
               <div className="grid gap-8 md:grid-cols-2">
@@ -255,7 +258,7 @@ function ContactPage() {
         </div>
       </main>
 
-      <Footer />
+      <Footer showCta={false} />
     </div>
   );
 }
