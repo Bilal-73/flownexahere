@@ -4,12 +4,9 @@ import { AnimatedBackground } from "@/components/flownexa/Background";
 import { Navbar } from "@/components/flownexa/Navbar";
 import { Footer } from "@/components/flownexa/Footer";
 import { ArrowUpRight, Eye, Mic, ShieldCheck } from "lucide-react";
-import aiphaPreview from "@/assets/Aipha/Aipha-product-clean.png";
-import resumePreview from "@/assets/resumeScrener/ResumeScrener-clean.png";
-import salesmintPreview from "@/assets/salesmint/Salesmint-clean.png";
-import fashionPreview from "@/assets/Ai fashion Assistant/Ai-fashion-clean.png";
-import clinifyPreview from "@/assets/clinify/clinify-clean.png";
-import ticketAutomationPreview from "@/assets/ticketAutomation/ticket-automation.png";
+import { caseStudies } from "@/components/flownexa/projects";
+import { PageHeader } from "@/components/flownexa/PageHeader";
+import { EASE, Reveal } from "@/components/flownexa/motion";
 
 export const Route = createFileRoute("/portfolio")({
   head: () => ({
@@ -23,82 +20,29 @@ export const Route = createFileRoute("/portfolio")({
   component: PortfolioPage,
 });
 
-interface Project {
-  title: string;
-  tag: string;
-  desc: string;
-  href?: string;
-  image?: string;
-  watermarkText?: string;
-  IllustrationIcon?: React.ComponentType<{ className?: string }>;
-}
-
-const featuredProject: Project = {
-  title: "SalesMint",
-  tag: "Featured • AI POS System",
-  desc: "An AI-powered POS and billing platform engineered for high-throughput retail checkout, automated inventory tracking, and real-time sales intelligence.",
-  image: salesmintPreview,
-  href: "/portfolio/salesmint",
-};
-
-const remainingProjects: Project[] = [
-  { 
-    title: "NeuroSymbolic VQA", 
-    tag: "Neuro-Symbolic AI", 
-    desc: "Visual question answering system combining deep learning perception with symbolic reasoning for complex visual analysis.",
-    watermarkText: "VQA",
-    IllustrationIcon: Eye,
+/** Builds without a public case study yet — listed as an index. */
+const otherBuilds = [
+  {
+    title: "NeuroSymbolic VQA",
+    tag: "Neuro-Symbolic AI",
+    desc: "Visual question answering combining deep-learning perception with symbolic reasoning for complex visual analysis.",
+    icon: Eye,
   },
-  { 
-    title: "MediTranscribe", 
-    tag: "Speech-to-Text AI", 
-    desc: "Real-time doctor-patient conversation transcription system converting clinical dialogue into structured EHR notes.",
-    watermarkText: "STT",
-    IllustrationIcon: Mic,
+  {
+    title: "MediTranscribe",
+    tag: "Speech-to-Text AI",
+    desc: "Real-time doctor–patient conversation transcription that turns clinical dialogue into structured EHR notes.",
+    icon: Mic,
   },
-  { 
-    title: "AI Resume Screener & Job Matcher", 
-    tag: "NLP / ML", 
-    desc: "High-volume resume classification API that predicts candidate role match scores and extracts structured contact entities.",
-    image: resumePreview,
-    href: "/portfolio/resume-screener",
-  },
-  { 
-    title: "Clinify", 
-    tag: "Automation / n8n", 
-    desc: "Clinic workflow automation platform integrating patient appointment scheduling, WhatsApp alerts, and AI receptionist tasks.",
-    image: clinifyPreview,
-    href: "/portfolio/clinify",
-  },
-  { 
-    title: "Ticket Automation", 
-    tag: "AI Automation", 
-    desc: "Intelligent support ticket classification and routing system built on n8n to eliminate manual support triaging.",
-    image: ticketAutomationPreview,
-    href: "/portfolio/ticket-automation",
-  },
-  { 
-    title: "AuditX", 
-    tag: "Call Auditing AI", 
-    desc: "Automated QA call auditing engine that analyzes support and sales conversations for compliance and agent performance.",
-    watermarkText: "QA",
-    IllustrationIcon: ShieldCheck,
-  },
-  { 
-    title: "AIPHA", 
-    tag: "AI Healthcare Assistant", 
-    desc: "Personalized fitness and nutrition assistant converting user goals into customized workout routines and daily meal plans.",
-    image: aiphaPreview,
-    href: "/portfolio/aipha",
-  },
-  { 
-    title: "AI Virtual Fashion Stylist", 
-    tag: "Computer Vision", 
-    desc: "Computer vision outfit recommendation engine analyzing user clothing items to suggest personalized style combinations.",
-    image: fashionPreview,
-    href: "/portfolio/fashion-stylist",
+  {
+    title: "AuditX",
+    tag: "Call Auditing AI",
+    desc: "Automated QA engine that reviews support and sales calls for compliance and agent performance.",
+    icon: ShieldCheck,
   },
 ];
+
+const [featured, ...rest] = caseStudies;
 
 function PortfolioPage() {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
@@ -112,139 +56,107 @@ function PortfolioPage() {
       <AnimatedBackground />
       <Navbar />
 
-      <main className="mx-auto max-w-7xl px-6 pt-32 pb-24 w-full">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="max-w-3xl"
-        >
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-1.5 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-            Selected Work
-          </div>
-          <h1 className="font-display text-5xl font-semibold leading-tight md:text-6xl lg:text-7xl">
-            Products & <span className="text-accent">Automations</span>
-          </h1>
-          <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-            A curated index of production AI software, custom models, and automation workflows engineered for clients worldwide.
-          </p>
-        </motion.div>
+      <main className="mx-auto max-w-7xl px-6 pt-36 pb-24 w-full">
+        <PageHeader eyebrow="Selected Work" title={"Products &\nautomations."} accent={["automations"]}>
+          A curated index of production AI software, custom models, and automation workflows engineered for clients worldwide.
+        </PageHeader>
 
-        {/* Featured Project Banner (Full Width Horizontal Split) */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mt-16"
-        >
+        {/* Featured */}
+        <Reveal className="mt-20">
           <Link
-            to={featuredProject.href!}
-            className="card-surface hover-lift group grid overflow-hidden rounded-2xl md:grid-cols-12"
+            to={featured.href}
+            className="group grid overflow-hidden rounded-3xl border border-border bg-card md:grid-cols-12"
           >
-            <div className="flex flex-col justify-between p-8 md:col-span-6 md:p-12">
+            <div className="flex flex-col justify-between p-8 md:col-span-5 md:p-12">
               <div>
-                <span className="text-xs font-semibold uppercase tracking-wider text-accent">
-                  {featuredProject.tag}
+                <span className="text-xs font-semibold uppercase tracking-[0.15em] text-accent">
+                  Featured · {featured.tag}
                 </span>
-                <h2 className="mt-3 font-display text-3xl font-semibold md:text-4xl">
-                  {featuredProject.title}
+                <h2 className="mt-4 font-display text-4xl font-semibold tracking-tight md:text-5xl">
+                  {featured.title}
                 </h2>
-                <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-                  {featuredProject.desc}
-                </p>
+                <p className="mt-5 text-base leading-relaxed text-muted-foreground">{featured.desc}</p>
               </div>
-
-              <div className="mt-8 flex items-center gap-2 text-sm font-semibold text-accent">
-                <span>Explore Case Study</span>
-                <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+              <div className="mt-10 inline-flex items-center gap-3 text-sm font-semibold">
+                <span className="flex h-11 w-11 items-center justify-center rounded-full bg-foreground text-background transition-colors duration-300 group-hover:bg-accent">
+                  <ArrowUpRight className="h-4 w-4 transition-transform duration-500 group-hover:rotate-45" />
+                </span>
+                Explore case study
               </div>
             </div>
-
-            <div className="relative min-h-[260px] bg-muted md:col-span-6 overflow-hidden border-t border-border md:border-t-0 md:border-l">
+            <div className="relative min-h-[280px] overflow-hidden border-t border-border bg-muted md:col-span-7 md:border-t-0 md:border-l">
               <img
-                src={featuredProject.image}
-                alt={featuredProject.title}
-                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                src={featured.image}
+                alt={`${featured.title} preview`}
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
               />
             </div>
           </Link>
-        </motion.div>
+        </Reveal>
 
-        {/* Remaining Projects (Staggered Grid) */}
-        <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-2">
-          {remainingProjects.map((p, i) => {
-            const CardShell = p.href ? Link : "div";
-
-            return (
-              <motion.div
-                key={p.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: (i % 2) * 0.1 }}
-                className="h-full"
-              >
-                <CardShell
-                  {...(p.href ? { to: p.href } : {})}
-                  className="card-surface hover-lift group flex flex-col h-full overflow-hidden rounded-2xl transition-all"
-                >
-                  {/* Card Header Illustration / Screenshot Container */}
-                  <div className="relative h-48 w-full overflow-hidden bg-muted border-b border-border">
-                    {p.image ? (
-                      <img
-                        src={p.image}
-                        alt={`${p.title} preview`}
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                    ) : (
-                      /* Editorial Line Art + Ghost Watermark Illustration */
-                      <div className="relative flex h-full w-full items-center justify-center bg-card p-6 overflow-hidden">
-                        {/* Oversized Ghost Watermark Text */}
-                        <span className="pointer-events-none absolute -right-2 -bottom-4 select-none font-display text-8xl font-bold tracking-tighter text-foreground/[0.06]">
-                          {p.watermarkText}
-                        </span>
-
-                        {/* Line Art Icon Motif */}
-                        <div className="relative z-10 flex items-center justify-center rounded-2xl border border-accent/20 bg-accent/5 p-4 text-accent">
-                          {p.IllustrationIcon && <p.IllustrationIcon className="h-8 w-8 stroke-[1.5]" />}
-                        </div>
-                      </div>
-                    )}
-
-                    {p.href && (
-                      <div className="absolute top-4 right-4 rounded-full border border-border bg-card/90 p-2 shadow-sm backdrop-blur-sm transition-transform group-hover:rotate-45">
-                        <ArrowUpRight className="h-4 w-4 text-foreground" />
-                      </div>
-                    )}
+        {/* Case studies */}
+        <div className="mt-10 grid gap-x-8 gap-y-14 md:grid-cols-2">
+          {rest.map((p, i) => (
+            <motion.div
+              key={p.slug}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "0px 0px -10% 0px" }}
+              transition={{ duration: 0.9, ease: EASE, delay: (i % 2) * 0.12 }}
+              className={i % 2 === 1 ? "md:mt-24" : ""}
+            >
+              <Link to={p.href} className="group block">
+                <div className="relative aspect-[16/11] overflow-hidden rounded-2xl border border-border bg-muted">
+                  <img
+                    src={p.image}
+                    alt={`${p.title} preview`}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05]"
+                  />
+                  <div className="absolute top-4 right-4 flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card/90 backdrop-blur-sm transition-all duration-500 group-hover:rotate-45 group-hover:border-accent group-hover:bg-accent group-hover:text-accent-foreground">
+                    <ArrowUpRight className="h-4 w-4" />
                   </div>
-
-                  {/* Card Content */}
-                  <div className="flex flex-col justify-between p-7 flex-1">
-                    <div>
-                      <div className="text-xs font-semibold uppercase tracking-wider text-accent">
-                        {p.tag}
-                      </div>
-                      <h3 className="mt-2 font-display text-2xl font-semibold">
-                        {p.title}
-                      </h3>
-                      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                        {p.desc}
-                      </p>
-                    </div>
-
-                    {p.href && (
-                      <div className="mt-6 inline-flex items-center gap-1.5 text-xs font-semibold text-accent uppercase tracking-wider">
-                        <span>Case Study</span>
-                        <ArrowUpRight className="h-3.5 w-3.5" />
-                      </div>
-                    )}
+                </div>
+                <div className="mt-6 flex items-start justify-between gap-6">
+                  <div>
+                    <div className="text-xs font-semibold uppercase tracking-[0.15em] text-accent">{p.tag}</div>
+                    <h3 className="mt-2 font-display text-2xl font-semibold tracking-tight md:text-3xl">{p.title}</h3>
+                    <p className="mt-3 max-w-md text-sm leading-relaxed text-muted-foreground">{p.desc}</p>
                   </div>
-                </CardShell>
-              </motion.div>
-            );
-          })}
+                  <span className="font-mono text-sm text-muted-foreground">
+                    {String(i + 2).padStart(2, "0")}
+                  </span>
+                </div>
+              </Link>
+            </motion.div>
+          ))}
         </div>
+
+        {/* Other builds */}
+        <section className="mt-32">
+          <Reveal>
+            <h2 className="font-display text-3xl font-semibold tracking-tight md:text-4xl">Also built</h2>
+            <p className="mt-3 text-muted-foreground">Research and client systems without a public case study yet.</p>
+          </Reveal>
+          <ul className="mt-10 border-t border-border">
+            {otherBuilds.map((b, i) => (
+              <Reveal as="li" key={b.title} delay={i * 0.06}>
+                <div className="group grid gap-4 border-b border-border py-7 md:grid-cols-12 md:items-center">
+                  <div className="flex items-center gap-4 md:col-span-5">
+                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-border bg-card text-accent transition-colors duration-300 group-hover:bg-accent group-hover:text-accent-foreground">
+                      <b.icon className="h-5 w-5 stroke-[1.75]" />
+                    </span>
+                    <h3 className="font-display text-xl font-semibold">{b.title}</h3>
+                  </div>
+                  <p className="text-sm leading-relaxed text-muted-foreground md:col-span-5">{b.desc}</p>
+                  <span className="text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground md:col-span-2 md:text-right">
+                    {b.tag}
+                  </span>
+                </div>
+              </Reveal>
+            ))}
+          </ul>
+        </section>
       </main>
 
       <Footer />

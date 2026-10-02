@@ -3,6 +3,13 @@ import { AnimatedBackground } from "@/components/flownexa/Background";
 import { Navbar } from "@/components/flownexa/Navbar";
 import { Hero } from "@/components/flownexa/Hero";
 import { Footer } from "@/components/flownexa/Footer";
+import {
+  Process,
+  ServicesPreview,
+  StackMarquee,
+  Statement,
+  WorkShowcase,
+} from "@/components/flownexa/HomeSections";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -18,11 +25,16 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <div className="relative min-h-screen text-foreground flex flex-col justify-between">
+    <div className="relative min-h-screen text-foreground">
       <AnimatedBackground />
       <Navbar />
       <main>
         <Hero />
+        <StackMarquee />
+        <Statement />
+        <ServicesPreview />
+        <WorkShowcase />
+        <Process />
       </main>
       <Footer />
     </div>

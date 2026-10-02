@@ -1,80 +1,115 @@
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ArrowDown } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import { EASE, Eyebrow, Magnetic, SplitText } from "./motion";
+import { FlowDiagram } from "./FlowDiagram";
+
+const fadeUp = (delay: number) => ({
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.8, ease: EASE, delay },
+});
 
 export function Hero() {
   return (
-    <section id="home" className="relative pt-32 pb-20 md:pt-44 md:pb-32">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="grid items-start gap-12 lg:grid-cols-[1.1fr_0.9fr]">
-          {/* Left — Copy */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-          >
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-1.5 text-xs font-medium tracking-wide text-muted-foreground uppercase">
-              <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-              AI Automation Agency
-            </div>
+    <section id="home" className="relative overflow-hidden pt-32 pb-24 md:pt-40 md:pb-32">
+      {/* Soft warm glow behind the diagram */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-40 top-20 h-[38rem] w-[38rem] rounded-full opacity-60 blur-3xl"
+        style={{
+          background: "radial-gradient(circle, oklch(0.85 0.08 55 / 0.55), transparent 65%)",
+        }}
+      />
 
-            <h1 className="font-display text-5xl font-semibold leading-[1.08] tracking-tight md:text-6xl lg:text-[4.5rem]">
-              We build chatbots,{" "}
-              <br className="hidden md:block" />
-              workflow engines,{" "}
-              <br className="hidden md:block" />
-              and custom{" "}
-              <span className="text-accent">AI tools</span>{" "}
-              <br className="hidden md:block" />
-              that actually ship.
+      <div className="relative mx-auto max-w-7xl px-6">
+        <div className="grid items-center gap-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
+          <div>
+            <motion.div {...fadeUp(0.1)}>
+              <Eyebrow>AI Automation Studio</Eyebrow>
+            </motion.div>
+
+            <h1 className="font-display text-[2.75rem] font-semibold leading-[1.02] tracking-[-0.035em] sm:text-6xl lg:text-[4.6rem]">
+              <SplitText
+                text={"We build AI\nthat runs your\noperations — and ships."}
+                accentWords={["ships"]}
+                delay={0.2}
+              />
             </h1>
 
-            <p className="mt-6 max-w-lg text-lg leading-relaxed text-muted-foreground">
-              From WhatsApp bots to full LLM pipelines — we design, build, and
-              deploy production AI for businesses that need it working, not just
-              demoed.
-            </p>
+            <motion.p
+              {...fadeUp(0.7)}
+              className="mt-7 max-w-lg text-lg leading-relaxed text-muted-foreground"
+            >
+              Chatbots, workflow engines and custom LLM tools — designed, built and deployed for
+              businesses that need it working in production, not just demoed.
+            </motion.p>
 
-            <div className="mt-10 flex flex-wrap gap-4">
-              <a
-                href="/contact"
-                className="group inline-flex items-center gap-2 rounded-full bg-accent px-7 py-3.5 font-semibold text-accent-foreground transition-all hover:opacity-90"
+            <motion.div {...fadeUp(0.85)} className="mt-10 flex flex-wrap items-center gap-4">
+              <Magnetic>
+                <Link
+                  to="/contact"
+                  className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-accent px-7 py-4 font-semibold text-accent-foreground"
+                >
+                  <span className="absolute inset-0 translate-y-full bg-foreground transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-y-0" />
+                  <span className="relative">Start a project</span>
+                  <ArrowRight className="relative h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                </Link>
+              </Magnetic>
+              <Link
+                to="/portfolio"
+                className="group inline-flex items-center gap-2 rounded-full px-4 py-4 font-semibold text-foreground"
               >
-                Start a project
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </a>
-              <a
-                href="/portfolio"
-                className="inline-flex items-center gap-2 rounded-full border border-foreground/20 px-7 py-3.5 font-semibold text-foreground transition-all hover:border-foreground/40 hover:bg-foreground/5"
-              >
-                View our work
-              </a>
-            </div>
-          </motion.div>
+                <span className="relative">
+                  See our work
+                  <span className="absolute -bottom-0.5 left-0 h-px w-full origin-left bg-foreground/30 transition-transform duration-500 group-hover:scale-x-0" />
+                  <span className="absolute -bottom-0.5 left-0 h-px w-full origin-right scale-x-0 bg-accent transition-transform delay-100 duration-500 group-hover:origin-left group-hover:scale-x-100" />
+                </span>
+              </Link>
+            </motion.div>
 
-          {/* Right — Typographic lockup */}
+            <motion.dl
+              {...fadeUp(1)}
+              className="mt-14 grid max-w-md grid-cols-3 gap-6 border-t border-border pt-6"
+            >
+              {[
+                ["8", "Products shipped"],
+                ["24h", "Reply time"],
+                ["3", "Industries"],
+              ].map(([v, l]) => (
+                <div key={l}>
+                  <dt className="sr-only">{l}</dt>
+                  <dd className="font-display text-2xl font-semibold tracking-tight">{v}</dd>
+                  <dd className="mt-1 text-xs text-muted-foreground">{l}</dd>
+                </div>
+              ))}
+            </motion.dl>
+          </div>
+
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative hidden items-center justify-center lg:flex"
+            initial={{ opacity: 0, y: 40, rotate: 1.5 }}
+            animate={{ opacity: 1, y: 0, rotate: 0 }}
+            transition={{ duration: 1.1, ease: EASE, delay: 0.25 }}
           >
-            <div className="relative select-none">
-              {/* Large typographic "AI" */}
-              <span
-                className="font-display block text-[12rem] font-bold leading-none tracking-tighter text-accent/10"
-                aria-hidden="true"
-              >
-                AI
-              </span>
-              {/* Overlapping accent bar */}
-              <div className="absolute bottom-8 left-0 h-2 w-24 rounded-full bg-accent" />
-              {/* Small descriptor */}
-              <p className="absolute -bottom-2 left-0 text-sm font-medium tracking-widest text-muted-foreground uppercase">
-                Built to ship
-              </p>
-            </div>
+            <FlowDiagram />
           </motion.div>
         </div>
+
+        <motion.a
+          href="#marquee"
+          {...fadeUp(1.4)}
+          className="mt-20 hidden items-center gap-3 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground transition-colors hover:text-foreground lg:inline-flex"
+        >
+          <span className="flex h-9 w-9 items-center justify-center rounded-full border border-border">
+            <motion.span
+              animate={{ y: [0, 4, 0] }}
+              transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <ArrowDown className="h-3.5 w-3.5" />
+            </motion.span>
+          </span>
+          Scroll to explore
+        </motion.a>
       </div>
     </section>
   );

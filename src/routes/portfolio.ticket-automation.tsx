@@ -12,6 +12,8 @@ import {
 } from "lucide-react";
 import { AnimatedBackground } from "@/components/flownexa/Background";
 import { Navbar } from "@/components/flownexa/Navbar";
+import { Footer } from "@/components/flownexa/Footer";
+import { NextCaseStudy } from "@/components/flownexa/NextCaseStudy";
 import ticketAutomationBanner from "@/assets/ticketAutomation/ticket-automation-banner.png";
 import ticketAutomationProduct from "@/assets/ticketAutomation/ticket-automation.png";
 
@@ -89,7 +91,7 @@ function TicketAutomationCaseStudyPage() {
       <AnimatedBackground />
       <Navbar />
 
-      <main className="pb-20">
+      <main>
         <section className="relative overflow-hidden pt-28">
           <div className="mx-auto max-w-7xl px-6">
             <Link
@@ -255,6 +257,9 @@ function TicketAutomationCaseStudyPage() {
           </CaseSection>
         </div>
       </main>
+
+      <NextCaseStudy current="ticket-automation" />
+      <Footer />
     </div>
   );
 }
