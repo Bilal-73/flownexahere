@@ -1,0 +1,235 @@
+---
+/**
+ * AI ROI Calculator. Pure arithmetic in the browser: no backend, no AI calls,
+ * nothing stored or sent. Results for the default inputs are rendered at build
+ * time so the page is useful before (or without) JavaScript.
+ */
+import ToolLayout from "@/layouts/ToolLayout.astro";
+import { getTool } from "@/config/tools";
+
+const tool = getTool("roi-calculator");
+
+/** Average weeks per month (52 weeks ÷ 12 months). */
+const WEEKS_PER_MONTH = 52 / 12;
+const defaults = { people: 5, hours: 8, rate: 25, share: 50 };
+
+const calc = (people: number, hours: number, rate: number, share: number) => {
+  const hoursMonth = people * hours * (share / 100) * WEEKS_PER_MONTH;
+  const moneyMonth = hoursMonth * rate;
+  return { hoursMonth, moneyMonth, moneyYear: moneyMonth * 12 };
+};
+const initial = calc(defaults.people, defaults.hours, defaults.rate, defaults.share);
+const fmtHours = (n: number) => Math.round(n).toLocaleString("en-US");
+const fmtMoney = (n: number) => `$${Math.round(n).toLocaleString("en-US")}`;
+---
+
+<ToolLayout
+  title="AI ROI Calculator: how much could automation save you? | FlowNexa"
+  description="Free automation ROI calculator. Enter your team size, hours spent on repetitive tasks and hourly cost to estimate the hours and money saved per month and per year."
+  ogImage="/og/tools/roi-calculator.png"
+  ogImageAlt="FlowNexa AI ROI Calculator: estimate hours and money saved by automation"
+  heading="How much could automation save your team?"
+  intro="Enter a few numbers about your team's repetitive work to get a quick estimate of the time and money automation could free up. It runs entirely in your browser; nothing you type is sent or stored."
+  toolName={tool.title}
+  path="/tools/roi-calculator/"
+  contactTopic={tool.contactTopic}
+  ctaTitle="Turn these hours into a working automation."
+  ctaBody="Tell us which tasks take the time. We'll reply with what we'd automate first and a fixed-price quote, usually ready in 3–10 days."
+  ctaLabel="Get a fixed-price quote"
+>
+  <div class="grid gap-6 lg:grid-cols-[1.1fr_1fr]">
+    <form class="card space-y-6 p-6 sm:p-8" data-roi-form novalidate aria-labelledby="roi-inputs-heading">
+      <h2 id="roi-inputs-heading" class="text-xl">Your team</h2>
+
+      <div>
+        <label for="roi-people" class="field-label">Number of people doing the work</label>
+        <input
+          id="roi-people"
+          name="people"
+          type="number"
+          inputmode="numeric"
+          min="1"
+          max="10000"
+          step="1"
+          value={defaults.people}
+          required
+          class="field"
+          aria-describedby="roi-people-hint"
+        />
+        <p id="roi-people-hint" class="mt-1.5 text-sm text-muted-foreground">Everyone who spends time on these tasks.</p>
+      </div>
+
+      <div>
+        <label for="roi-hours" class="field-label">Hours per person per week on repetitive tasks</label>
+        <input
+          id="roi-hours"
+          name="hours"
+          type="number"
+          inputmode="decimal"
+          min="0"
+          max="80"
+          step="0.5"
+          value={defaults.hours}
+          required
+          class="field"
+          aria-describedby="roi-hours-hint"
+        />
+        <p id="roi-hours-hint" class="mt-1.5 text-sm text-muted-foreground">
+          Copying data between tools, answering the same questions, building reports by hand.
+        </p>
+      </div>
+
+      <div>
+        <label for="roi-rate" class="field-label">Hourly cost per person (USD)</label>
+        <div class="relative">
+          <span class="pointer-events-none absolute inset-y-0 left-3.5 flex items-center text-muted-foreground" aria-hidden="true">$</span>
+          <input
+            id="roi-rate"
+            name="rate"
+            type="number"
+            inputmode="decimal"
+            min="0"
+            max="10000"
+            step="0.5"
+            value={defaults.rate}
+            required
+            class="field !pl-7"
+            aria-describedby="roi-rate-hint"
+          />
+        </div>
+        <p id="roi-rate-hint" class="mt-1.5 text-sm text-muted-foreground">Wage plus overheads. Use a rough average if it varies.</p>
+      </div>
+
+      <div>
+        <div class="flex items-baseline justify-between gap-3">
+          <label for="roi-share" class="field-label">Share of that work that can be automated</label>
+          <output for="roi-share" class="text-sm font-semibold text-accent" data-roi-share-value>{defaults.share}%</output>
+        </div>
+        <input
+          id="roi-share"
+          name="share"
+          type="range"
+          min="0"
+          max="100"
+          step="5"
+          value={defaults.share}
+          aria-valuetext={`${defaults.share}%`}
+          aria-describedby="roi-share-hint"
+          class="mt-2 w-full"
+        />
+        <p id="roi-share-hint" class="mt-1.5 text-sm text-muted-foreground">
+          50% is a sensible starting point. Rule-based, repetitive tasks are often higher; judgement-heavy work is lower.
+        </p>
+      </div>
+
+      <p class="text-sm font-medium text-accent" data-roi-error role="alert" hidden></p>
+    </form>
+
+    <section class="card flex flex-col p-6 sm:p-8" aria-labelledby="roi-results-heading">
+      <h2 id="roi-results-heading" class="text-xl">Estimated savings</h2>
+      <dl class="mt-6 grid gap-4" aria-live="polite" data-roi-results>
+        <div class="rounded-xl bg-muted/60 p-5">
+          <dt class="text-sm text-muted-foreground">Hours saved per month</dt>
+          <dd class="mt-1 text-3xl font-semibold tracking-tight md:text-4xl" data-roi-out="hoursMonth">{fmtHours(initial.hoursMonth)}</dd>
+        </div>
+        <div class="rounded-xl bg-muted/60 p-5">
+          <dt class="text-sm text-muted-foreground">Money saved per month</dt>
+          <dd class="mt-1 text-3xl font-semibold tracking-tight md:text-4xl" data-roi-out="moneyMonth">{fmtMoney(initial.moneyMonth)}</dd>
+        </div>
+        <div class="rounded-xl bg-accent-soft p-5">
+          <dt class="text-sm text-muted-foreground">Money saved per year</dt>
+          <dd class="mt-1 text-3xl font-semibold tracking-tight text-accent md:text-4xl" data-roi-out="moneyYear">{fmtMoney(initial.moneyYear)}</dd>
+        </div>
+      </dl>
+      <p class="mt-6 text-sm text-muted-foreground">
+        A rough estimate, not a quote. Figures are rounded to the nearest whole hour or dollar.
+      </p>
+      <noscript>
+        <p class="mt-3 text-sm text-muted-foreground">
+          JavaScript is off, so these figures show the default inputs. Use the formula below to work out your own.
+        </p>
+      </noscript>
+    </section>
+  </div>
+
+  <Fragment slot="method">
+    <p>The calculator multiplies four numbers together. Nothing else goes into it.</p>
+    <ul>
+      <li><strong>Hours saved per month</strong> = people × hours per week × automatable share × 4.33</li>
+      <li><strong>Money saved per month</strong> = hours saved per month × hourly cost</li>
+      <li><strong>Money saved per year</strong> = money saved per month × 12</li>
+    </ul>
+    <h3>Assumptions</h3>
+    <ul>
+      <li>A month is 52 ÷ 12 ≈ 4.33 weeks, and the workload is steady across the year.</li>
+      <li>Automated time is time saved. In practice some of it is reinvested in other work, which is the point, but it isn't always cash in the bank.</li>
+      <li>It does not subtract the cost of building or running the automation (build fee, software subscriptions, AI usage), or the time spent reviewing its output.</li>
+      <li>Hourly cost is the full cost to the business (wage plus overheads), entered in US dollars.</li>
+      <li>Your numbers stay on this page: the sums run in your browser and nothing is sent, saved or tracked.</li>
+    </ul>
+  </Fragment>
+</ToolLayout>
+
+<script>
+  const WEEKS_PER_MONTH = 52 / 12;
+  const form = document.querySelector<HTMLFormElement>("[data-roi-form]");
+
+  if (form) {
+    const field = (name: string) => form.elements.namedItem(name) as HTMLInputElement;
+    const people = field("people");
+    const hours = field("hours");
+    const rate = field("rate");
+    const share = field("share");
+    const shareValue = form.querySelector<HTMLOutputElement>("[data-roi-share-value]");
+    const error = form.querySelector<HTMLElement>("[data-roi-error]");
+    const out = (key: string) => document.querySelector<HTMLElement>(`[data-roi-out="${key}"]`);
+    const outputs = { hoursMonth: out("hoursMonth"), moneyMonth: out("moneyMonth"), moneyYear: out("moneyYear") };
+
+    const fmtHours = (n: number) => Math.round(n).toLocaleString("en-US");
+    const fmtMoney = (n: number) => `$${Math.round(n).toLocaleString("en-US")}`;
+
+    /** Parsed value, or null if empty / not a number / outside min–max. */
+    const read = (input: HTMLInputElement): number | null => {
+      if (input.value.trim() === "") return null;
+      const n = Number(input.value);
+      if (!Number.isFinite(n) || n < Number(input.min) || n > Number(input.max)) return null;
+      return n;
+    };
+
+    const update = () => {
+      const s = Number(share.value);
+      if (shareValue) shareValue.textContent = `${s}%`;
+      share.setAttribute("aria-valuetext", `${s}%`);
+
+      const values = [people, hours, rate].map((input) => {
+        const v = read(input);
+        input.setAttribute("aria-invalid", v === null ? "true" : "false");
+        return v;
+      });
+
+      if (values.some((v) => v === null)) {
+        if (error) {
+          error.textContent = "Enter a number in each box (people 1–10,000, hours 0–80, cost 0–10,000).";
+          error.hidden = false;
+        }
+        Object.values(outputs).forEach((el) => el && (el.textContent = "–"));
+        return;
+      }
+      if (error) error.hidden = true;
+
+      const [p, h, r] = values as number[];
+      const hoursMonth = p * h * (s / 100) * WEEKS_PER_MONTH;
+      const moneyMonth = hoursMonth * r;
+      if (outputs.hoursMonth) outputs.hoursMonth.textContent = fmtHours(hoursMonth);
+      if (outputs.moneyMonth) outputs.moneyMonth.textContent = fmtMoney(moneyMonth);
+      if (outputs.moneyYear) outputs.moneyYear.textContent = fmtMoney(moneyMonth * 12);
+    };
+
+    form.addEventListener("input", update);
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      update();
+    });
+    update();
+  }
+</script>
