@@ -42,7 +42,7 @@ None of the old copy names a client (the "Client Challenge" sections describe ge
 
 | Project | File | Type / status now | Notes |
 | --- | --- | --- | --- |
-| PosNexa: AI POS System (was SalesMint) | `posnexa.md` | product / in-development | Renamed from SalesMint at the owner's request; `/work/salesmint` redirects here. Confirm status (`live` if it is in use). `tech` is empty because the old page named no technologies; the screenshot looks like a Windows desktop app. Is this the Electron POS? (see draft f) |
+| PosNexa: AI POS System (was SalesMint) | `posnexa.md` | product / in-development | Keyboard-friendly Electron desktop POS (confirmed). Past MVP, not live yet. Switch `status: live` when it is in use. `/work/salesmint` redirects here. |
 | Clinify: Clinic Workflow Automation | `clinify.md` | demo / demo | `tech: [n8n]` taken from the old card tag "Automation / n8n". |
 | Ticket Automation | `ticket-automation.md` | demo / demo | Old copy said "n8n-style"; written here as n8n. Confirm. |
 | AI Resume Classification & Details Extraction | `resume-screener.md` | demo / demo | |
@@ -52,7 +52,7 @@ None of the old copy names a client (the "Client Challenge" sections describe ge
 | MediTranscribe | `meditranscribe.md` | demo / demo, card only | No images, no case study. |
 | AuditX | `auditx.md` | demo / demo, card only | No images, no case study. |
 | CricNexa | `cricnexa.md` | product / in-development | Links to /cricnexa. |
-| ProNexa | `pronexa.md` | product / in-development, card only | Owner described it only as a "personal app". **Add a one-line description** (what it does, who it is for); the site currently says "More details soon." |
+| ProNexa | `pronexa.md` | product / in-development | Full page written from the owner's README (encrypted offline-first Android organiser). Past MVP, not live yet. Add screenshots as `cover`/`gallery` and a Play Store link (`links.demo`) when available. |
 
 No dates, demo links, repos or videos existed for any project. Add `date`, `links.demo`, `links.repo` or `links.video` where you have them.
 
@@ -69,7 +69,6 @@ Each has `status: draft` and TODO sections. They show in `npm run dev` only.
 | c. Local business lead scraper + gap analysis (sanitised sample only) | `local-lead-scraper.md` |
 | d. Document extractor (PDF → JSON → Sheet) | `document-extractor.md` |
 | e. Sales insights & forecasting dashboard (demo data) | `sales-insights-dashboard.md` |
-| f. Offline/online POS (Electron) | `offline-online-pos.md` (likely overlaps PosNexa; merge into `posnexa.md` if so) |
 
 ## 5. Missing assets
 
