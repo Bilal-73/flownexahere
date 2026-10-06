@@ -1,0 +1,59 @@
+---
+/** Netlify Form "cricnexa-waitlist" with honeypot. */
+import Icon from "./Icon.astro";
+---
+
+<div>
+  <form
+    name="cricnexa-waitlist"
+    method="POST"
+    action="/thanks/?form=cricnexa"
+    data-netlify="true"
+    netlify-honeypot="bot-field"
+    data-ajax-form
+    data-success-target="waitlist-success"
+    class="space-y-4"
+  >
+    <input type="hidden" name="form-name" value="cricnexa-waitlist" />
+    <p class="hp-field" aria-hidden="true">
+      <label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+    </p>
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div>
+        <label for="wl-email" class="field-label">Email</label>
+        <input id="wl-email" name="email" type="email" required autocomplete="email" class="field" />
+      </div>
+      <div>
+        <label for="wl-role" class="field-label">I am a… <span class="font-normal text-muted-foreground">(optional)</span></label>
+        <select id="wl-role" name="role" class="field">
+          <option value="">Choose one</option>
+          <option>Club official</option>
+          <option>Coach / academy</option>
+          <option>Tournament organiser</option>
+          <option>Player</option>
+          <option>Other</option>
+        </select>
+      </div>
+    </div>
+    <div>
+      <label for="wl-club" class="field-label">Club, academy or tournament <span class="font-normal text-muted-foreground">(optional)</span></label>
+      <input id="wl-club" name="organisation" type="text" class="field" autocomplete="organization" />
+    </div>
+    <p class="text-xs leading-relaxed text-muted-foreground">
+      We'll only use your email to tell you about CricNexa early access and launch. No spam, no sharing,
+      unsubscribe any time by replying "stop". <a href="/privacy/" class="link">Privacy note</a>.
+    </p>
+    <div class="flex flex-wrap items-center gap-4">
+      <button type="submit" class="btn btn-primary" data-track="cricnexa_waitlist_submit">
+        Join the waitlist <Icon name="arrow-right" class="h-4 w-4" />
+      </button>
+      <p class="text-sm text-muted-foreground" data-form-status role="status" aria-live="polite"></p>
+    </div>
+  </form>
+  <div id="waitlist-success" hidden tabindex="-1" class="card p-6" role="status">
+    <p class="flex items-center gap-2 text-lg font-semibold">
+      <Icon name="check" class="h-5 w-5 text-success" /> You're on the list.
+    </p>
+    <p class="mt-2 text-muted-foreground">We'll email you when early access opens. Thanks for your interest in CricNexa.</p>
+  </div>
+</div>
