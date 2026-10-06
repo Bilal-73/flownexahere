@@ -1,0 +1,42 @@
+---
+/**
+ * Renders the agency email without putting the address in the HTML source.
+ * The address is stored reversed + base64 in a data attribute and assembled by
+ * a tiny script on load (see BaseLayout). Without JS, a human-readable
+ * "name [at] domain" fallback is shown.
+ */
+import { site } from "@/config/site";
+
+interface Props {
+  class?: string;
+  /** Visible text. Defaults to the address itself. */
+  text?: string;
+  track?: string;
+  /** Small caption above the address (e.g. "Email"). */
+  caption?: string;
+}
+const { class: className = "", text, track = "email", caption } = Astro.props;
+const encoded = Buffer.from([...site.contact.email].reverse().join("")).toString("base64");
+const [user, domain] = site.contact.email.split("@");
+const fallback = `${user} [at] ${domain.replace(/\./g, " [dot] ")}`;
+---
+
+<a
+  href="/contact/#contact-form"
+  class={className || undefined}
+  data-email={encoded}
+  data-email-text={text ? "keep" : undefined}
+  data-track={track}
+>
+  <slot name="icon" />
+  {
+    caption ? (
+      <span>
+        <span class="block text-xs tracking-wide text-muted-foreground uppercase">{caption}</span>
+        <span data-email-label class="font-semibold group-hover:text-accent">{text ?? fallback}</span>
+      </span>
+    ) : (
+      <span data-email-label>{text ?? fallback}</span>
+    )
+  }
+</a>

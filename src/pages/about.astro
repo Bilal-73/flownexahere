@@ -1,0 +1,46 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import About from "@/components/sections/About.astro";
+import ContactSection from "@/components/sections/ContactSection.astro";
+import Icon, { type IconName } from "@/components/Icon.astro";
+import { organizationLd, breadcrumbLd } from "@/lib/schema";
+
+const pillars: { icon: IconName; title: string; text: string }[] = [
+  { icon: "code", title: "Engineering first", text: "Every AI feature is treated as software: clear inputs and outputs, fallbacks when the model is unsure, structured data and logging." },
+  { icon: "shield", title: "Reliable in production", text: "Models can be wrong. We add checks, test sets and human handoff so outputs can be trusted in real workflows." },
+  { icon: "clock", title: "Fast, fixed scope", text: "Working software in weeks, not months. We start with the bottleneck that saves you the most time." },
+];
+---
+
+<BaseLayout
+  title="About FlowNexa: AI engineering agency"
+  description="FlowNexa is a small AI engineering agency based in Pakistan, building chatbots, automations and custom software for clients worldwide."
+  jsonLd={[organizationLd(), breadcrumbLd([{ name: "Home", path: "/" }, { name: "About", path: "/about/" }])]}
+>
+  <About showTeam headingLevel="h1" />
+
+  <section class="border-y border-border bg-muted/40 py-16" aria-labelledby="principles-heading">
+    <div class="container-page">
+      <blockquote class="max-w-4xl text-2xl leading-snug font-medium md:text-3xl">
+        “We don't build generic AI wrappers or hand over 80-page decks. We design, test and ship automation
+        that runs quietly and reliably in production.”
+      </blockquote>
+      <h2 id="principles-heading" class="sr-only">How we differ</h2>
+      <ul class="mt-12 grid gap-5 md:grid-cols-3">
+        {
+          pillars.map((p) => (
+            <li class="card p-6">
+              <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-accent-soft text-accent">
+                <Icon name={p.icon} />
+              </span>
+              <h3 class="mt-4 text-xl">{p.title}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-muted-foreground">{p.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <ContactSection title="Let's build something that scales." />
+</BaseLayout>

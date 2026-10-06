@@ -1,0 +1,26 @@
+---
+/**
+ * Privacy-friendly analytics.
+ *
+ * - Cloudflare Web Analytics (cookieless, free): loads only when
+ *   PUBLIC_CF_BEACON_TOKEN is set at build time.
+ * - Google Analytics 4 (optional): only when PUBLIC_GA_ID is set, and only
+ *   after the visitor accepts the consent notice (see ConsentNotice.astro).
+ *
+ * With neither variable set (e.g. local dev) nothing is loaded.
+ */
+const cfToken = import.meta.env.PUBLIC_CF_BEACON_TOKEN?.trim();
+const gaId = import.meta.env.PUBLIC_GA_ID?.trim();
+---
+
+{
+  cfToken && (
+    <script
+      is:inline
+      defer
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon={JSON.stringify({ token: cfToken })}
+    />
+  )
+}
+{gaId && <meta name="fn-ga-id" content={gaId} />}

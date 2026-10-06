@@ -1,0 +1,18 @@
+---
+/** FlowNexa orbital mark (same geometry as public/favicon.svg). */
+interface Props {
+  class?: string;
+}
+const { class: className = "h-9 w-9" } = Astro.props;
+---
+
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class={className} aria-hidden="true">
+  <circle cx="50" cy="50" r="50" fill="#000"></circle>
+  <circle cx="50" cy="50" r="42" fill="#fff"></circle>
+  <g stroke="#000" stroke-width="8.5" stroke-linecap="round" fill="none">
+    <path d="M12 50C12 28 40 22 66 36"></path>
+    <path d="M12 50C12 72 40 78 66 64"></path>
+    <path d="M12 50H52"></path>
+  </g>
+  <circle cx="66" cy="50" r="15" fill="#fff" stroke="#000" stroke-width="8"></circle>
+</svg>

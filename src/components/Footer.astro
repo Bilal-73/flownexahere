@@ -1,0 +1,109 @@
+---
+import Logo from "./Logo.astro";
+import Icon from "./Icon.astro";
+import ObfuscatedEmail from "./ObfuscatedEmail.astro";
+import { site, whatsappUrl } from "@/config/site";
+import { visibleSocials } from "@/lib/links";
+
+const socials = visibleSocials();
+const year = new Date().getFullYear();
+
+const columns = [
+  {
+    title: "Work",
+    links: [
+      { label: "All projects", href: "/work/" },
+      { label: "Services & pricing", href: "/services/" },
+      { label: "CricNexa", href: "/cricnexa/" },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { label: "About", href: "/about/" },
+      { label: "Contact", href: "/contact/" },
+      { label: "Privacy", href: "/privacy/" },
+    ],
+  },
+];
+---
+
+<footer class="bg-inverse text-inverse-foreground">
+  <div class="container-page grid gap-12 py-14 md:grid-cols-12">
+    <div class="md:col-span-5">
+      <a href="/" class="inline-flex items-center gap-2.5 font-display text-xl font-semibold">
+        <Logo class="h-9 w-9 rounded-full ring-1 ring-white/30" />
+        {site.name}
+      </a>
+      <p class="mt-4 max-w-sm text-sm leading-relaxed text-inverse-muted">
+        An AI engineering agency building chatbots, automations and custom software that run
+        reliably in production. Based in {site.location.country}, working with clients worldwide.
+      </p>
+      <ul class="mt-6 space-y-3 text-sm">
+        <li>
+          <ObfuscatedEmail class="inline-flex items-center gap-2 text-inverse-foreground hover:text-inverse-accent" track="footer_email">
+            <Icon slot="icon" name="mail" class="h-4 w-4" />
+          </ObfuscatedEmail>
+        </li>
+        <li>
+          <a
+            href={whatsappUrl()}
+            target="_blank"
+            rel="noopener"
+            class="inline-flex items-center gap-2 hover:text-inverse-accent"
+            data-track="footer_whatsapp"
+          >
+            <Icon name="whatsapp" class="h-4 w-4" /> WhatsApp {site.contact.whatsappDisplay}
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    {
+      columns.map((col) => (
+        <div class="md:col-span-2">
+          <h2 class="text-xs font-semibold tracking-[0.16em] text-inverse-muted uppercase">{col.title}</h2>
+          <ul class="mt-4 space-y-3 text-sm">
+            {col.links.map((l) => (
+              <li>
+                <a href={l.href} class="hover:text-inverse-accent">
+                  {l.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+
+    <div class="md:col-span-3">
+      <h2 class="text-xs font-semibold tracking-[0.16em] text-inverse-muted uppercase">Follow</h2>
+      {
+        socials.length > 0 ? (
+          <ul class="mt-4 space-y-3 text-sm">
+            {socials.map((s) => (
+              <li>
+                {s.todo ? (
+                  <span class="inline-flex items-center gap-2 text-inverse-muted" title={`Set ${s.label} URL in src/config/site.ts`}>
+                    <Icon name={s.icon} class="h-4 w-4" /> {s.label}
+                    <span class="rounded bg-yellow-300 px-1.5 text-[10px] font-bold text-black">TODO</span>
+                  </span>
+                ) : (
+                  <a href={s.href} target="_blank" rel="noopener me" class="inline-flex items-center gap-2 hover:text-inverse-accent">
+                    <Icon name={s.icon} class="h-4 w-4" /> {s.label}
+                  </a>
+                )}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p class="mt-4 text-sm text-inverse-muted">Message us on WhatsApp or email; we reply {site.contact.replyTime}.</p>
+        )
+      }
+    </div>
+  </div>
+  <div class="container-page flex flex-col gap-2 border-t border-white/15 py-6 text-xs text-inverse-muted sm:flex-row sm:justify-between">
+    <p>© {year} {site.legalName}. All rights reserved.</p>
+    <p>Built with Astro. Hosted on Netlify. No tracking cookies by default.</p>
+  </div>
+</footer>

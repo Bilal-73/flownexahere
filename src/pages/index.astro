@@ -1,0 +1,48 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Hero from "@/components/sections/Hero.astro";
+import ServiceCards from "@/components/sections/ServiceCards.astro";
+import FeaturedWork from "@/components/sections/FeaturedWork.astro";
+import Process from "@/components/sections/Process.astro";
+import FoundingBanner from "@/components/sections/FoundingBanner.astro";
+import CricnexaTeaser from "@/components/sections/CricnexaTeaser.astro";
+import About from "@/components/sections/About.astro";
+import Faq from "@/components/sections/Faq.astro";
+import ContactSection from "@/components/sections/ContactSection.astro";
+import Icon from "@/components/Icon.astro";
+import { site } from "@/config/site";
+import { organizationLd, professionalServiceLd } from "@/lib/schema";
+---
+
+<BaseLayout
+  title={`${site.name}: AI chatbots & automation agency`}
+  description="FlowNexa builds RAG chatbots, n8n and Python automations, data dashboards and custom software for small businesses and founders. Fixed scopes, clear prices, code you own."
+  jsonLd={[organizationLd(), professionalServiceLd()]}
+>
+  <Hero />
+
+  <section class="py-16 md:py-20" aria-labelledby="services-heading">
+    <div class="container-page">
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p class="eyebrow">Services</p>
+          <h2 id="services-heading" class="mt-3 text-3xl md:text-4xl">Fixed-scope packages. Clear starting prices.</h2>
+        </div>
+        <a href="/services/" class="inline-flex items-center gap-1.5 font-semibold hover:text-accent">
+          Compare packages <Icon name="arrow-right" class="h-4 w-4" />
+        </a>
+      </div>
+      <div class="mt-10">
+        <ServiceCards />
+      </div>
+    </div>
+  </section>
+
+  <FoundingBanner />
+  <FeaturedWork />
+  <CricnexaTeaser />
+  <Process />
+  <About />
+  <Faq />
+  <ContactSection />
+</BaseLayout>

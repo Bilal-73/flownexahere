@@ -1,0 +1,93 @@
+---
+import { getCollection } from "astro:content";
+import Icon, { type IconName } from "../Icon.astro";
+import { formatPrice, site } from "@/config/site";
+
+interface Props {
+  /** Show the full "what's included" list (services page) or a compact version (home). */
+  detailed?: boolean;
+  headingLevel?: "h2" | "h3";
+}
+const { detailed = false, headingLevel = "h3" } = Astro.props;
+const Heading = headingLevel;
+
+const services = (await getCollection("services")).sort((a, b) => a.data.order - b.data.order);
+const primary = services.filter((s) => !s.data.secondary);
+const secondary = services.filter((s) => s.data.secondary);
+const icons: Record<string, IconName> = {
+  "rag-chatbot": "bot",
+  "workflow-automation": "workflow",
+  "data-insights": "chart",
+  "custom-software": "monitor",
+};
+---
+
+<div class="grid gap-5 lg:grid-cols-3">
+  {
+    primary.map((s) => {
+      const price = site.pricing.packages[s.data.key];
+      return (
+        <article id={s.data.key} class="card flex flex-col p-6 sm:p-7">
+          <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-accent-soft text-accent">
+            <Icon name={icons[s.data.key]} class="h-5 w-5" />
+          </span>
+          <Heading class="mt-5 text-xl">{s.data.title}</Heading>
+          <p class="mt-2 text-sm leading-relaxed text-muted-foreground">{s.data.summary}</p>
+          <ul class="mt-5 space-y-2 text-sm">
+            {(detailed ? s.data.includes : s.data.includes.slice(0, 3)).map((item) => (
+              <li class="flex gap-2">
+                <Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+          {detailed && <p class="mt-4 text-sm text-muted-foreground"><strong class="text-foreground">Good fit for:</strong> {s.data.idealFor}</p>}
+          <div class="mt-auto pt-6"><div class="flex items-end justify-between gap-4 border-t border-border pt-5">
+            <p>
+              <span class="block text-xs text-muted-foreground">Starting from</span>
+              <span class="font-display text-2xl font-semibold">{formatPrice(price.from)}</span>
+              <span class="text-xs text-muted-foreground"> {price.note}</span>
+            </p>
+            <p class="text-right text-xs text-muted-foreground">
+              <Icon name="clock" class="inline h-3.5 w-3.5" /> {price.timeline}
+            </p>
+          </div></div>
+          <a href={`/contact/?topic=${s.data.key}#contact-form`} class="btn btn-secondary mt-5 w-full" data-track={`service_${s.data.key}`}>
+            Ask about {s.data.title.split(" (")[0]}
+          </a>
+        </article>
+      );
+    })
+  }
+</div>
+
+{
+  secondary.map((s) => {
+    const price = site.pricing.packages[s.data.key];
+    return (
+      <article id={s.data.key} class="card mt-5 flex flex-col gap-5 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-7">
+        <div class="flex gap-4">
+          <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-muted text-foreground">
+            <Icon name={icons[s.data.key]} class="h-5 w-5" />
+          </span>
+          <div>
+            <Heading class="text-lg">{s.data.title}</Heading>
+            <p class="mt-1 max-w-2xl text-sm leading-relaxed text-muted-foreground">{s.data.summary}</p>
+            {detailed && (
+              <ul class="mt-3 flex flex-wrap gap-1.5">
+                {s.data.includes.map((i) => <li class="chip">{i}</li>)}
+              </ul>
+            )}
+          </div>
+        </div>
+        <div class="flex shrink-0 items-center gap-4 sm:flex-col sm:items-end">
+          <p class="text-sm"><span class="text-muted-foreground">From</span> <strong class="font-display text-lg">{formatPrice(price.from)}</strong></p>
+          <a href={`/contact/?topic=${s.data.key}#contact-form`} class="link text-sm" data-track={`service_${s.data.key}`}>Discuss your project</a>
+        </div>
+      </article>
+    );
+  })
+}
+<p class="mt-4 text-xs text-muted-foreground">
+  Prices are starting points in {site.pricing.currency}. You get a fixed quote in writing before any work starts.
+</p>

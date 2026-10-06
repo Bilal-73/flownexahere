@@ -1,0 +1,61 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ServiceCards from "@/components/sections/ServiceCards.astro";
+import Process from "@/components/sections/Process.astro";
+import Faq from "@/components/sections/Faq.astro";
+import ContactSection from "@/components/sections/ContactSection.astro";
+import { professionalServiceLd, breadcrumbLd } from "@/lib/schema";
+
+/** Broader capabilities, carried over from the previous services page. */
+const capabilities = [
+  { title: "AI chatbots & conversational agents", body: "Assistants trained on your documentation and product catalogue, on web, WhatsApp and Slack.", items: ["RAG document memory", "WhatsApp, Slack, web", "Human escalation rules", "Multilingual conversations"] },
+  { title: "Workflow & process automation", body: "Remove repetitive data entry, lead routing and document handling by wiring AI steps into your existing tools.", items: ["n8n and Zapier pipelines", "CRM & ERP syncing", "Ticket and email triage", "Webhooks & API orchestration"] },
+  { title: "Custom LLM solutions", body: "Models and pipelines shaped around your business rules, security needs and edge cases.", items: ["Fine-tuning where it helps", "Vector database & embeddings", "Data privacy by design", "Structured outputs & validation"] },
+  { title: "Voice & audio AI", body: "Transcription, call quality auditing and voice assistants for clinics, support desks and sales teams.", items: ["Speech-to-text", "Call QA & compliance checks", "IVR / voice bots", "Sentiment analysis"] },
+  { title: "Predictive analytics & insights", body: "Turn operational data into dashboards, forecasts and alerts.", items: ["Natural-language data questions", "Sales & inventory insights", "KPI dashboards", "Anomaly alerts"] },
+  { title: "AI strategy & technical consulting", body: "Find the highest-value place to start, check feasibility and plan an architecture that scales.", items: ["Feasibility & ROI review", "Architecture specs", "Data governance advice", "Team training & handoff"] },
+];
+---
+
+<BaseLayout
+  title="Services & pricing: RAG chatbots, automation, data insights | FlowNexa"
+  description="Fixed-scope AI packages with starting prices: RAG chatbot setup, n8n/Python workflow automation, data & AI insights, and custom software including offline POS."
+  jsonLd={[professionalServiceLd(), breadcrumbLd([{ name: "Home", path: "/" }, { name: "Services", path: "/services/" }])]}
+>
+  <section class="container-page pt-12 pb-16 md:pt-16">
+    <p class="eyebrow">Services</p>
+    <h1 class="mt-3 max-w-3xl text-4xl md:text-5xl">Fixed-scope packages, built to be used every day.</h1>
+    <p class="mt-4 max-w-2xl text-lg text-muted-foreground">
+      Pick a package, or tell us the problem and we'll suggest one. Every project starts with a written
+      scope and a fixed quote.
+    </p>
+    <div class="mt-12">
+      <ServiceCards detailed headingLevel="h2" />
+    </div>
+  </section>
+
+  <section class="border-y border-border bg-muted/40 py-16 md:py-20" aria-labelledby="capabilities-heading">
+    <div class="container-page">
+      <p class="eyebrow">Beyond the packages</p>
+      <h2 id="capabilities-heading" class="mt-3 text-3xl md:text-4xl">Broader capabilities</h2>
+      <p class="mt-3 max-w-2xl text-muted-foreground">Larger or unusual projects are quoted after a call.</p>
+      <ul class="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {
+          capabilities.map((c) => (
+            <li class="card p-6">
+              <h3 class="text-lg">{c.title}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-muted-foreground">{c.body}</p>
+              <ul class="mt-4 flex flex-wrap gap-1.5">
+                {c.items.map((i) => <li class="chip">{i}</li>)}
+              </ul>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <Process />
+  <Faq />
+  <ContactSection title="Not sure which package fits?" />
+</BaseLayout>

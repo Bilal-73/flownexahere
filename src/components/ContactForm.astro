@@ -1,0 +1,87 @@
+---
+/**
+ * Netlify Form "contact". Plain HTML in the static build, so Netlify detects it
+ * at deploy time. Spam protection: honeypot field + Netlify's built-in filter.
+ * With JS: submits via fetch and shows an inline success message.
+ * Without JS: posts normally and lands on /thanks/.
+ */
+import Icon from "./Icon.astro";
+import { site } from "@/config/site";
+
+const topics = [
+  { key: "call", label: "Free 15-min call" },
+  { key: "rag-chatbot", label: "RAG chatbot" },
+  { key: "workflow-automation", label: "Workflow automation" },
+  { key: "data-insights", label: "Data & AI insights" },
+  { key: "custom-software", label: "Custom software / POS" },
+  { key: "other", label: "Something else" },
+];
+---
+
+<div>
+  <form
+    name="contact"
+    method="POST"
+    action="/thanks/"
+    data-netlify="true"
+    netlify-honeypot="bot-field"
+    data-ajax-form
+    data-success-target="contact-success"
+    class="space-y-5"
+  >
+    <input type="hidden" name="form-name" value="contact" />
+    <p class="hp-field" aria-hidden="true">
+      <label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+    </p>
+
+    <div class="grid gap-5 sm:grid-cols-2">
+      <div>
+        <label for="cf-name" class="field-label">Your name</label>
+        <input id="cf-name" name="name" type="text" required autocomplete="name" class="field" />
+      </div>
+      <div>
+        <label for="cf-email" class="field-label">Email</label>
+        <input id="cf-email" name="email" type="email" required autocomplete="email" class="field" />
+      </div>
+    </div>
+
+    <div>
+      <label for="cf-topic" class="field-label">What do you need?</label>
+      <select id="cf-topic" name="topic" class="field">
+        {topics.map((t) => <option data-key={t.key} value={t.label}>{t.label}</option>)}
+      </select>
+    </div>
+
+    <div>
+      <label for="cf-message" class="field-label">Tell us about the work you want to automate</label>
+      <textarea
+        id="cf-message"
+        name="message"
+        rows="5"
+        required
+        class="field"
+        placeholder="What happens today, which tools you use, and what “done” looks like."
+      ></textarea>
+    </div>
+
+    <p class="text-xs leading-relaxed text-muted-foreground">
+      We use your details only to reply to this enquiry. See our <a href="/privacy/" class="link">privacy note</a>.
+    </p>
+
+    <div class="flex flex-wrap items-center gap-4">
+      <button type="submit" class="btn btn-primary" data-track="contact_form_submit">
+        <Icon name="send" class="h-4 w-4" /> Send message
+      </button>
+      <p class="text-sm text-muted-foreground" data-form-status role="status" aria-live="polite"></p>
+    </div>
+  </form>
+
+  <div id="contact-success" hidden tabindex="-1" class="card p-6" role="status">
+    <p class="flex items-center gap-2 text-lg font-semibold">
+      <Icon name="check" class="h-5 w-5 text-success" /> Thanks, we've got your message.
+    </p>
+    <p class="mt-2 text-muted-foreground">
+      We'll reply {site.contact.replyTime}. For anything urgent, message us on WhatsApp.
+    </p>
+  </div>
+</div>

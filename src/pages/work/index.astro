@@ -1,0 +1,114 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ProjectCard from "@/components/ProjectCard.astro";
+import { getProjects } from "@/lib/projects";
+import { SERVICE_TAGS, SERVICE_TAG_LABELS } from "@/content.config";
+import { breadcrumbLd } from "@/lib/schema";
+
+const projects = await getProjects();
+const usedServices = SERVICE_TAGS.filter((tag) => projects.some((p) => p.data.services.includes(tag)));
+const techs = [...new Set(projects.flatMap((p) => p.data.tech))].sort((a, b) => a.localeCompare(b));
+---
+
+<BaseLayout
+  title="Work: AI chatbots, automations and software | FlowNexa"
+  description="Case studies and demo builds from FlowNexa: AI chatbots, n8n automations, machine learning APIs, dashboards and custom POS software."
+  jsonLd={[breadcrumbLd([{ name: "Home", path: "/" }, { name: "Work", path: "/work/" }])]}
+>
+  <section class="container-page pt-12 pb-20 md:pt-16">
+    <p class="eyebrow">Work</p>
+    <h1 class="mt-3 text-4xl md:text-5xl">Products, demos &amp; automations.</h1>
+    <p class="mt-4 max-w-2xl text-lg text-muted-foreground">
+      Every project is labelled: <strong class="text-foreground">Demo</strong> builds show capability,{" "}
+      <strong class="text-foreground">Products</strong> are ours, and client work is marked only when the client has agreed.
+    </p>
+
+    <div id="work-filters" class="mt-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between" hidden>
+      <fieldset>
+        <legend class="field-label">Filter by service</legend>
+        <div class="flex flex-wrap gap-2">
+          <label class="filter-pill"><input type="radio" name="service" value="" checked class="sr-only" /> All</label>
+          {
+            usedServices.map((tag) => (
+              <label class="filter-pill">
+                <input type="radio" name="service" value={tag} class="sr-only" /> {SERVICE_TAG_LABELS[tag]}
+              </label>
+            ))
+          }
+        </div>
+      </fieldset>
+      <div class="sm:w-60">
+        <label for="tech-filter" class="field-label">Filter by tech</label>
+        <select id="tech-filter" class="field">
+          <option value="">All tech</option>
+          {techs.map((t) => <option value={t.toLowerCase()}>{t}</option>)}
+        </select>
+      </div>
+    </div>
+    <p class="mt-4 text-sm text-muted-foreground" id="work-count" role="status" aria-live="polite"></p>
+
+    <ul class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        projects.map((p, i) => (
+          <li data-project-item>
+            <ProjectCard project={p} headingLevel="h2" eager={i < 3} />
+          </li>
+        ))
+      }
+    </ul>
+    <p id="work-empty" class="mt-8 text-muted-foreground" hidden>No projects match those filters yet.</p>
+  </section>
+</BaseLayout>
+
+<style>
+  .filter-pill {
+    display: inline-flex;
+    cursor: pointer;
+    align-items: center;
+    min-height: 2.5rem;
+    border-radius: 9999px;
+    border: 1px solid var(--color-border);
+    background: var(--color-card);
+    padding: 0.4rem 0.95rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  .filter-pill:has(input:checked) {
+    background: var(--color-foreground);
+    border-color: var(--color-foreground);
+    color: var(--color-background);
+  }
+  .filter-pill:has(input:focus-visible) {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+</style>
+
+<script>
+  const filters = document.getElementById("work-filters");
+  const items = [...document.querySelectorAll<HTMLElement>("[data-project-item]")];
+  const techSelect = document.getElementById("tech-filter") as HTMLSelectElement | null;
+  const count = document.getElementById("work-count");
+  const empty = document.getElementById("work-empty");
+
+  if (filters && techSelect) {
+    filters.hidden = false;
+    const apply = () => {
+      const service = (filters.querySelector<HTMLInputElement>('input[name="service"]:checked')?.value ?? "").trim();
+      const tech = techSelect.value;
+      let shown = 0;
+      for (const li of items) {
+        const card = li.querySelector<HTMLElement>("[data-project]");
+        const services = (card?.dataset.services ?? "").split(" ");
+        const techs = (card?.dataset.tech ?? "").split("|");
+        const match = (!service || services.includes(service)) && (!tech || techs.includes(tech));
+        li.hidden = !match;
+        if (match) shown++;
+      }
+      if (count) count.textContent = `Showing ${shown} of ${items.length} projects`;
+      if (empty) empty.hidden = shown > 0;
+    };
+    filters.addEventListener("change", apply);
+    apply();
+  }
+</script>
