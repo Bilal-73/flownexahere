@@ -1,0 +1,98 @@
+---
+import Logo from "./Logo.astro";
+import Icon from "./Icon.astro";
+import { bookingHref, site } from "@/config/site";
+
+const nav = [
+  { label: "Work", href: "/work/" },
+  { label: "Services", href: "/services/" },
+  { label: "About", href: "/about/" },
+  { label: "CricNexa", href: "/cricnexa/" },
+  { label: "Contact", href: "/contact/" },
+];
+
+const path = Astro.url.pathname;
+const isActive = (href: string) => path === href || path.startsWith(href);
+const booking = bookingHref();
+const external = booking.startsWith("http");
+---
+
+<header class="sticky top-0 z-40 border-b border-border/70 bg-background/90 backdrop-blur-md supports-[backdrop-filter]:bg-background/75">
+  <div class="container-page flex h-16 items-center justify-between gap-4">
+    <a href="/" class="flex items-center gap-2.5 font-display text-lg font-semibold tracking-tight" aria-label={`${site.name} home`}>
+      <Logo class="h-8 w-8" />
+      <span>{site.name}</span>
+    </a>
+
+    <nav aria-label="Main" class="hidden md:block">
+      <ul class="flex items-center gap-1">
+        {
+          nav.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={isActive(item.href) ? "page" : undefined}
+                class:list={[
+                  "rounded-full px-3.5 py-2 text-sm font-medium transition-colors",
+                  isActive(item.href)
+                    ? "bg-muted text-foreground"
+                    : "text-muted-foreground hover:text-foreground",
+                ]}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <a
+        href={booking}
+        class="btn btn-primary hidden !min-h-10 !px-4 !py-2 text-sm sm:inline-flex"
+        data-track="header_book_call"
+        {...external ? { target: "_blank", rel: "noopener" } : {}}
+      >
+        Book a free call
+      </a>
+
+      <details class="group relative md:hidden" data-mobile-menu>
+        <summary
+          class="flex h-10 w-10 cursor-pointer list-none items-center justify-center rounded-full border border-border bg-card [&::-webkit-details-marker]:hidden"
+          aria-label="Menu"
+        >
+          <Icon name="menu" class="h-5 w-5 group-open:hidden" />
+          <Icon name="x" class="hidden h-5 w-5 group-open:block" />
+        </summary>
+        <div class="card absolute right-0 mt-2 w-[min(18rem,calc(100vw-2rem))] p-2 shadow-xl">
+          <nav aria-label="Mobile">
+            <ul>
+              {
+                nav.map((item) => (
+                  <li>
+                    <a
+                      href={item.href}
+                      aria-current={isActive(item.href) ? "page" : undefined}
+                      class="block rounded-lg px-3 py-3 text-base font-medium hover:bg-muted aria-[current=page]:text-accent"
+                    >
+                      {item.label}
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </nav>
+          <a
+            href={booking}
+            class="btn btn-primary mt-2 w-full"
+            data-track="mobile_menu_book_call"
+            {...external ? { target: "_blank", rel: "noopener" } : {}}
+          >
+            Book a free 15-min call
+          </a>
+        </div>
+      </details>
+    </div>
+  </div>
+</header>

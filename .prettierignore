@@ -1,7 +1,5 @@
 node_modules
 dist
-.output
-.vinxi
-pnpm-lock.yaml
+.astro
+legacy
 package-lock.json
-routeTree.gen.ts

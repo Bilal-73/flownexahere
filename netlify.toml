@@ -1,23 +1,89 @@
+# Netlify configuration for the FlowNexa static Astro site.
+# Docs: https://docs.netlify.com/configure-builds/file-based-configuration/
+
 [build]
   command = "npm run build"
   publish = "dist"
-  functions = "netlify/functions"
 
-[dev]
-  functions = "netlify/functions"
-  port = 3000
+[build.environment]
+  NODE_VERSION = "22"
+  # Analytics (optional). Set the real values in the Netlify UI:
+  # Site configuration → Environment variables. Do not commit them here.
+  #   PUBLIC_CF_BEACON_TOKEN  Cloudflare Web Analytics token
+  #   PUBLIC_GA_ID            Google Analytics 4 measurement ID (G-XXXXXXX)
+
+# ---------------------------------------------------------------------------
+# Redirects: keep every old URL from the previous React site working (301).
+# Netlify matches with and without a trailing slash.
+# ---------------------------------------------------------------------------
+[[redirects]]
+  from = "/portfolio"
+  to = "/work/"
+  status = 301
 
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+  from = "/portfolio/*"
+  to = "/work/:splat"
+  status = 301
 
+[[redirects]]
+  from = "/team"
+  to = "/about/#team"
+  status = 301
+
+# Old domain variants → canonical (uncomment if you add www or keep the netlify.app URL public)
+# [[redirects]]
+#   from = "https://www.flownexahere.live/*"
+#   to = "https://flownexahere.live/:splat"
+#   status = 301
+#   force = true
+
+# Unknown URLs fall through to dist/404.html automatically (real 404 status).
+
+# ---------------------------------------------------------------------------
+# Headers
+# ---------------------------------------------------------------------------
 [[headers]]
-  for = "/index.html"
+  for = "/*"
   [headers.values]
-    Cache-Control = "max-age=0, no-cache, no-store, must-revalidate"
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+    Cross-Origin-Opener-Policy = "same-origin"
+    # script-src is intentionally not locked down (see MIGRATION_PLAN.md D10).
+    Content-Security-Policy = "frame-ancestors 'none'; base-uri 'self'; object-src 'none'; form-action 'self'; upgrade-insecure-requests"
 
+# Fingerprinted build assets: cache for a year.
 [[headers]]
-  for = "/assets/*"
+  for = "/_astro/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+# Generated share images and icons: cache a day, revalidate after.
+[[headers]]
+  for = "/og/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"
+
+[[headers]]
+  for = "/*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"
+
+[[headers]]
+  for = "/favicon.*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+# HTML: always revalidate so deploys show up immediately.
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/manifest.webmanifest"
+  [headers.values]
+    Content-Type = "application/manifest+json"
