@@ -2,13 +2,12 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import About from "@/components/sections/About.astro";
 import ContactSection from "@/components/sections/ContactSection.astro";
-import Icon, { type IconName } from "@/components/Icon.astro";
 import { organizationLd, breadcrumbLd } from "@/lib/schema";
 
-const pillars: { icon: IconName; title: string; text: string }[] = [
-  { icon: "code", title: "Engineering first", text: "Every AI feature is treated as software: clear inputs and outputs, fallbacks when the model is unsure, structured data and logging." },
-  { icon: "shield", title: "Reliable in production", text: "Models can be wrong. We add checks, test sets and human handoff so outputs can be trusted in real workflows." },
-  { icon: "clock", title: "Fast, fixed scope", text: "Working software in weeks, not months. We start with the bottleneck that saves you the most time." },
+const pillars: { title: string; text: string }[] = [
+  { title: "Engineering first", text: "Every AI feature is treated as software: clear inputs and outputs, fallbacks when the model is unsure, structured data and logging." },
+  { title: "Reliable in production", text: "Models can be wrong. We add checks, test sets and human handoff so outputs can be trusted in real workflows." },
+  { title: "Fast, fixed scope", text: "Working software in weeks, not months. We start with the bottleneck that saves you the most time." },
 ];
 ---
 
@@ -26,15 +25,12 @@ const pillars: { icon: IconName; title: string; text: string }[] = [
         that runs quietly and reliably in production.”
       </blockquote>
       <h2 id="principles-heading" class="sr-only">How we differ</h2>
-      <ul class="mt-12 grid gap-5 md:grid-cols-3">
+      <ul class="mt-12 grid gap-8 md:grid-cols-3">
         {
           pillars.map((p) => (
-            <li class="card p-6">
-              <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-accent-soft text-accent">
-                <Icon name={p.icon} />
-              </span>
-              <h3 class="mt-4 text-xl">{p.title}</h3>
-              <p class="mt-2 text-sm leading-relaxed text-muted-foreground">{p.text}</p>
+            <li class="border-t-2 border-foreground pt-5">
+              <h3 class="text-xl">{p.title}</h3>
+              <p class="mt-2 leading-relaxed text-muted-foreground">{p.text}</p>
             </li>
           ))
         }

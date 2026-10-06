@@ -82,8 +82,8 @@ export const site = {
   /** Founding-client offer banner on the home page. Set `enabled: false` to hide it. */
   foundingOffer: {
     enabled: true,
-    text: "Taking 3 projects this month at founding-client pricing.",
-    detail: "Founding clients get the starting price in exchange for honest feedback we can quote.",
+    text: "Founding-client pricing for our first 3 projects.",
+    detail: "You pay the starting price; in return we ask for honest feedback we can quote.",
   },
 
   /** "Starting from" pricing. TODO(owner): confirm every number before launch. */
@@ -171,7 +171,6 @@ export const site = {
   team: [
     { name: "Bilal Imran", role: "Founder & AI Engineer", photo: "bilal-imran" },
     { name: "Ijtaba Satti", role: "Co-Founder & Full Stack AI Developer", photo: "ijtaba-satti" },
-    { name: "Usama Tahir", role: "AI Lead & ML Engineer", photo: "usama-tahir" },
   ],
 
   /** Tools shown in the skills strip. Only list tools you actually use. */
@@ -204,7 +203,7 @@ export const site = {
     ],
     audience: ["Cricket clubs", "Academies and coaches", "Tournament organisers"],
     disclaimer:
-      "Planned features may change as we test with early users. No launch date is set yet; waitlist members hear first.",
+      "There is no launch date yet, and the planned features may change as we test with early users. People on the waitlist hear first.",
   },
 } as const;
 
@@ -218,6 +217,25 @@ export const whatsappUrl = (message: string = site.contact.whatsappMessage) =>
 /** Booking URL if configured, otherwise the contact form with the call option preselected. */
 export const bookingHref = (): string =>
   isTodo(site.contact.bookingUrl) ? "/contact/?topic=call#contact-form" : site.contact.bookingUrl;
+
+/**
+ * The one primary call-to-action label used site-wide. Honest about what
+ * happens: until a real booking link exists, visitors request a call by form.
+ */
+export const callCta = (short = false): string =>
+  isTodo(site.contact.bookingUrl)
+    ? short
+      ? "Request a call"
+      : "Request a free 15-min call"
+    : short
+      ? "Book a call"
+      : "Book a free 15-min call";
+
+/** Small line under the primary CTA explaining what happens next. */
+export const callCtaNote = (): string =>
+  isTodo(site.contact.bookingUrl)
+    ? `We'll reply ${site.contact.replyTime} with a few times that suit you.`
+    : "Pick a time that suits you. No preparation needed.";
 
 export const formatPrice = (amount: number) =>
   `${site.pricing.currencySymbol}${amount.toLocaleString("en-US")}`;

@@ -6,7 +6,7 @@ services: [custom-software, data-insights]
 tech: []
 type: product
 status: in-development
-order: 5
+order: 100
 caseStudy: false
 href: /cricnexa/
 ---

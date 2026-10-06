@@ -7,11 +7,9 @@ tech: [Conversational AI, Prompt workflows, Mobile chat UI]
 type: demo
 status: demo
 featured: true
-order: 50
+order: 20
 cover: ../../assets/projects/aipha/cover.png
-coverAlt: "AIPHA chat screens on mobile and tablet with a workout and diet plan"
-banner: ../../assets/projects/aipha/banner.png
-bannerAlt: "AIPHA product banner showing mobile and tablet AI assistant screens"
+coverAlt: "AIPHA chat on phone and tablet: a workout and diet plan generated from the user's question"
 facts:
   - { label: "Industry", value: "Health, fitness & wellness" }
   - { label: "Product type", value: "AI assistant / mobile experience" }

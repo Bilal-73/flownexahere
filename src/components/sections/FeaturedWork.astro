@@ -1,27 +1,95 @@
 ---
-import ProjectCard from "../ProjectCard.astro";
+/**
+ * Home proof section, AI work first: one project shown large, the rest as a
+ * scannable list. Uses `featured: true` client/demo projects (sorted by
+ * `order`), then card-only AI builds. Own products have their own section.
+ */
+import { Picture } from "astro:assets";
 import Icon from "../Icon.astro";
-import { getProjects } from "@/lib/projects";
+import { getProjects, projectHref, statusLabel, typeLabel } from "@/lib/projects";
 
-const featured = (await getProjects()).filter((p) => p.data.featured).slice(0, 6);
+const work = (await getProjects()).filter((p) => p.data.type !== "product");
+const featured = work.filter((p) => p.data.featured).slice(0, 6);
+const [lead, ...rest] = featured;
+// Smaller AI builds without a public case study, listed (unlinked) after the featured ones.
+const extras = work.filter((p) => !p.data.featured && !p.data.caseStudy && !p.data.href).slice(0, 3);
+const list = [...rest, ...extras];
 ---
 
 <section class="py-16 md:py-24" aria-labelledby="work-heading">
   <div class="container-page">
-    <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-      <div>
-        <p class="eyebrow">Selected work</p>
-        <h2 id="work-heading" class="mt-3 text-3xl md:text-4xl">Shipped, not slideware.</h2>
-        <p class="mt-3 max-w-2xl text-muted-foreground">
-          Demo builds and products that show what we can do. Each one is labelled honestly: demo, product or client work.
+    <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+      <div class="max-w-2xl">
+        <h2 id="work-heading" class="text-3xl md:text-4xl">Shipped, not slideware.</h2>
+        <p class="mt-3 text-muted-foreground">
+          AI assistants, automations and machine-learning systems we've built, with real screens. Each is labelled honestly as a demo or client project.
         </p>
       </div>
-      <a href="/work/" class="inline-flex items-center gap-1.5 font-semibold hover:text-accent" data-track="home_all_work">
-        All projects <Icon name="arrow-right" class="h-4 w-4" />
+      <a href="/work/" class="inline-flex shrink-0 items-center gap-1.5 font-semibold hover:text-accent" data-track="home_all_work">
+        All work <Icon name="arrow-right" class="h-4 w-4" />
       </a>
     </div>
-    <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {featured.map((p) => <ProjectCard project={p} />)}
-    </div>
+
+    {
+      lead && (
+        <a
+          href={projectHref(lead)}
+          class="group mt-10 grid items-center gap-8 rounded-[var(--radius-card)] border border-border bg-card p-4 transition-colors hover:border-foreground/40 sm:p-6 lg:grid-cols-[1.25fr_1fr] lg:gap-12"
+          data-track="home_featured_project"
+        >
+          {lead.data.cover && (
+            <div class="overflow-hidden rounded-xl bg-muted">
+              <Picture
+                src={lead.data.cover}
+                alt={lead.data.coverAlt ?? `${lead.data.title} screen`}
+                formats={["avif"]}
+                fallbackFormat="webp"
+                widths={[...new Set([Math.min(480, lead.data.cover.width), lead.data.cover.width])]}
+                sizes="(min-width: 1024px) 680px, 100vw"
+                class="h-auto w-full"
+              />
+            </div>
+          )}
+          <div class="pb-2 lg:pb-0">
+            <p class="text-sm text-muted-foreground">
+              {typeLabel(lead)} · {lead.data.tag}
+            </p>
+            <h3 class="mt-2 text-2xl md:text-3xl">{lead.data.title}</h3>
+            <p class="mt-3 leading-relaxed text-muted-foreground">{lead.data.summary}</p>
+            <span class="mt-6 inline-flex items-center gap-1.5 font-semibold group-hover:text-accent">
+              Read the case study <Icon name="arrow-right" class="h-4 w-4" />
+            </span>
+          </div>
+        </a>
+      )
+    }
+
+    <ul class="mt-8 divide-y divide-border border-y border-border">
+      {
+        list.map((p) => {
+          const href = projectHref(p);
+          const Row = href ? "a" : "div";
+          return (
+            <li>
+              <Row href={href} class="group grid grid-cols-[1fr_auto] items-center gap-x-6 gap-y-1 py-5 sm:grid-cols-[minmax(0,16rem)_1fr_auto]">
+                <span class:list={["font-semibold sm:text-lg", href && "group-hover:text-accent"]}>{p.data.title}</span>
+                <span class="col-span-2 row-start-2 text-sm text-muted-foreground sm:col-span-1 sm:row-start-auto">{p.data.summary}</span>
+                <span class="col-start-2 row-start-1 inline-flex items-center gap-2 justify-self-end text-sm text-muted-foreground sm:col-start-auto sm:row-start-auto">
+                  <span
+                    class:list={[
+                      "rounded-full px-2.5 py-0.5 text-xs font-semibold",
+                      p.data.status === "in-development" ? "bg-accent-soft text-accent" : "bg-muted text-foreground",
+                    ]}
+                  >
+                    {statusLabel(p)}
+                  </span>
+                  {href && <Icon name="arrow-right" class="h-4 w-4 transition-transform group-hover:translate-x-0.5" />}
+                </span>
+              </Row>
+            </li>
+          );
+        })
+      }
+    </ul>
   </div>
 </section>

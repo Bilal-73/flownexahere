@@ -7,11 +7,9 @@ tech: [n8n]
 type: demo
 status: demo
 featured: true
-order: 20
+order: 40
 cover: ../../assets/projects/clinify/cover.png
-coverAlt: "Clinify clinic dashboard showing patient totals, today's appointments and the medical team"
-banner: ../../assets/projects/clinify/banner.png
-bannerAlt: "Clinify clinic dashboard product banner"
+coverAlt: "Clinify dashboard: patient and appointment counts, patient list and medical team cards"
 facts:
   - { label: "Industry", value: "Healthcare & clinic operations" }
   - { label: "Product type", value: "Clinic management and automation dashboard" }

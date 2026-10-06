@@ -102,6 +102,10 @@
 @layer base {
   html {
     background-color: var(--background);
+    accent-color: var(--accent);
+    caret-color: var(--accent);
+    scrollbar-color: color-mix(in oklch, var(--foreground) 28%, transparent) transparent;
+    font-variant-numeric: tabular-nums;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     scroll-behavior: smooth;
@@ -167,16 +171,6 @@
     }
   }
 
-  .eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--accent);
-  }
 
   .card {
     background: var(--card);

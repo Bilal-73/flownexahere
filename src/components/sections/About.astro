@@ -10,6 +10,8 @@ interface Props {
 }
 const { showTeam = false, headingLevel = "h2" } = Astro.props;
 const Heading = headingLevel;
+// Sub-headings sit one level below the section heading (never skip levels).
+const Sub = headingLevel === "h1" ? "h2" : "h3";
 
 const photos = import.meta.glob<{ default: ImageMetadata }>("/src/assets/team/*.{jpg,jpeg,png}", { eager: true });
 const photoFor = (key: string) => Object.entries(photos).find(([path]) => path.includes(`/${key}.`))?.[1].default;
@@ -19,8 +21,7 @@ const founderPhoto = photoFor(site.team[0].photo);
 <section class="py-16 md:py-24" aria-labelledby="about-heading">
   <div class="container-page grid gap-10 lg:grid-cols-12 lg:items-start">
     <div class="lg:col-span-7">
-      <p class="eyebrow">About FlowNexa</p>
-      <Heading id="about-heading" class="mt-3 text-3xl md:text-4xl">Built for execution. Grounded in craft.</Heading>
+      <Heading id="about-heading" class="text-3xl md:text-4xl">Built for execution. Grounded in craft.</Heading>
       <div class="mt-6 space-y-4 text-lg leading-relaxed text-muted-foreground">
         {site.founder.story.map((p) => <p>{p}</p>)}
       </div>
@@ -29,7 +30,7 @@ const founderPhoto = photoFor(site.team[0].photo);
       </p>
 
       <div class="mt-10">
-        <h3 class="text-sm font-semibold tracking-[0.12em] text-muted-foreground uppercase">Tools we work with</h3>
+        <Sub class="text-sm font-semibold text-muted-foreground">Tools we work with</Sub>
         <ul class="mt-4 flex flex-wrap gap-2">
           {site.skills.map((s) => <li class="chip !text-sm">{s}</li>)}
         </ul>
@@ -38,7 +39,7 @@ const founderPhoto = photoFor(site.team[0].photo);
       {
         site.credentials.length > 0 && (
           <div class="mt-8">
-            <h3 class="text-sm font-semibold tracking-[0.12em] text-muted-foreground uppercase">Credentials</h3>
+            <Sub class="text-sm font-semibold text-muted-foreground">Credentials</Sub>
             <ul class="mt-4 flex flex-wrap gap-2">
               {site.credentials.map((c) => (
                 <li>
@@ -87,7 +88,7 @@ const founderPhoto = photoFor(site.team[0].photo);
     showTeam && (
       <div id="team" class="container-page mt-16 scroll-mt-24">
         <h2 class="text-2xl md:text-3xl">The team</h2>
-        <ul class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <ul class="mt-8 grid max-w-3xl gap-6 sm:grid-cols-2">
           {site.team.map((m) => {
             const photo = photoFor(m.photo);
             return (
@@ -97,7 +98,7 @@ const founderPhoto = photoFor(site.team[0].photo);
                     src={photo}
                     alt={`${m.name}, ${m.role}`}
                     widths={[320, 480, 640]}
-                    sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 90vw"
+                    sizes="(min-width: 640px) 384px, 90vw"
                     class="aspect-[4/5] w-full object-cover object-top"
                   />
                 )}

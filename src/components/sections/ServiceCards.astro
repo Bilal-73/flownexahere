@@ -1,10 +1,15 @@
 ---
+/**
+ * Package comparison: one surface split into columns (not a row of identical
+ * icon cards). The recommended package carries the accent; prices come from
+ * src/config/site.ts.
+ */
 import { getCollection } from "astro:content";
-import Icon, { type IconName } from "../Icon.astro";
+import Icon from "../Icon.astro";
 import { formatPrice, site } from "@/config/site";
 
 interface Props {
-  /** Show the full "what's included" list (services page) or a compact version (home). */
+  /** Full "what's included" list (services page) or the first three items (home). */
   detailed?: boolean;
   headingLevel?: "h2" | "h3";
 }
@@ -14,47 +19,76 @@ const Heading = headingLevel;
 const services = (await getCollection("services")).sort((a, b) => a.data.order - b.data.order);
 const primary = services.filter((s) => !s.data.secondary);
 const secondary = services.filter((s) => s.data.secondary);
-const icons: Record<string, IconName> = {
-  "rag-chatbot": "bot",
-  "workflow-automation": "workflow",
-  "data-insights": "chart",
-  "custom-software": "monitor",
-};
+const offer = site.foundingOffer;
 ---
 
-<div class="grid gap-5 lg:grid-cols-3">
+{
+  offer.enabled && (
+    <p class="mb-5 flex flex-wrap items-baseline gap-x-2 gap-y-1 text-sm">
+      <span class="font-semibold text-accent">{offer.text}</span>
+      <span class="text-muted-foreground">{offer.detail}</span>
+      <a href="/contact/?topic=founding#contact-form" class="link" data-track="founding_offer_cta">
+        Ask about it
+      </a>
+    </p>
+  )
+}
+
+<div class="grid overflow-hidden rounded-[var(--radius-card)] border border-border bg-card lg:grid-cols-3">
   {
     primary.map((s) => {
       const price = site.pricing.packages[s.data.key];
+      const rec = s.data.recommended;
       return (
-        <article id={s.data.key} class="card flex flex-col p-6 sm:p-7">
-          <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-accent-soft text-accent">
-            <Icon name={icons[s.data.key]} class="h-5 w-5" />
-          </span>
-          <Heading class="mt-5 text-xl">{s.data.title}</Heading>
-          <p class="mt-2 text-sm leading-relaxed text-muted-foreground">{s.data.summary}</p>
-          <ul class="mt-5 space-y-2 text-sm">
+        <article
+          id={s.data.key}
+          class:list={[
+            "relative flex flex-col p-6 sm:p-8 [&:not(:first-child)]:border-t [&:not(:first-child)]:border-border lg:[&:not(:first-child)]:border-t-0 lg:[&:not(:first-child)]:border-l",
+            rec && "bg-accent-soft/60",
+          ]}
+        >
+          {rec && <span class="absolute inset-x-0 top-0 h-1 bg-accent" aria-hidden="true" />}
+          <div class="flex items-start justify-between gap-3">
+            <Heading class="text-xl leading-snug">{s.data.title}</Heading>
+            {rec && (
+              <span class="shrink-0 rounded-full bg-accent px-2.5 py-1 text-xs font-semibold text-accent-foreground">
+                Good place to start
+              </span>
+            )}
+          </div>
+          {s.data.stack && <p class="mt-1.5 text-sm text-muted-foreground">{s.data.stack}</p>}
+          <p class="mt-4 leading-relaxed">{s.data.summary}</p>
+
+          <p class="mt-6 flex items-baseline gap-2">
+            <span class="text-sm text-muted-foreground">From</span>
+            <span class="font-display text-3xl font-semibold tracking-tight">{formatPrice(price.from)}</span>
+            <span class="text-sm text-muted-foreground">{price.note}</span>
+          </p>
+          <p class="mt-1 text-sm text-muted-foreground">Usually ready in {price.timeline}</p>
+
+          <ul class="mt-6 space-y-2.5 border-t border-border pt-6 text-sm">
             {(detailed ? s.data.includes : s.data.includes.slice(0, 3)).map((item) => (
-              <li class="flex gap-2">
+              <li class="flex gap-2.5">
                 <Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-accent" />
                 <span>{item}</span>
               </li>
             ))}
           </ul>
-          {detailed && <p class="mt-4 text-sm text-muted-foreground"><strong class="text-foreground">Good fit for:</strong> {s.data.idealFor}</p>}
-          <div class="mt-auto pt-6"><div class="flex items-end justify-between gap-4 border-t border-border pt-5">
-            <p>
-              <span class="block text-xs text-muted-foreground">Starting from</span>
-              <span class="font-display text-2xl font-semibold">{formatPrice(price.from)}</span>
-              <span class="text-xs text-muted-foreground"> {price.note}</span>
+          {detailed && (
+            <p class="mt-5 text-sm text-muted-foreground">
+              <strong class="font-semibold text-foreground">Good fit for:</strong> {s.data.idealFor}
             </p>
-            <p class="text-right text-xs text-muted-foreground">
-              <Icon name="clock" class="inline h-3.5 w-3.5" /> {price.timeline}
-            </p>
-          </div></div>
-          <a href={`/contact/?topic=${s.data.key}#contact-form`} class="btn btn-secondary mt-5 w-full" data-track={`service_${s.data.key}`}>
-            Ask about {s.data.title.split(" (")[0]}
-          </a>
+          )}
+
+          <div class="mt-auto pt-8">
+            <a
+              href={`/contact/?topic=${s.data.key}#contact-form`}
+              class:list={["btn w-full", rec ? "btn-primary" : "btn-secondary"]}
+              data-track={`service_${s.data.key}`}
+            >
+              Start with this package
+            </a>
+          </div>
         </article>
       );
     })
@@ -65,29 +99,25 @@ const icons: Record<string, IconName> = {
   secondary.map((s) => {
     const price = site.pricing.packages[s.data.key];
     return (
-      <article id={s.data.key} class="card mt-5 flex flex-col gap-5 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-7">
-        <div class="flex gap-4">
-          <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-muted text-foreground">
-            <Icon name={icons[s.data.key]} class="h-5 w-5" />
-          </span>
-          <div>
-            <Heading class="text-lg">{s.data.title}</Heading>
-            <p class="mt-1 max-w-2xl text-sm leading-relaxed text-muted-foreground">{s.data.summary}</p>
-            {detailed && (
-              <ul class="mt-3 flex flex-wrap gap-1.5">
-                {s.data.includes.map((i) => <li class="chip">{i}</li>)}
-              </ul>
-            )}
-          </div>
+      <article
+        id={s.data.key}
+        class="mt-5 flex flex-col gap-4 border-t border-border pt-6 sm:flex-row sm:items-baseline sm:justify-between"
+      >
+        <div class="max-w-2xl">
+          <Heading class="text-lg">
+            {s.data.title}
+            <span class="ml-2 text-base font-normal text-muted-foreground">from {formatPrice(price.from)}</span>
+          </Heading>
+          <p class="mt-1 text-muted-foreground">{s.data.summary}</p>
+          {detailed && <p class="mt-2 text-sm text-muted-foreground">{s.data.includes.join(" · ")}</p>}
         </div>
-        <div class="flex shrink-0 items-center gap-4 sm:flex-col sm:items-end">
-          <p class="text-sm"><span class="text-muted-foreground">From</span> <strong class="font-display text-lg">{formatPrice(price.from)}</strong></p>
-          <a href={`/contact/?topic=${s.data.key}#contact-form`} class="link text-sm" data-track={`service_${s.data.key}`}>Discuss your project</a>
-        </div>
+        <a href={`/contact/?topic=${s.data.key}#contact-form`} class="link shrink-0" data-track={`service_${s.data.key}`}>
+          Tell us what you need
+        </a>
       </article>
     );
   })
 }
-<p class="mt-4 text-xs text-muted-foreground">
-  Prices are starting points in {site.pricing.currency}. You get a fixed quote in writing before any work starts.
+<p class="mt-5 text-sm text-muted-foreground">
+  Starting prices in {site.pricing.currency}. You get a fixed quote in writing before any work starts.
 </p>

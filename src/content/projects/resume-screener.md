@@ -7,11 +7,9 @@ tech: [Python, FastAPI, Textract, TF-IDF, Random Forest, Regex]
 type: demo
 status: demo
 featured: true
-order: 40
+order: 30
 cover: ../../assets/projects/resume-screener/cover.png
-coverAlt: "AI Resume Screener interface on mobile and tablet showing an uploaded resume and its predicted category"
-banner: ../../assets/projects/resume-screener/banner.png
-bannerAlt: "AI Resume Classification and Details Extraction product banner"
+coverAlt: "Resume screener on phone and tablet: upload panel with extracted candidate details and recommended jobs"
 facts:
   - { label: "Industry", value: "HR tech & recruitment" }
   - { label: "Product type", value: "AI resume screening API" }

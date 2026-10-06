@@ -21,6 +21,18 @@
   to = "/work/"
   status = 301
 
+# SalesMint was renamed PosNexa (a FlowNexa product). Listed before the
+# generic rules so old links go straight to the new page in one hop.
+[[redirects]]
+  from = "/portfolio/salesmint"
+  to = "/work/posnexa/"
+  status = 301
+
+[[redirects]]
+  from = "/work/salesmint"
+  to = "/work/posnexa/"
+  status = 301
+
 [[redirects]]
   from = "/portfolio/*"
   to = "/work/:splat"

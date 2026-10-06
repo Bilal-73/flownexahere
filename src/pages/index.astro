@@ -1,48 +1,41 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Hero from "@/components/sections/Hero.astro";
-import ServiceCards from "@/components/sections/ServiceCards.astro";
 import FeaturedWork from "@/components/sections/FeaturedWork.astro";
-import Process from "@/components/sections/Process.astro";
-import FoundingBanner from "@/components/sections/FoundingBanner.astro";
-import CricnexaTeaser from "@/components/sections/CricnexaTeaser.astro";
-import About from "@/components/sections/About.astro";
-import Faq from "@/components/sections/Faq.astro";
+import ProductsSection from "@/components/sections/ProductsSection.astro";
+import ServiceCards from "@/components/sections/ServiceCards.astro";
 import ContactSection from "@/components/sections/ContactSection.astro";
 import Icon from "@/components/Icon.astro";
 import { site } from "@/config/site";
 import { organizationLd, professionalServiceLd } from "@/lib/schema";
+
+// Home is deliberately short: offer → AI work → our products → packages → contact.
+// Process, FAQ and the full founder story live on /services and /about.
 ---
 
 <BaseLayout
   title={`${site.name}: AI chatbots & automation agency`}
-  description="FlowNexa builds RAG chatbots, n8n and Python automations, data dashboards and custom software for small businesses and founders. Fixed scopes, clear prices, code you own."
+  description="FlowNexa builds chatbots that answer your customers and automations that move your data between tools, for small businesses and founders. Fixed price, ready in 1–2 weeks, code you own."
   jsonLd={[organizationLd(), professionalServiceLd()]}
 >
   <Hero />
+  <FeaturedWork />
+  <ProductsSection />
 
-  <section class="py-16 md:py-20" aria-labelledby="services-heading">
+  <section class="border-t border-border py-16 md:py-24" aria-labelledby="packages-heading">
     <div class="container-page">
-      <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <p class="eyebrow">Services</p>
-          <h2 id="services-heading" class="mt-3 text-3xl md:text-4xl">Fixed-scope packages. Clear starting prices.</h2>
+      <div class="mb-10 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div class="max-w-2xl">
+          <h2 id="packages-heading" class="text-3xl md:text-4xl">Pick a package. Know the price up front.</h2>
+          <p class="mt-3 text-muted-foreground">Fixed scope, a written quote before we start, and everything handed over at the end.</p>
         </div>
-        <a href="/services/" class="inline-flex items-center gap-1.5 font-semibold hover:text-accent">
-          Compare packages <Icon name="arrow-right" class="h-4 w-4" />
+        <a href="/services/" class="inline-flex shrink-0 items-center gap-1.5 font-semibold hover:text-accent">
+          How we work &amp; FAQ <Icon name="arrow-right" class="h-4 w-4" />
         </a>
       </div>
-      <div class="mt-10">
-        <ServiceCards />
-      </div>
+      <ServiceCards />
     </div>
   </section>
 
-  <FoundingBanner />
-  <FeaturedWork />
-  <CricnexaTeaser />
-  <Process />
-  <About />
-  <Faq />
   <ContactSection />
 </BaseLayout>

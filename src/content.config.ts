@@ -75,7 +75,11 @@ const services = defineCollection({
   schema: z.object({
     key: z.enum(["rag-chatbot", "workflow-automation", "data-insights", "custom-software"]),
     title: z.string(),
+    /** Small secondary line naming the tech, for visitors who care. */
+    stack: z.string().optional(),
     summary: z.string(),
+    /** Highlight this package as the suggested starting point. */
+    recommended: z.boolean().default(false),
     /** What the fixed-scope package includes. */
     includes: z.array(z.string()).min(1),
     /** Good fit for… */

@@ -1,6 +1,7 @@
 ---
 key: custom-software
-title: "Custom Software"
+title: "Custom software"
+stack: "Web apps · Electron desktop apps · offline-first POS"
 summary: "Desktop, web and point-of-sale software built to fit how you work, including apps that keep running offline."
 includes:
   - "Discovery call and written scope"
