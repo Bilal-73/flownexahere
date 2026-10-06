@@ -23,7 +23,7 @@ const fallback = `${user} [at] ${domain.replace(/\./g, " [dot] ")}`;
 
 <a
   href="/contact/#contact-form"
-  class={className}
+  class={className || undefined}
   data-email={encoded}
   data-email-text={text ? "keep" : undefined}
   data-track={track}
