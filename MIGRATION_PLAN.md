@@ -92,3 +92,19 @@ No dates, links, demos, repos or videos exist for any project. None of the copy 
 - **D9 WhatsApp number.** The existing site lists +92 317 410 0973 as the agency WhatsApp; it also appears as the founder's personal phone on the old team page. It is kept as the WhatsApp CTA (it was already public as the agency contact) and flagged for confirmation / replacement with a WhatsApp Business number.
 - **D10 CSP.** Security headers are strict except `script-src`, which is not locked down (Astro may inline small scripts and the optional analytics are third-party). `frame-ancestors`, `object-src`, `base-uri` and `form-action` are restricted.
 - **D11 Netlify Function removed.** `send-email.ts` (and `nodemailer`/`resend`) is replaced by Netlify Forms + Netlify's free email notifications. No server code remains.
+
+## 5. Results (verification run, 6 Oct 2026)
+
+- `npm ci && npm run build`: 0 type errors, 15 static pages, drafts excluded. Clean install verified from `package-lock.json`.
+- Built HTML audit (script over `dist/`): 0 broken internal links or anchors, every `<img>` has `alt`, `width` and `height`, exactly one `<h1>` per page, email address absent from raw HTML. Both forms carry `data-netlify="true"` + `netlify-honeypot="bot-field"` + hidden `form-name`.
+- Browser checks (Playwright/Chromium): analytics load only with env vars; GA4 waits for consent and remembers the choice; email de-obfuscates; /work filters; mobile menu opens/closes (Escape); `?topic=call` preselects the form.
+- Lighthouse 13 against `astro preview` (localhost, so no CDN/HTTP2; real-world numbers on Netlify should be similar or better):
+
+  | Page | Form factor | Perf | A11y | Best practices | SEO | LCP | CLS | Weight |
+  | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+  | `/` | mobile | 100 | 100 | 100 | 100 | 1.4 s | 0 | 72 KiB |
+  | `/` | desktop | 100 | 100 | 100 | 100 | | | |
+  | `/work/salesmint/` | mobile | 100 | 100 | 100 | 100 | 1.5 s | 0 | 71 KiB |
+  | `/work/salesmint/` | desktop | 100 | 100 | 100 | 100 | | | |
+
+- `npm audit`: 2 moderate advisories in `fflate` (transitive, build-time only, used for font/zip handling, never exposed to visitor input). No runtime JS dependencies ship to visitors.
