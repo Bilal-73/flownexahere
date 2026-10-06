@@ -1,0 +1,33 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ToolCard from "@/components/ToolCard.astro";
+import Icon from "@/components/Icon.astro";
+import { tools } from "@/config/tools";
+import { breadcrumbLd } from "@/lib/schema";
+---
+
+<BaseLayout
+  title="Free AI & automation tools for small businesses | FlowNexa"
+  description="Free browser-based tools from FlowNexa: estimate the hours and money automation could save your team, with more tools on the way. No sign-up, no data collected."
+  image="/og/tools.png"
+  imageAlt="FlowNexa free tools: size up your automation"
+  jsonLd={[breadcrumbLd([{ name: "Home", path: "/" }, { name: "Free tools", path: "/tools/" }])]}
+>
+  <section class="container-page pt-12 pb-16 md:pt-16">
+    <h1 class="max-w-3xl text-4xl md:text-5xl">Free tools to size up your automation.</h1>
+    <p class="mt-4 max-w-2xl text-lg text-muted-foreground">
+      Quick, honest estimates you can run on your own. Everything works in your browser: no sign-up, and nothing you type is sent anywhere.
+    </p>
+
+    <ul class="mt-12 grid gap-4 md:grid-cols-3">
+      {tools.map((tool) => <ToolCard tool={tool} headingLevel="h2" track="hub_tool" />)}
+    </ul>
+
+    <p class="mt-10 flex flex-wrap items-center gap-x-2 gap-y-1 text-muted-foreground">
+      Already know what you want built?
+      <a href="/services/" class="inline-flex items-center gap-1.5 font-semibold text-foreground hover:text-accent">
+        See our packages <Icon name="arrow-right" class="h-4 w-4" />
+      </a>
+    </p>
+  </section>
+</BaseLayout>
