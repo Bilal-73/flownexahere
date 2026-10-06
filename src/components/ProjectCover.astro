@@ -1,0 +1,53 @@
+---
+import { Picture } from "astro:assets";
+import type { Project } from "@/lib/projects";
+
+interface Props {
+  project: Project;
+  class?: string;
+  sizes?: string;
+  eager?: boolean;
+}
+const {
+  project,
+  class: className = "",
+  sizes = "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw",
+  eager = false,
+} = Astro.props;
+const { cover, coverAlt, title } = project.data;
+---
+
+{
+  cover ? (
+    <Picture
+      src={cover}
+      alt={coverAlt ?? `${title} preview`}
+      formats={["avif"]} fallbackFormat="webp"
+      widths={[400, 640, 960, 1260].filter((w) => w <= cover.width)}
+      sizes={sizes}
+      loading={eager ? "eager" : "lazy"}
+      fetchpriority={eager ? "high" : "auto"}
+      class:list={["h-full w-full object-cover", className]}
+    />
+  ) : (
+    <div
+      class:list={[
+        "relative flex h-full w-full items-center justify-center overflow-hidden bg-inverse text-inverse-foreground",
+        className,
+      ]}
+      role="img"
+      aria-label={`${title}: image coming soon`}
+    >
+      <svg viewBox="0 0 400 250" class="absolute inset-0 h-full w-full opacity-40" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <pattern id={`dots-${project.id}`} width="16" height="16" patternUnits="userSpaceOnUse">
+            <circle cx="2" cy="2" r="1.2" fill="currentColor" opacity="0.35" />
+          </pattern>
+        </defs>
+        <rect width="400" height="250" fill={`url(#dots-${project.id})`} />
+        <circle cx="330" cy="40" r="90" fill="var(--color-inverse-accent)" opacity="0.25" />
+      </svg>
+      <span class="relative px-6 text-center font-display text-xl font-semibold tracking-tight">{title}</span>
+    </div>
+  )
+}

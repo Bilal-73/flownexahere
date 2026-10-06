@@ -1,0 +1,53 @@
+---
+import ContactForm from "../ContactForm.astro";
+import ObfuscatedEmail from "../ObfuscatedEmail.astro";
+import Icon from "../Icon.astro";
+import { bookingHref, isTodo, site, whatsappUrl } from "@/config/site";
+
+interface Props {
+  headingLevel?: "h1" | "h2";
+  title?: string;
+}
+const { headingLevel = "h2", title = "Tell us what eats your week." } = Astro.props;
+const Heading = headingLevel;
+const hasBooking = !isTodo(site.contact.bookingUrl);
+---
+
+<section id="contact" class="py-16 md:py-24" aria-labelledby="contact-heading">
+  <div class="container-page grid gap-12 lg:grid-cols-12">
+    <div class="lg:col-span-5">
+      <p class="eyebrow">Contact</p>
+      <Heading id="contact-heading" class="mt-3 text-3xl md:text-5xl">{title}</Heading>
+      <p class="mt-4 text-lg leading-relaxed text-muted-foreground">
+        Describe the repetitive work and the tools involved. We'll reply {site.contact.replyTime} with
+        a clear next step, usually a free 15-minute call.
+      </p>
+      <ul class="mt-8 space-y-4">
+        {
+          hasBooking && (
+            <li>
+              <a href={bookingHref()} target="_blank" rel="noopener" class="group flex items-center gap-4" data-track="contact_booking">
+                <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-accent-soft text-accent"><Icon name="calendar" /></span>
+                <span><span class="block text-xs tracking-wide text-muted-foreground uppercase">Book a call</span><span class="font-semibold group-hover:text-accent">Free 15-minute call</span></span>
+              </a>
+            </li>
+          )
+        }
+        <li>
+          <a href={whatsappUrl()} target="_blank" rel="noopener" class="group flex items-center gap-4" data-track="contact_whatsapp">
+            <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-accent-soft text-accent"><Icon name="whatsapp" /></span>
+            <span><span class="block text-xs tracking-wide text-muted-foreground uppercase">WhatsApp</span><span class="font-semibold group-hover:text-accent">{site.contact.whatsappDisplay}</span></span>
+          </a>
+        </li>
+        <li>
+          <ObfuscatedEmail class="group flex items-center gap-4" track="contact_email" caption="Email">
+            <span slot="icon" class="flex h-11 w-11 items-center justify-center rounded-xl bg-accent-soft text-accent"><Icon name="mail" /></span>
+          </ObfuscatedEmail>
+        </li>
+      </ul>
+    </div>
+    <div id="contact-form" class="card scroll-mt-24 p-6 sm:p-8 lg:col-span-7">
+      <ContactForm />
+    </div>
+  </div>
+</section>

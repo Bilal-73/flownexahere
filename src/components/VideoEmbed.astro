@@ -1,0 +1,61 @@
+---
+/**
+ * Privacy-friendly, click-to-load video. Nothing is requested from YouTube/Vimeo
+ * until the visitor presses play. YouTube uses the youtube-nocookie domain.
+ */
+import Icon from "./Icon.astro";
+
+interface Props {
+  url: string;
+  title: string;
+}
+const { url, title } = Astro.props;
+
+function toEmbed(raw: string): string | null {
+  try {
+    const u = new URL(raw);
+    const host = u.hostname.replace(/^www\./, "");
+    if (host === "youtu.be") return `https://www.youtube-nocookie.com/embed/${u.pathname.slice(1)}?autoplay=1`;
+    if (host.endsWith("youtube.com")) {
+      const id = u.searchParams.get("v") ?? u.pathname.split("/").pop();
+      return id ? `https://www.youtube-nocookie.com/embed/${id}?autoplay=1` : null;
+    }
+    if (host.endsWith("vimeo.com")) {
+      const id = u.pathname.split("/").filter(Boolean).pop();
+      return id ? `https://player.vimeo.com/video/${id}?autoplay=1&dnt=1` : null;
+    }
+  } catch {
+    /* invalid URL */
+  }
+  return null;
+}
+const embed = toEmbed(url);
+---
+
+{
+  embed ? (
+    <div class="relative aspect-video overflow-hidden rounded-[var(--radius-card)] border border-border bg-inverse">
+      <button
+        type="button"
+        class="group absolute inset-0 flex w-full flex-col items-center justify-center gap-3 text-inverse-foreground"
+        data-video-src={embed}
+        data-video-title={title}
+        aria-label={`Play video: ${title}`}
+      >
+        <span class="flex h-16 w-16 items-center justify-center rounded-full bg-accent text-accent-foreground transition-transform group-hover:scale-105">
+          <Icon name="play" class="ml-1 h-7 w-7" />
+        </span>
+        <span class="text-sm font-medium">Play video</span>
+        <span class="max-w-xs px-4 text-center text-xs text-inverse-muted">
+          Loads from a third-party video host when you press play.
+        </span>
+      </button>
+    </div>
+  ) : (
+    <p>
+      <a href={url} class="link" target="_blank" rel="noopener">
+        Watch the video
+      </a>
+    </p>
+  )
+}

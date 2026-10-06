@@ -1,0 +1,15 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ContactSection from "@/components/sections/ContactSection.astro";
+import Faq from "@/components/sections/Faq.astro";
+import { breadcrumbLd } from "@/lib/schema";
+---
+
+<BaseLayout
+  title="Contact FlowNexa: book a free 15-min call"
+  description="Tell us about the repetitive work you want automated. Free 15-minute call, reply within 24 hours, via form, WhatsApp or email."
+  jsonLd={[breadcrumbLd([{ name: "Home", path: "/" }, { name: "Contact", path: "/contact/" }])]}
+>
+  <ContactSection headingLevel="h1" title="Let's talk about your workflow." />
+  <Faq />
+</BaseLayout>

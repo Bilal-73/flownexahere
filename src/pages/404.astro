@@ -1,0 +1,15 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Page not found | FlowNexa" description="This page doesn't exist or has moved." noindex>
+  <section class="container-page py-24 text-center">
+    <p class="font-display text-[7rem] leading-none font-bold tracking-tighter text-accent/30" aria-hidden="true">404</p>
+    <h1 class="mt-4 text-3xl">Page not found</h1>
+    <p class="mx-auto mt-3 max-w-md text-muted-foreground">The page you're looking for doesn't exist or has moved. Old <code>/portfolio</code> links now live under <a href="/work/" class="link">/work</a>.</p>
+    <div class="mt-8 flex flex-wrap justify-center gap-3">
+      <a href="/" class="btn btn-primary">Go home</a>
+      <a href="/contact/" class="btn btn-secondary">Contact us</a>
+    </div>
+  </section>
+</BaseLayout>

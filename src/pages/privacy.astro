@@ -1,0 +1,56 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ObfuscatedEmail from "@/components/ObfuscatedEmail.astro";
+import { site } from "@/config/site";
+const updated = "6 October 2026";
+---
+
+<BaseLayout title="Privacy | FlowNexa" description="How FlowNexa handles analytics and the information you send through our forms. Plain language, short.">
+  <section class="container-page max-w-3xl pt-12 pb-20 md:pt-16">
+    <p class="eyebrow">Privacy</p>
+    <h1 class="mt-3 text-4xl">Privacy, in plain language</h1>
+    <p class="mt-3 text-sm text-muted-foreground">Last updated: {updated}</p>
+
+    <div class="prose-fn mt-8">
+      <p>
+        This site is run by {site.name}. We collect as little as possible. This page explains what we collect, why, and what you can do about it.
+      </p>
+
+      <h2>Analytics</h2>
+      <p>
+        We use <strong>Cloudflare Web Analytics</strong> to count visits and see which pages are useful. It does not use cookies, does not
+        fingerprint you and does not track you across other sites. It records things like the page visited, referring site, country
+        and browser type in aggregate.
+      </p>
+      <p>
+        If we ever turn on <strong>Google Analytics 4</strong>, it only loads after you click “Allow analytics” in the notice at the bottom of the page.
+        It sets cookies to measure visits. If you choose “No thanks”, it never loads. You can reset your choice by clearing this site's data in your browser.
+      </p>
+
+      <h2>Contact form and CricNexa waitlist</h2>
+      <p>
+        When you send the contact form we receive your name, email, chosen topic and message. When you join the CricNexa waitlist we
+        receive your email and, if you provide them, your role and organisation. Forms are processed by our host,
+        <strong>Netlify</strong>, and forwarded to our inbox.
+      </p>
+      <ul>
+        <li>We use contact details only to reply to you and to discuss your project.</li>
+        <li>We use waitlist emails only to tell you about CricNexa early access and launch.</li>
+        <li>We never sell or share your details for marketing.</li>
+        <li>We delete enquiries that don't lead to a project within 12 months, and waitlist emails when CricNexa launches or if you ask.</li>
+      </ul>
+
+      <h2>WhatsApp and email</h2>
+      <p>If you contact us on WhatsApp or by email, those services process your messages under their own privacy policies.</p>
+
+      <h2>Embedded videos</h2>
+      <p>Videos on case-study pages only load from YouTube (privacy-enhanced mode) or Vimeo after you press play.</p>
+
+      <h2>Your rights</h2>
+      <p>
+        You can ask us what we hold about you, ask us to correct it, or ask us to delete it. Email
+        <ObfuscatedEmail track="privacy_email" /> and we'll respond within 30 days.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

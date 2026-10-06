@@ -1,0 +1,19 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Icon from "@/components/Icon.astro";
+import { site } from "@/config/site";
+---
+
+<BaseLayout title="Thanks! | FlowNexa" description="Your message was received." noindex>
+  <section class="container-page py-24 text-center">
+    <span class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-accent-soft text-accent"><Icon name="check" class="h-7 w-7" /></span>
+    <h1 class="mt-6 text-4xl">Thanks, it's in.</h1>
+    <p class="mx-auto mt-4 max-w-md text-lg text-muted-foreground">
+      If you sent an enquiry, we'll reply {site.contact.replyTime}. If you joined the CricNexa waitlist, we'll email you when early access opens.
+    </p>
+    <div class="mt-8 flex flex-wrap justify-center gap-3">
+      <a href="/" class="btn btn-primary">Back to home</a>
+      <a href="/work/" class="btn btn-secondary">See our work</a>
+    </div>
+  </section>
+</BaseLayout>
