@@ -9,11 +9,12 @@ import Icon from "./Icon.astro";
 import { site } from "@/config/site";
 
 const topics = [
-  { key: "call", label: "Free 15-min call" },
-  { key: "rag-chatbot", label: "RAG chatbot" },
+  { key: "call", label: "A free 15-min call" },
+  { key: "rag-chatbot", label: "Customer-answering chatbot" },
   { key: "workflow-automation", label: "Workflow automation" },
-  { key: "data-insights", label: "Data & AI insights" },
+  { key: "data-insights", label: "Sales & data dashboard" },
   { key: "custom-software", label: "Custom software / POS" },
+  { key: "founding", label: "Founding-client pricing" },
   { key: "other", label: "Something else" },
 ];
 ---
@@ -76,7 +77,7 @@ const topics = [
     </div>
   </form>
 
-  <div id="contact-success" hidden tabindex="-1" class="card p-6" role="status">
+  <div id="contact-success" hidden tabindex="-1" class="py-2" role="status">
     <p class="flex items-center gap-2 text-lg font-semibold">
       <Icon name="check" class="h-5 w-5 text-success" /> Thanks, we've got your message.
     </p>

@@ -62,7 +62,7 @@ const columns = [
     {
       columns.map((col) => (
         <div class="md:col-span-2">
-          <h2 class="text-xs font-semibold tracking-[0.16em] text-inverse-muted uppercase">{col.title}</h2>
+          <h2 class="text-sm font-semibold text-inverse-muted">{col.title}</h2>
           <ul class="mt-4 space-y-3 text-sm">
             {col.links.map((l) => (
               <li>
@@ -77,7 +77,7 @@ const columns = [
     }
 
     <div class="md:col-span-3">
-      <h2 class="text-xs font-semibold tracking-[0.16em] text-inverse-muted uppercase">Follow</h2>
+      <h2 class="text-sm font-semibold text-inverse-muted">Follow</h2>
       {
         socials.length > 0 ? (
           <ul class="mt-4 space-y-3 text-sm">

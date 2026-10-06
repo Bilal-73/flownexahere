@@ -1,7 +1,7 @@
 ---
 import Logo from "./Logo.astro";
 import Icon from "./Icon.astro";
-import { bookingHref, site } from "@/config/site";
+import { bookingHref, callCta, site } from "@/config/site";
 
 const nav = [
   { label: "Work", href: "/work/" },
@@ -50,11 +50,11 @@ const external = booking.startsWith("http");
     <div class="flex items-center gap-2">
       <a
         href={booking}
-        class="btn btn-primary hidden !min-h-10 !px-4 !py-2 text-sm sm:inline-flex"
-        data-track="header_book_call"
+        class="btn btn-primary !min-h-10 !px-4 !py-2 text-sm"
+        data-track="header_call"
         {...external ? { target: "_blank", rel: "noopener" } : {}}
       >
-        Book a free call
+        {callCta(true)}
       </a>
 
       <details class="group relative md:hidden" data-mobile-menu>
@@ -65,7 +65,7 @@ const external = booking.startsWith("http");
           <Icon name="menu" class="h-5 w-5 group-open:hidden" />
           <Icon name="x" class="hidden h-5 w-5 group-open:block" />
         </summary>
-        <div class="card absolute right-0 mt-2 w-[min(18rem,calc(100vw-2rem))] p-2 shadow-xl">
+        <div class="absolute right-0 mt-2 w-[min(18rem,calc(100vw-2rem))] rounded-[var(--radius-card)] border border-border bg-card p-2 shadow-[0_8px_14px_-8px_rgb(0_0_0/0.22)]">
           <nav aria-label="Mobile">
             <ul>
               {
@@ -86,10 +86,10 @@ const external = booking.startsWith("http");
           <a
             href={booking}
             class="btn btn-primary mt-2 w-full"
-            data-track="mobile_menu_book_call"
+            data-track="mobile_menu_call"
             {...external ? { target: "_blank", rel: "noopener" } : {}}
           >
-            Book a free 15-min call
+            {callCta()}
           </a>
         </div>
       </details>

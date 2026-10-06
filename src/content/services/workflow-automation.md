@@ -1,7 +1,8 @@
 ---
 key: workflow-automation
-title: "Workflow Automation (n8n / Python)"
-summary: "We connect the tools you already use so leads, orders, documents and follow-ups move on their own."
+title: "Workflow automation"
+stack: "Built in n8n or Python · AI steps where they help"
+summary: "Leads, orders, documents and follow-ups move between the tools you already use, without anyone copying and pasting."
 includes:
   - "One workflow, mapped and agreed in writing before we build"
   - "Built in n8n (self-hosted or cloud) or Python, whichever fits"

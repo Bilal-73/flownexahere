@@ -32,7 +32,7 @@ const fallback = `${user} [at] ${domain.replace(/\./g, " [dot] ")}`;
   {
     caption ? (
       <span>
-        <span class="block text-xs tracking-wide text-muted-foreground uppercase">{caption}</span>
+        <span class="block text-xs text-muted-foreground">{caption}</span>
         <span data-email-label class="font-semibold group-hover:text-accent">{text ?? fallback}</span>
       </span>
     ) : (

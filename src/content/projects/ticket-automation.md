@@ -10,8 +10,6 @@ featured: true
 order: 30
 cover: ../../assets/projects/ticket-automation/cover.png
 coverAlt: "Ticket Automation support dashboard with classified and prioritised tickets"
-banner: ../../assets/projects/ticket-automation/banner.png
-bannerAlt: "Ticket Automation workflow product banner"
 facts:
   - { label: "Industry", value: "Customer support & operations" }
   - { label: "Product type", value: "AI ticket routing and workflow automation" }

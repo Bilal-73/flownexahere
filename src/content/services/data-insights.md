@@ -1,7 +1,8 @@
 ---
 key: data-insights
-title: "Data & AI Insights"
-summary: "Turn your sales or operations data into a clear dashboard, plus simple forecasts and alerts you can act on."
+title: "Sales & data dashboard"
+stack: "Python · trend analysis · simple forecasts"
+summary: "Your sales or operations data turned into a clear dashboard, with simple forecasts and alerts you can act on."
 includes:
   - "Data clean-up of one source (spreadsheet, export or database)"
   - "Dashboard with the 5–8 numbers that matter to you"

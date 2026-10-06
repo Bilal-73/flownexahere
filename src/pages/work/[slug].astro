@@ -6,7 +6,10 @@ import ProjectCard from "@/components/ProjectCard.astro";
 import VideoEmbed from "@/components/VideoEmbed.astro";
 import Icon from "@/components/Icon.astro";
 import { getCaseStudies, ogImageFor, statusLabel, typeLabel, type Project } from "@/lib/projects";
-import { bookingHref, site, whatsappUrl } from "@/config/site";
+import { bookingHref, callCta, site, whatsappUrl } from "@/config/site";
+
+/** Responsive widths up to the image's own size (never upscale, never empty). */
+const sizesFor = (w: number) => [...new Set([480, 800, 1260, 1920].filter((x) => x < w).concat(w))];
 import { SERVICE_TAG_LABELS } from "@/content.config";
 import { breadcrumbLd } from "@/lib/schema";
 
@@ -74,7 +77,7 @@ const articleLd = {
         <a href="/work/" class="inline-flex items-center gap-1.5 hover:text-accent"><Icon name="arrow-left" class="h-4 w-4" /> All work</a>
       </nav>
       <div class="mt-6 flex flex-wrap items-center gap-2">
-        <span class="rounded-full bg-inverse px-3 py-1 text-xs font-semibold tracking-wide text-inverse-foreground uppercase">{statusLabel(project)}</span>
+        {d.status !== "demo" && <span class="rounded-full bg-inverse px-3 py-1 text-xs font-semibold text-inverse-foreground">{statusLabel(project)}</span>}
         <span class="chip">{typeLabel(project)}</span>
         {d.tag && <span class="chip">{d.tag}</span>}
       </div>
@@ -96,11 +99,11 @@ const articleLd = {
     {
       (d.banner || d.cover) && (
         <div class="container-page mt-10">
-          <div class="overflow-hidden rounded-[var(--radius-card)] border border-border bg-card">
+          <div class="flex justify-center rounded-[var(--radius-card)] bg-muted px-4 py-6 sm:px-10 sm:py-10">
             {d.banner ? (
-              <Picture src={d.banner} alt={d.bannerAlt ?? `${d.title} banner`} formats={["avif"]} fallbackFormat="webp" widths={[640, 1024, 1440, 1920].filter((w) => w <= d.banner!.width)} sizes="(min-width: 1280px) 1232px, 100vw" loading="eager" fetchpriority="high" class="h-auto w-full" />
+              <Picture src={d.banner} alt={d.bannerAlt ?? `${d.title} banner`} formats={["avif"]} fallbackFormat="webp" widths={sizesFor(d.banner.width)} sizes="(min-width: 1280px) 1232px, 100vw" loading="eager" fetchpriority="high" class="h-auto w-full rounded-lg" />
             ) : (
-              <Picture src={d.cover!} alt={d.coverAlt ?? `${d.title} preview`} formats={["avif"]} fallbackFormat="webp" widths={[640, 960, 1260].filter((w) => w <= d.cover!.width)} sizes="(min-width: 1280px) 1232px, 100vw" loading="eager" fetchpriority="high" class="h-auto w-full" />
+              <Picture src={d.cover!} alt={d.coverAlt ?? `${d.title} preview`} formats={["avif"]} fallbackFormat="webp" widths={sizesFor(d.cover!.width)} sizes={`(min-width: ${d.cover!.width}px) ${d.cover!.width}px, 100vw`} loading="eager" fetchpriority="high" class="h-auto w-full rounded-lg shadow-[0_10px_24px_-14px_rgb(0_0_0/0.45)]" style={`max-width:${d.cover!.width}px`} />
             )}
           </div>
         </div>
@@ -113,7 +116,7 @@ const articleLd = {
           <dl class="grid overflow-hidden rounded-[var(--radius-card)] bg-inverse text-inverse-foreground sm:grid-cols-3">
             {d.facts.map((f) => (
               <div class="border-white/10 p-5 not-last:border-b sm:not-last:border-r sm:not-last:border-b-0">
-                <dt class="text-xs font-semibold tracking-[0.12em] text-inverse-muted uppercase">{f.label}</dt>
+                <dt class="text-sm font-semibold text-inverse-muted">{f.label}</dt>
                 <dd class="mt-1.5 font-semibold">{f.value}</dd>
               </div>
             ))}
@@ -142,12 +145,12 @@ const articleLd = {
               <ul class="!mt-6 grid list-none gap-4 !pl-0 sm:grid-cols-2">
                 {d.cover && d.banner && (
                   <li class="!mt-0 overflow-hidden rounded-xl border border-border bg-card">
-                    <Image src={d.cover} alt={d.coverAlt ?? `${d.title} screenshot`} widths={[480, 800, 1260].filter((w) => w <= d.cover!.width)} sizes="(min-width: 1024px) 400px, 100vw" class="h-auto w-full" />
+                    <Image src={d.cover} alt={d.coverAlt ?? `${d.title} screenshot`} widths={sizesFor(d.cover!.width)} sizes="(min-width: 1024px) 400px, 100vw" class="h-auto w-full" />
                   </li>
                 )}
                 {d.gallery.map((g) => (
                   <li class="!mt-0 overflow-hidden rounded-xl border border-border bg-card">
-                    <Image src={g.src} alt={g.alt} widths={[480, 800, 1200].filter((w) => w <= g.src.width)} sizes="(min-width: 1024px) 400px, 100vw" class="h-auto w-full" />
+                    <Image src={g.src} alt={g.alt} widths={sizesFor(g.src.width)} sizes="(min-width: 1024px) 400px, 100vw" class="h-auto w-full" />
                   </li>
                 ))}
               </ul>
@@ -161,7 +164,7 @@ const articleLd = {
           {
             d.tech.length > 0 && (
               <div class="card p-5">
-                <h2 class="text-sm font-semibold tracking-[0.12em] text-muted-foreground uppercase">Tech</h2>
+                <h2 class="text-sm font-semibold text-muted-foreground">Tech</h2>
                 <ul class="mt-3 flex flex-wrap gap-1.5">
                   {d.tech.map((t) => <li class="chip">{t}</li>)}
                 </ul>
@@ -169,7 +172,7 @@ const articleLd = {
             )
           }
           <div class="card p-5">
-            <h2 class="text-sm font-semibold tracking-[0.12em] text-muted-foreground uppercase">Services</h2>
+            <h2 class="text-sm font-semibold text-muted-foreground">Services</h2>
             <ul class="mt-3 space-y-1.5 text-sm">
               {d.services.map((s) => <li>{SERVICE_TAG_LABELS[s]}</li>)}
             </ul>
@@ -178,7 +181,7 @@ const articleLd = {
             <h2 class="text-xl">Want something like this?</h2>
             <p class="mt-2 text-sm text-inverse-muted">Tell us about your workflow. Free 15-minute call, fixed quote, code you own.</p>
             <div class="mt-5 flex flex-col gap-2">
-              <a href={booking} class="btn btn-inverse" data-track="case_book_call" {...(booking.startsWith("http") ? { target: "_blank", rel: "noopener" } : {})}>Book a free call</a>
+              <a href={booking} class="btn btn-inverse" data-track="case_book_call" {...(booking.startsWith("http") ? { target: "_blank", rel: "noopener" } : {})}>{callCta()}</a>
               <a href={whatsappUrl(`Hi FlowNexa, I saw "${d.title}" and want something similar.`)} class="btn border border-white/25 text-inverse-foreground hover:border-white" target="_blank" rel="noopener" data-track="case_whatsapp">
                 <Icon name="whatsapp" class="h-4 w-4" /> WhatsApp
               </a>
@@ -193,10 +196,7 @@ const articleLd = {
     next.id !== project.id && (
       <section class="border-t border-border bg-muted/40 py-14" aria-label="Next case study">
         <div class="container-page grid gap-8 md:grid-cols-2 md:items-center">
-          <div>
-            <p class="eyebrow">Next case study</p>
-            <p class="mt-3 text-3xl font-semibold tracking-tight">{next.data.title}</p>
-          </div>
+          <h2 class="text-3xl">Next: {next.data.title}</h2>
           <ProjectCard project={next} />
         </div>
       </section>

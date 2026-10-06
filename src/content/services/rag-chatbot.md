@@ -1,7 +1,9 @@
 ---
 key: rag-chatbot
-title: "RAG Chatbot Setup"
-summary: "A chatbot that answers customer questions from your own documents, on your website or WhatsApp, and hands off to a person when it should."
+title: "Customer-answering chatbot"
+stack: "Built on your own documents (RAG) · website or WhatsApp"
+recommended: true
+summary: "A chatbot that answers your customers' questions from your own documents, day and night, and hands over to a person when it should."
 includes:
   - "Trained on up to 50 pages of your FAQs, policies and product info"
   - "Website widget or WhatsApp channel"

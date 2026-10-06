@@ -9,9 +9,7 @@ status: demo
 featured: true
 order: 10
 cover: ../../assets/projects/salesmint/cover.png
-coverAlt: "SalesMint POS billing screen with product search, shopping cart, totals and payment options"
-banner: ../../assets/projects/salesmint/banner.png
-bannerAlt: "SalesMint POS and billing product banner"
+coverAlt: "SalesMint billing screen: product search, shopping cart with totals and tax, and cash/card payment buttons"
 facts:
   - { label: "Industry", value: "Retail, POS & inventory" }
   - { label: "Product type", value: "Billing and business management system" }
