@@ -1,15 +1,15 @@
 ---
-title: "SalesMint: AI POS System"
-summary: "A POS and billing platform for fast retail checkout, inventory tracking and sales history, built as a foundation for AI-assisted sales insights."
-tag: "AI POS system"
+title: "PosNexa: AI POS System"
+summary: "Our point-of-sale and billing product for fast retail checkout, inventory tracking and sales history, built as a foundation for AI-assisted sales insights."
+tag: "FlowNexa product · POS & billing"
 services: [custom-software, data-insights]
 tech: []
-type: demo
-status: demo
-featured: true
-order: 10
-cover: ../../assets/projects/salesmint/cover.png
-coverAlt: "SalesMint billing screen: product search, shopping cart with totals and tax, and cash/card payment buttons"
+type: product
+status: in-development
+featured: false
+order: 120
+cover: ../../assets/projects/posnexa/cover.png
+coverAlt: "PosNexa billing screen: product search, shopping cart with totals and tax, and cash/card payment buttons"
 facts:
   - { label: "Industry", value: "Retail, POS & inventory" }
   - { label: "Product type", value: "Billing and business management system" }
@@ -22,7 +22,7 @@ Small and growing businesses often manage billing, inventory and sales records a
 
 ## What we built
 
-SalesMint is a POS and billing platform that keeps the cashier workflow simple while giving the business a stronger operational foundation. The billing screen offers product search, cart totals, tax calculation and payment choices, designed for everyday retail where speed and clarity at the counter matter.
+PosNexa is a POS and billing platform that keeps the cashier workflow simple while giving the business a stronger operational foundation. The billing screen offers product search, cart totals, tax calculation and payment choices, designed for everyday retail where speed and clarity at the counter matter.
 
 Beyond checkout, the sidebar organises the key business modules: dashboard, POS billing, products, categories, inventory, customers, sales history, reports, users, settings and backup.
 
@@ -53,7 +53,7 @@ Beyond checkout, the sidebar organises the key business modules: dashboard, POS 
 
 ## Result
 
-SalesMint is a demo build. It is designed to:
+PosNexa is a FlowNexa product in development. It is designed to:
 
 - speed up billing with a cashier-focused checkout;
 - give one view across products, inventory, customers and sales history;

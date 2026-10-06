@@ -7,7 +7,7 @@ tech: [n8n, Webhooks, NLP classification]
 type: demo
 status: demo
 featured: true
-order: 30
+order: 10
 cover: ../../assets/projects/ticket-automation/cover.png
 coverAlt: "Ticket Automation support dashboard with classified and prioritised tickets"
 facts:

@@ -2,13 +2,14 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Hero from "@/components/sections/Hero.astro";
 import FeaturedWork from "@/components/sections/FeaturedWork.astro";
+import ProductsSection from "@/components/sections/ProductsSection.astro";
 import ServiceCards from "@/components/sections/ServiceCards.astro";
 import ContactSection from "@/components/sections/ContactSection.astro";
 import Icon from "@/components/Icon.astro";
 import { site } from "@/config/site";
 import { organizationLd, professionalServiceLd } from "@/lib/schema";
 
-// Home is deliberately short: offer → proof → packages → contact.
+// Home is deliberately short: offer → AI work → our products → packages → contact.
 // Process, FAQ and the full founder story live on /services and /about.
 ---
 
@@ -19,6 +20,7 @@ import { organizationLd, professionalServiceLd } from "@/lib/schema";
 >
   <Hero />
   <FeaturedWork />
+  <ProductsSection />
 
   <section class="border-t border-border py-16 md:py-24" aria-labelledby="packages-heading">
     <div class="container-page">

@@ -1,25 +1,27 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import ProjectCard from "@/components/ProjectCard.astro";
+import ProductsSection from "@/components/sections/ProductsSection.astro";
 import { getProjects } from "@/lib/projects";
 import { SERVICE_TAGS, SERVICE_TAG_LABELS } from "@/content.config";
 import { breadcrumbLd } from "@/lib/schema";
 
-const projects = await getProjects();
+// Client and demo work (AI first, by `order`); our own products get their own section below.
+const projects = (await getProjects()).filter((p) => p.data.type !== "product");
 const usedServices = SERVICE_TAGS.filter((tag) => projects.some((p) => p.data.services.includes(tag)));
 const techs = [...new Set(projects.flatMap((p) => p.data.tech))].sort((a, b) => a.localeCompare(b));
 ---
 
 <BaseLayout
-  title="Work: AI chatbots, automations and software | FlowNexa"
-  description="Case studies and demo builds from FlowNexa: AI chatbots, n8n automations, machine learning APIs, dashboards and custom POS software."
+  title="Work: AI assistants, automations and machine learning | FlowNexa"
+  description="AI work from FlowNexa: AI assistants, support-ticket triage, machine-learning APIs, computer vision and automations, plus our own products CricNexa, ProNexa and PosNexa."
   jsonLd={[breadcrumbLd([{ name: "Home", path: "/" }, { name: "Work", path: "/work/" }])]}
 >
   <section class="container-page pt-12 pb-20 md:pt-16">
-    <h1 class="text-4xl md:text-5xl">Products, demos &amp; automations.</h1>
+    <h1 class="text-4xl md:text-5xl">AI, automation &amp; machine learning.</h1>
     <p class="mt-4 max-w-2xl text-lg text-muted-foreground">
-      Every project is labelled: <strong class="text-foreground">Demo</strong> builds show capability,{" "}
-      <strong class="text-foreground">Products</strong> are ours, and client work is marked only when the client has agreed.
+      Assistants, triage systems, ML models and automations we've built. <strong class="text-foreground">Demo</strong> builds
+      show capability; client work is marked only when the client has agreed. Our own products are further down.
     </p>
 
     <div id="work-filters" class="mt-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between" hidden>
@@ -57,6 +59,7 @@ const techs = [...new Set(projects.flatMap((p) => p.data.tech))].sort((a, b) => 
     </ul>
     <p id="work-empty" class="mt-8 text-muted-foreground" hidden>No projects match those filters yet.</p>
   </section>
+  <ProductsSection />
 </BaseLayout>
 
 <style>

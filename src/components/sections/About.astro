@@ -88,7 +88,7 @@ const founderPhoto = photoFor(site.team[0].photo);
     showTeam && (
       <div id="team" class="container-page mt-16 scroll-mt-24">
         <h2 class="text-2xl md:text-3xl">The team</h2>
-        <ul class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <ul class="mt-8 grid max-w-3xl gap-6 sm:grid-cols-2">
           {site.team.map((m) => {
             const photo = photoFor(m.photo);
             return (
@@ -98,7 +98,7 @@ const founderPhoto = photoFor(site.team[0].photo);
                     src={photo}
                     alt={`${m.name}, ${m.role}`}
                     widths={[320, 480, 640]}
-                    sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 90vw"
+                    sizes="(min-width: 640px) 384px, 90vw"
                     class="aspect-[4/5] w-full object-cover object-top"
                   />
                 )}

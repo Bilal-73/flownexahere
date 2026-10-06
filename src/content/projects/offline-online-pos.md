@@ -20,7 +20,7 @@ TODO: Shops lose sales when the internet drops, and cloud-only POS systems stop 
 
 TODO: An Electron desktop POS with a local database for offline sales and background sync to the cloud when the connection returns. Positioned as engineering depth: data integrity, sync and conflict handling.
 
-> TODO(owner): Is this the same product as SalesMint? If so, merge the details into `salesmint.md` and delete this draft.
+> TODO(owner): PosNexa (`posnexa.md`) is now the POS product page. Merge any offline/online sync details into it and delete this draft.
 
 ## How it works
 

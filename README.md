@@ -85,7 +85,7 @@ Spam protection: a hidden honeypot field (`bot-field`) plus Netlify's built-in s
 ## Quality checks
 
 - `npm run build` runs `astro check` (TypeScript) before building, and content schemas fail the build on bad frontmatter.
-- Lighthouse (local production preview, Oct 2026): 100 / 100 / 100 / 100 (Performance, Accessibility, Best Practices, SEO) on the home page and `/work/salesmint/`, mobile and desktop.
+- Lighthouse (local production preview, Oct 2026): 100 / 100 / 100 / 100 (Performance, Accessibility, Best Practices, SEO) on the home page and `/work/salesmint/` (now `/work/posnexa/`), mobile and desktop.
 
 ## Adding interactivity later
 

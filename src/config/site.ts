@@ -171,7 +171,6 @@ export const site = {
   team: [
     { name: "Bilal Imran", role: "Founder & AI Engineer", photo: "bilal-imran" },
     { name: "Ijtaba Satti", role: "Co-Founder & Full Stack AI Developer", photo: "ijtaba-satti" },
-    { name: "Usama Tahir", role: "AI Lead & ML Engineer", photo: "usama-tahir" },
   ],
 
   /** Tools shown in the skills strip. Only list tools you actually use. */

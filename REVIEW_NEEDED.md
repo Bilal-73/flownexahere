@@ -42,7 +42,7 @@ None of the old copy names a client (the "Client Challenge" sections describe ge
 
 | Project | File | Type / status now | Notes |
 | --- | --- | --- | --- |
-| SalesMint: AI POS System | `salesmint.md` | demo / demo | Old page called it a "product". If it is your own product, use `type: product`. `tech` is empty because the old page named no technologies; the screenshot looks like a Windows desktop app. Is this the Electron POS? (see draft f) |
+| PosNexa: AI POS System (was SalesMint) | `posnexa.md` | product / in-development | Renamed from SalesMint at the owner's request; `/work/salesmint` redirects here. Confirm status (`live` if it is in use). `tech` is empty because the old page named no technologies; the screenshot looks like a Windows desktop app. Is this the Electron POS? (see draft f) |
 | Clinify: Clinic Workflow Automation | `clinify.md` | demo / demo | `tech: [n8n]` taken from the old card tag "Automation / n8n". |
 | Ticket Automation | `ticket-automation.md` | demo / demo | Old copy said "n8n-style"; written here as n8n. Confirm. |
 | AI Resume Classification & Details Extraction | `resume-screener.md` | demo / demo | |
@@ -52,6 +52,7 @@ None of the old copy names a client (the "Client Challenge" sections describe ge
 | MediTranscribe | `meditranscribe.md` | demo / demo, card only | No images, no case study. |
 | AuditX | `auditx.md` | demo / demo, card only | No images, no case study. |
 | CricNexa | `cricnexa.md` | product / in-development | Links to /cricnexa. |
+| ProNexa | `pronexa.md` | product / in-development, card only | Owner described it only as a "personal app". **Add a one-line description** (what it does, who it is for); the site currently says "More details soon." |
 
 No dates, demo links, repos or videos existed for any project. Add `date`, `links.demo`, `links.repo` or `links.video` where you have them.
 
@@ -68,7 +69,7 @@ Each has `status: draft` and TODO sections. They show in `npm run dev` only.
 | c. Local business lead scraper + gap analysis (sanitised sample only) | `local-lead-scraper.md` |
 | d. Document extractor (PDF → JSON → Sheet) | `document-extractor.md` |
 | e. Sales insights & forecasting dashboard (demo data) | `sales-insights-dashboard.md` |
-| f. Offline/online POS (Electron) | `offline-online-pos.md` (may duplicate SalesMint; merge if so) |
+| f. Offline/online POS (Electron) | `offline-online-pos.md` (likely overlaps PosNexa; merge into `posnexa.md` if so) |
 
 ## 5. Missing assets
 
@@ -80,7 +81,7 @@ Each has `status: draft` and TODO sections. They show in `npm run dev` only.
 | Per-project OG images | Generated from title + cover. |
 | Covers for card-only projects and drafts | Branded placeholder shown. Add `cover` images when available. |
 | CricNexa visuals | Abstract graphic only (no fake screenshots). Add real screenshots when the product exists. |
-| Team photos | Carried over (Bilal, Ijtaba, Usama). Personal emails, phones and social links from the old Team page were **removed** (agency site must not use personal accounts). |
+| Team photos | Bilal and Ijtaba (Usama removed at the owner's request). Personal emails, phones and social links from the old Team page were **removed** (agency site must not use personal accounts). |
 
 ## 6. Launch tasks (Netlify / DNS)
 
@@ -88,7 +89,7 @@ Each has `status: draft` and TODO sections. They show in `npm run dev` only.
 - [ ] Set `PUBLIC_CF_BEACON_TOKEN` (Cloudflare Web Analytics) in Netlify env vars and redeploy.
 - [ ] (Optional) Set `PUBLIC_GA_ID` for GA4.
 - [ ] Merge this branch into `main` (or set it as the production branch) and confirm the deploy.
-- [ ] Check old links redirect: `/portfolio`, `/portfolio/salesmint`, `/team`.
+- [ ] Check old links redirect: `/portfolio`, `/portfolio/salesmint` (→ `/work/posnexa/`), `/team`.
 - [ ] If the old Netlify Function env vars (`GMAIL_USER`, `GMAIL_PASSWORD`, `RESEND_API_KEY`) are set in Netlify, delete them: the function no longer exists. **Revoke that Gmail app password** in your Google account.
 - [ ] Submit `https://flownexahere.live/sitemap-index.xml` in Google Search Console (free).
 - [ ] Update the portfolio link on Fiverr, Freelancer, PeoplePerHour, Contra and LinkedIn, and test the preview card (LinkedIn Post Inspector).

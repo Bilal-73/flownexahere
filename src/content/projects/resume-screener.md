@@ -7,7 +7,7 @@ tech: [Python, FastAPI, Textract, TF-IDF, Random Forest, Regex]
 type: demo
 status: demo
 featured: true
-order: 40
+order: 30
 cover: ../../assets/projects/resume-screener/cover.png
 coverAlt: "Resume screener on phone and tablet: upload panel with extracted candidate details and recommended jobs"
 facts:

@@ -7,7 +7,7 @@ tech: [Conversational AI, Prompt workflows, Mobile chat UI]
 type: demo
 status: demo
 featured: true
-order: 50
+order: 20
 cover: ../../assets/projects/aipha/cover.png
 coverAlt: "AIPHA chat on phone and tablet: a workout and diet plan generated from the user's question"
 facts:

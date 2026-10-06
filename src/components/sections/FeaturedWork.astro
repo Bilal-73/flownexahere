@@ -1,18 +1,19 @@
 ---
 /**
- * Home proof section: one project shown large, the rest as a scannable list.
- * Projects are flagged with `featured: true`; CricNexa joins the list as the
- * in-development product.
+ * Home proof section, AI work first: one project shown large, the rest as a
+ * scannable list. Uses `featured: true` client/demo projects (sorted by
+ * `order`), then card-only AI builds. Own products have their own section.
  */
 import { Picture } from "astro:assets";
 import Icon from "../Icon.astro";
 import { getProjects, projectHref, statusLabel, typeLabel } from "@/lib/projects";
 
-const projects = await getProjects();
-const featured = projects.filter((p) => p.data.featured).slice(0, 6);
+const work = (await getProjects()).filter((p) => p.data.type !== "product");
+const featured = work.filter((p) => p.data.featured).slice(0, 6);
 const [lead, ...rest] = featured;
-const product = projects.find((p) => p.data.status === "in-development");
-const list = product ? [...rest, product] : rest;
+// Smaller AI builds without a public case study, listed (unlinked) after the featured ones.
+const extras = work.filter((p) => !p.data.featured && !p.data.caseStudy && !p.data.href).slice(0, 3);
+const list = [...rest, ...extras];
 ---
 
 <section class="py-16 md:py-24" aria-labelledby="work-heading">
@@ -21,7 +22,7 @@ const list = product ? [...rest, product] : rest;
       <div class="max-w-2xl">
         <h2 id="work-heading" class="text-3xl md:text-4xl">Shipped, not slideware.</h2>
         <p class="mt-3 text-muted-foreground">
-          Real screens from things we've built. Each is labelled honestly as a demo, product or client project.
+          AI assistants, automations and machine-learning systems we've built, with real screens. Each is labelled honestly as a demo or client project.
         </p>
       </div>
       <a href="/work/" class="inline-flex shrink-0 items-center gap-1.5 font-semibold hover:text-accent" data-track="home_all_work">
@@ -67,10 +68,11 @@ const list = product ? [...rest, product] : rest;
       {
         list.map((p) => {
           const href = projectHref(p);
+          const Row = href ? "a" : "div";
           return (
             <li>
-              <a href={href} class="group grid grid-cols-[1fr_auto] items-center gap-x-6 gap-y-1 py-5 sm:grid-cols-[minmax(0,16rem)_1fr_auto]">
-                <span class="font-semibold group-hover:text-accent sm:text-lg">{p.data.title}</span>
+              <Row href={href} class="group grid grid-cols-[1fr_auto] items-center gap-x-6 gap-y-1 py-5 sm:grid-cols-[minmax(0,16rem)_1fr_auto]">
+                <span class:list={["font-semibold sm:text-lg", href && "group-hover:text-accent"]}>{p.data.title}</span>
                 <span class="col-span-2 row-start-2 text-sm text-muted-foreground sm:col-span-1 sm:row-start-auto">{p.data.summary}</span>
                 <span class="col-start-2 row-start-1 inline-flex items-center gap-2 justify-self-end text-sm text-muted-foreground sm:col-start-auto sm:row-start-auto">
                   <span
@@ -81,9 +83,9 @@ const list = product ? [...rest, product] : rest;
                   >
                     {statusLabel(p)}
                   </span>
-                  <Icon name="arrow-right" class="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                  {href && <Icon name="arrow-right" class="h-4 w-4 transition-transform group-hover:translate-x-0.5" />}
                 </span>
-              </a>
+              </Row>
             </li>
           );
         })
