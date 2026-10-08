@@ -12,6 +12,11 @@ export interface SeoProps {
   noindex?: boolean;
   /** JSON-LD objects to embed. */
   jsonLd?: Record<string, unknown>[];
+  /** Person or organisation credited as author. */
+  author?: string;
+  /** Article dates, emitted only when `type` is "article". */
+  publishedTime?: Date;
+  modifiedTime?: Date;
 }
 
 const {
@@ -22,14 +27,19 @@ const {
   type = "website",
   noindex = false,
   jsonLd = [],
+  author = site.name,
+  publishedTime,
+  modifiedTime,
 } = Astro.props as SeoProps;
 
 const canonical = new URL(Astro.url.pathname, site.url).toString();
 const ogImage = absoluteUrl(image);
+const isArticle = type === "article";
 ---
 
 <title>{title}</title>
 <meta name="description" content={description} />
+<meta name="author" content={author} />
 <link rel="canonical" href={canonical} />
 {noindex && <meta name="robots" content="noindex, follow" />}
 
@@ -43,6 +53,9 @@ const ogImage = absoluteUrl(image);
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="og:image:alt" content={imageAlt} />
+{isArticle && <meta property="article:author" content={author} />}
+{isArticle && publishedTime && <meta property="article:published_time" content={publishedTime.toISOString()} />}
+{isArticle && modifiedTime && <meta property="article:modified_time" content={modifiedTime.toISOString()} />}
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />

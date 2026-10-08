@@ -54,6 +54,7 @@ const articleLd = {
   image={ogImageFor(project)}
   imageAlt={`${d.title}: ${d.tag ?? "FlowNexa case study"}`}
   type="article"
+  publishedTime={d.date}
   noindex={isDraft}
   jsonLd={[
     articleLd,
