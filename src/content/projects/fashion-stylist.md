@@ -6,7 +6,8 @@ services: [machine-learning]
 tech: [Python, Flask, YOLOv8, KMeans, MySQL]
 type: demo
 status: demo
-featured: true
+listed: false
+featured: false
 order: 50
 cover: ../../assets/projects/fashion-stylist/cover.png
 coverAlt: "Fashion stylist app on phone and tablet: a detected shirt with matching trousers suggested"

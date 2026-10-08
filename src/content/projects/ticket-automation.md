@@ -6,8 +6,8 @@ services: [workflow-automation, ai-agent]
 tech: [n8n, Webhooks, NLP classification]
 type: demo
 status: demo
-featured: true
-order: 10
+featured: false
+order: 70
 cover: ../../assets/projects/ticket-automation/cover.png
 coverAlt: "Ticket Automation support dashboard with classified and prioritised tickets"
 facts:

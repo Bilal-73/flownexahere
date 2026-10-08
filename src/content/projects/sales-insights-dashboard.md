@@ -6,6 +6,7 @@ services: [data-insights, machine-learning]
 tech: [Python, Pandas, TODO]
 type: demo
 status: draft
+listed: false
 featured: false
 order: 340
 ---

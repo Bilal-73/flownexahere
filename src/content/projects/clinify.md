@@ -6,7 +6,8 @@ services: [workflow-automation, ai-agent]
 tech: [n8n]
 type: demo
 status: demo
-featured: true
+listed: false
+featured: false
 order: 40
 cover: ../../assets/projects/clinify/cover.png
 coverAlt: "Clinify dashboard: patient and appointment counts, patient list and medical team cards"

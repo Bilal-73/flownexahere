@@ -2,19 +2,19 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import ProjectCard from "@/components/ProjectCard.astro";
 import ProductsSection from "@/components/sections/ProductsSection.astro";
-import { getProjects } from "@/lib/projects";
+import { getListedProjects } from "@/lib/projects";
 import { SERVICE_TAGS, SERVICE_TAG_LABELS } from "@/content.config";
 import { breadcrumbLd } from "@/lib/schema";
 
 // Client and demo work (AI first, by `order`); our own products get their own section below.
-const projects = (await getProjects()).filter((p) => p.data.type !== "product");
+const projects = (await getListedProjects()).filter((p) => p.data.type !== "product");
 const usedServices = SERVICE_TAGS.filter((tag) => projects.some((p) => p.data.services.includes(tag)));
 const techs = [...new Set(projects.flatMap((p) => p.data.tech))].sort((a, b) => a.localeCompare(b));
 ---
 
 <BaseLayout
   title="Work: AI assistants, automations and machine learning | FlowNexa"
-  description="AI work from FlowNexa: AI assistants, support-ticket triage, machine-learning APIs, computer vision and automations, plus our own products CricNexa, ProNexa and PosNexa."
+  description="AI work from FlowNexa: agentic RAG with cited answers, medical transcription, AI code review automation, machine-learning APIs and AI assistants, plus our own products PosNexa, ProNexa and CricNexa."
   jsonLd={[breadcrumbLd([{ name: "Home", path: "/" }, { name: "Work", path: "/work/" }])]}
 >
   <section class="container-page pt-12 pb-20 md:pt-16">

@@ -6,7 +6,8 @@ services: [custom-software, data-insights]
 tech: []
 type: product
 status: in-development
-order: 100
+order: 120
+# TODO(owner): add CricNexa screenshots in src/assets/projects/cricnexa/ and show them on /cricnexa
 caseStudy: false
 href: /cricnexa/
 ---

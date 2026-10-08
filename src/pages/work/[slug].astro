@@ -15,9 +15,12 @@ import { breadcrumbLd } from "@/lib/schema";
 
 export async function getStaticPaths() {
   const studies = await getCaseStudies();
-  return studies.map((project, i) => ({
+  // "Next project" cycles through listed studies only; unlisted pages point to the first one.
+  const listed = studies.filter((s) => s.data.listed);
+  const nextFor = (p: Project) => listed[(listed.indexOf(p) + 1) % listed.length] ?? studies[0];
+  return studies.map((project) => ({
     params: { slug: project.id },
-    props: { project, next: studies[(i + 1) % studies.length] },
+    props: { project, next: nextFor(project) },
   }));
 }
 

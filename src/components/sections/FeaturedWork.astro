@@ -2,18 +2,16 @@
 /**
  * Home proof section, AI work first: one project shown large, the rest as a
  * scannable list. Uses `featured: true` client/demo projects (sorted by
- * `order`), then card-only AI builds. Own products have their own section.
+ * `order`, first six). Own products have their own section.
  */
 import { Picture } from "astro:assets";
 import Icon from "../Icon.astro";
-import { getProjects, projectHref, statusLabel, typeLabel } from "@/lib/projects";
+import ProjectCover from "../ProjectCover.astro";
+import { getListedProjects, projectHref, statusLabel, typeLabel } from "@/lib/projects";
 
-const work = (await getProjects()).filter((p) => p.data.type !== "product");
+const work = (await getListedProjects()).filter((p) => p.data.type !== "product");
 const featured = work.filter((p) => p.data.featured).slice(0, 6);
-const [lead, ...rest] = featured;
-// Smaller AI builds without a public case study, listed (unlinked) after the featured ones.
-const extras = work.filter((p) => !p.data.featured && !p.data.caseStudy && !p.data.href).slice(0, 3);
-const list = [...rest, ...extras];
+const [lead, ...list] = featured;
 ---
 
 <section class="py-16 md:py-24" aria-labelledby="work-heading">
@@ -37,7 +35,7 @@ const list = [...rest, ...extras];
           class="group mt-10 grid items-center gap-8 rounded-[var(--radius-card)] border border-border bg-card p-4 transition-colors hover:border-foreground/40 sm:p-6 lg:grid-cols-[1.25fr_1fr] lg:gap-12"
           data-track="home_featured_project"
         >
-          {lead.data.cover && (
+          {lead.data.cover ? (
             <div class="overflow-hidden rounded-xl bg-muted">
               <Picture
                 src={lead.data.cover}
@@ -48,6 +46,10 @@ const list = [...rest, ...extras];
                 sizes="(min-width: 1024px) 680px, 100vw"
                 class="h-auto w-full"
               />
+            </div>
+          ) : (
+            <div class="aspect-[16/10] overflow-hidden rounded-xl">
+              <ProjectCover project={lead} />
             </div>
           )}
           <div class="pb-2 lg:pb-0">

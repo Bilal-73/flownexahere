@@ -6,7 +6,8 @@ services: [machine-learning]
 tech: [Deep learning, Symbolic reasoning]
 type: demo
 status: demo
-order: 80
+featured: true
+order: 30
 caseStudy: false
 ---
 

@@ -42,6 +42,8 @@ const projects = defineCollection({
       /** draft = hidden from production builds, sitemap and OG images. */
       status: z.enum(["live", "demo", "in-development", "draft"]),
       featured: z.boolean().default(false),
+      /** false = kept out of /work and the home page; its case-study page (if any) still works. */
+      listed: z.boolean().default(true),
       /** Lower numbers sort first. */
       order: z.number().default(100),
       /** Card / preview image. Optional for drafts; a branded placeholder is used instead. */

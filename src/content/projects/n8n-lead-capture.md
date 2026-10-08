@@ -6,6 +6,7 @@ services: [workflow-automation, ai-agent]
 tech: [n8n, Google Sheets, Telegram, TODO]
 type: demo
 status: draft
+listed: false
 featured: false
 order: 310
 ---
