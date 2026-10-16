@@ -57,7 +57,7 @@ const projects = defineCollection({
         .object({
           demo: z.url().optional(),
           repo: z.url().optional(),
-          /** YouTube or Vimeo URL. Rendered as a click-to-load, privacy-friendly embed. */
+          /** YouTube, Vimeo or Loom URL. Rendered as a click-to-load, privacy-friendly embed. */
           video: z.url().optional(),
         })
         .default({}),

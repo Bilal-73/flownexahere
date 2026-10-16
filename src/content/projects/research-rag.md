@@ -3,7 +3,7 @@ title: "ResearchRAG: Cited Answers from Research Papers"
 summary: "An agentic RAG assistant over arXiv papers. Every answer cites the exact paper section, tables and figures are searchable, and questions the papers can't answer are refused, not guessed."
 tag: "Agentic RAG"
 services: [rag-chatbot, ai-agent]
-tech: [FastAPI, LangGraph, Qdrant, Azure OpenAI, Redis, RAGAS, React]
+tech: [LangGraph, LangChain, FastAPI, Qdrant, Azure OpenAI, Redis, RAGAS, React]
 type: demo
 status: demo
 featured: true
@@ -11,10 +11,13 @@ order: 10
 # TODO(owner): add a screenshot of the research-rag-frontend chat + inspector as cover.
 # cover: ../../assets/projects/research-rag/cover.png
 # coverAlt: ""
+links:
+  video: https://www.loom.com/share/4fb32525f7fb4776ba86049607ed0ecd
 facts:
   - { label: "Domain", value: "Research & literature review" }
-  - { label: "Corpus", value: "arXiv papers (Open RAG Benchmark)" }
-  - { label: "Measured on", value: "60 stratified benchmark questions" }
+  - { label: "Corpus", value: "50 arXiv papers, 5,346 text, table and figure chunks" }
+  - { label: "Safety", value: "19 guardrails across 6 pipeline stages" }
+  - { label: "Measured on", value: "60 stratified Open RAG Benchmark questions" }
 ---
 
 ## Problem
@@ -25,41 +28,43 @@ Most RAG chatbots are judged on a handful of hand-picked questions, often with "
 
 ResearchRAG is a literature assistant over arXiv research papers, served as a FastAPI API with a React inspection frontend. It answers in plain language and cites every claim down to the paper section. Text, tables and figures are all indexed, so "what accuracy does Table 3 report?" works as well as a question about the abstract.
 
-It is evaluated against the public [Open RAG Benchmark](https://huggingface.co/datasets/vectara/open_ragbench), whose questions and reference answers nobody on our side wrote. Retrieval quality is measured, not asserted.
+It started as a demo over ten medical papers, where the test answers were written by an LLM from the same chunks the system retrieved. We moved it to the public [Open RAG Benchmark](https://huggingface.co/datasets/vectara/open_ragbench): 3,045 questions with reference answers nobody on our side wrote, and relevance judged down to the paper section. Retrieval quality is measured, not asserted.
 
 ### Key features
 
 - **Section-level citations:** every answer carries clickable `[S1]` sources pointing at the paper, section and chunk type (text, table or figure).
-- **Agent, not a single prompt:** a LangGraph agent routes intent, handles follow-ups, rewrites the query, plans multi-part questions, uses HyDE, and retries retrieval when the evidence is weak.
-- **Hybrid search:** dense and sparse vectors in Qdrant, fused with RRF, then reranked by a cross-encoder.
-- **Guardrails:** PII redaction, prompt-injection defence, dual-use screening, crisis handling, citation enforcement and a groundedness check. Any arXiv id or DOI not found in the evidence is stripped, which catches the classic invented-reference hallucination.
-- **Honest refusals:** if the papers don't support an answer, it says so.
+- **An agent, not a single prompt:** a 14-node LangGraph state machine routes intent, handles follow-ups, rewrites the query, splits multi-part questions, uses HyDE, and retries retrieval once when the evidence is weak.
+- **Hybrid search:** dense and sparse vectors in Qdrant, fused with RRF across query variants, then reranked by a cross-encoder from 20 candidates to 5.
+- **19 guardrails across input, retrieval, generation and output:** rate limits, PII redaction, prompt-injection scoring, self-harm and dual-use screening, poisoned-chunk removal, citation enforcement, a canary token for prompt leaks and a second-pass groundedness check. Any arXiv id or DOI not found in the evidence is stripped, which catches the classic invented-reference hallucination.
+- **Honest refusals:** if the papers don't support an answer, it says so. Blocked and refused turns are normal responses with a clear `answer_kind`, never a made-up answer.
+- **Private memory:** each conversation keeps its last 6 turns plus a rolling summary, and only PII-redacted text is ever stored.
 - **Built to inspect:** the frontend shows each turn's route and timings, the guardrails that fired, the evidence used, conversation memory, a live Redis cache panel and per-request toggles for A/B-testing retrieval techniques. Live RAGAS scoring can be switched on per answer.
 
 ## How it works
 
-1. Papers are split by section, keeping tables and figures as their own chunks, then embedded and stored in Qdrant.
-2. The input guard screens the question; the agent classifies it as a new question, follow-up, chit-chat or out of scope.
-3. The question is rewritten as a standalone query, planned into sub-questions if needed, and expanded with a hypothetical answer (HyDE).
-4. Hybrid search retrieves candidates, a reranker keeps the best five, and a grader checks they actually answer the question, retrying if not.
-5. The answer is generated with mandatory citations, then the output guard checks grounding and strips unsupported references.
+1. **Ingestion:** papers are chunked by section (up to 400 tokens, never crossing a section boundary), with the abstract, every table and every figure as their own chunks. Each chunk is prefixed with its paper title and section so a bare sentence is still findable. Ingestion is resumable, and one bad paper never stops the run.
+2. **Input guard:** the cheapest checks run first: rate limit, length cap, PII redaction, safety screening, then prompt-injection scoring.
+3. **Planning:** the agent classifies the message (new question, follow-up, chit-chat or out of scope), rewrites it as a standalone query, splits compound questions into up to 3 sub-questions, and drafts a hypothetical answer passage (HyDE) to search with.
+4. **Retrieval:** every query variant runs a hybrid dense + sparse search, results are fused with RRF, chunks containing injected instructions are dropped, and a cross-encoder keeps the best five. A grader checks the evidence can answer the question and triggers one broader retry if not.
+5. **Answer:** the answer is written at temperature 0 from the numbered excerpts only, with every claim cited. The output guard then strips invalid citations and unseen references, and a second model pass flags any unsupported claim.
 
 ## Tech
 
-- **Backend:** Python, FastAPI, LangGraph
-- **Retrieval:** Qdrant (dense + sparse), RRF fusion, cross-encoder reranker, HyDE
-- **Models:** Azure OpenAI (GPT-4o-mini, embeddings)
-- **Caching & memory:** Redis embedding cache, per-conversation memory with rolling summaries
-- **Evaluation:** Open RAG Benchmark, RAGAS, retrieval metrics at document and section level
+- **Agent & orchestration:** LangGraph (state machine + checkpointer), LangChain (LCEL chains, retrievers, reranker, vector store)
+- **Backend:** Python, FastAPI with typed schemas, constant-time API-key auth and one consistent error shape
+- **Retrieval:** Qdrant (dense + sparse named vectors), RRF fusion, MiniLM cross-encoder reranker, HyDE
+- **Models:** Azure OpenAI GPT-4o-mini and text-embedding-3-small, behind one resilient client (backoff, `Retry-After`, concurrency cap)
+- **Caching & memory:** Redis embedding cache that fails open; in-memory or SQLite conversation memory
+- **Evaluation:** Open RAG Benchmark, RAGAS, retrieval metrics at paper and section level, a refusal test
 - **Frontend:** React, TypeScript, Vite
 - **Quality:** 200+ offline tests running the real agent, guardrails and API
 
 ## Result
 
-On a stratified sample of 60 benchmark questions over 50 indexed papers:
+On a stratified sample of 60 benchmark questions over 50 indexed papers (3 October 2026 run):
 
 - **88%** of questions had the right paper *section* in the top 20 results (100% found the right paper);
-- **0.91** RAGAS faithfulness: answers stay close to the retrieved evidence;
+- **0.91** RAGAS faithfulness and **0.90** context precision: answers stay close to the retrieved evidence;
 - **95%** correct refusals (19 of 20) on real questions whose source paper was deliberately left out.
 
-Figure questions are the weakest slice (64% section recall), and the evaluation reports that openly instead of hiding it in an average. It is a demo build, and the same pipeline works over a business's own documents.
+We report the weak spots too. Figure questions are the weakest slice (64% section recall, because figures are searched by their captions), and with 50 of 1,000 papers indexed the scores are indicative. Next steps are real BM25 for the sparse side, vision-model captions for figures and indexing more of the corpus. It is a demo build, and the same pipeline works over a business's own documents.
