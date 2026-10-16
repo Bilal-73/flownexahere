@@ -1,6 +1,6 @@
 ---
 /**
- * Privacy-friendly, click-to-load video. Nothing is requested from YouTube/Vimeo
+ * Privacy-friendly, click-to-load video. Nothing is requested from YouTube/Vimeo/Loom
  * until the visitor presses play. YouTube uses the youtube-nocookie domain.
  */
 import Icon from "./Icon.astro";
@@ -23,6 +23,11 @@ function toEmbed(raw: string): string | null {
     if (host.endsWith("vimeo.com")) {
       const id = u.pathname.split("/").filter(Boolean).pop();
       return id ? `https://player.vimeo.com/video/${id}?autoplay=1&dnt=1` : null;
+    }
+    if (host.endsWith("loom.com")) {
+      // loom.com/share/<id> or loom.com/embed/<id>
+      const id = u.pathname.split("/").filter(Boolean).pop();
+      return id ? `https://www.loom.com/embed/${id}?autoplay=1` : null;
     }
   } catch {
     /* invalid URL */

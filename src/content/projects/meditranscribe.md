@@ -6,7 +6,8 @@ services: [machine-learning, workflow-automation]
 tech: [Speech-to-text]
 type: demo
 status: demo
-order: 60
+featured: true
+order: 20
 caseStudy: false
 ---
 

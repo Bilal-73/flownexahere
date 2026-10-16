@@ -6,6 +6,7 @@ services: [rag-chatbot]
 tech: [Python, LangChain, Vector database, TODO]
 type: demo
 status: draft
+listed: false
 featured: false
 order: 300
 ---

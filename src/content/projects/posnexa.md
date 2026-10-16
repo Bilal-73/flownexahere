@@ -1,18 +1,19 @@
 ---
 title: "PosNexa: AI POS System"
-summary: "Our point-of-sale and billing product for fast retail checkout, inventory tracking and sales history, built as a foundation for AI-assisted sales insights."
-tag: "FlowNexa product · POS & billing"
+summary: "Our keyboard-friendly desktop point-of-sale for fast retail checkout, inventory, customers and sales history. Built with Electron, past its first version and in active development."
+tag: "Desktop POS"
 services: [custom-software, data-insights]
-tech: []
+tech: [Electron, Desktop app]
 type: product
 status: in-development
 featured: false
-order: 120
+order: 100
+# TODO(owner): add fresh PosNexa screenshots (cover + gallery) in src/assets/projects/posnexa/
 cover: ../../assets/projects/posnexa/cover.png
 coverAlt: "PosNexa billing screen: product search, shopping cart with totals and tax, and cash/card payment buttons"
 facts:
   - { label: "Industry", value: "Retail, POS & inventory" }
-  - { label: "Product type", value: "Billing and business management system" }
+  - { label: "Product type", value: "Desktop POS and billing app (Electron)" }
   - { label: "Focus", value: "Checkout, products, inventory, customers, reports" }
 ---
 
@@ -22,12 +23,13 @@ Small and growing businesses often manage billing, inventory and sales records a
 
 ## What we built
 
-PosNexa is a POS and billing platform that keeps the cashier workflow simple while giving the business a stronger operational foundation. The billing screen offers product search, cart totals, tax calculation and payment choices, designed for everyday retail where speed and clarity at the counter matter.
+PosNexa is a desktop POS and billing app, built with Electron and designed to be driven from the keyboard, so cashiers can search, add items and take payment without reaching for the mouse. It keeps the cashier workflow simple while giving the business a stronger operational foundation. The billing screen offers product search, cart totals, tax calculation and payment choices, designed for everyday retail where speed and clarity at the counter matter.
 
 Beyond checkout, the sidebar organises the key business modules: dashboard, POS billing, products, categories, inventory, customers, sales history, reports, users, settings and backup.
 
 ### Key features
 
+- **Keyboard-friendly checkout:** built for speed at the counter, with the main billing actions reachable from the keyboard.
 - **POS & billing:** a focused checkout screen for searching products, adding items, applying tax and taking payment.
 - **Shopping cart workflow:** line items with quantity, price and totals, and clean cashier interaction.
 - **Product search:** fast lookup so cashiers find items quickly during active billing.
@@ -46,14 +48,15 @@ Beyond checkout, the sidebar organises the key business modules: dashboard, POS 
 
 ## Tech
 
-- **Frontend:** responsive dashboard and POS interface
+- **App:** Electron desktop application
+- **Interface:** keyboard-friendly POS screen and management dashboard
 - **Core modules:** billing, products, inventory, customers, reports
 - **Data:** sales history, cart totals, tax, product records
 - **AI scope:** foundation for business insights, recommendations and smart reporting
 
 ## Result
 
-PosNexa is a FlowNexa product in development. It is designed to:
+PosNexa is a FlowNexa product, past its first version and in active development. It is designed to:
 
 - speed up billing with a cashier-focused checkout;
 - give one view across products, inventory, customers and sales history;

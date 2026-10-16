@@ -5,7 +5,7 @@
  * names its status honestly and links to its page when it has one.
  */
 import Icon from "../Icon.astro";
-import { getProjects, projectHref, statusLabel } from "@/lib/projects";
+import { getListedProjects, projectHref, statusLabel } from "@/lib/projects";
 
 interface Props {
   headingLevel?: "h2" | "h3";
@@ -14,7 +14,7 @@ const { headingLevel = "h2" } = Astro.props;
 const Heading = headingLevel;
 const Sub = headingLevel === "h2" ? "h3" : "h4";
 
-const products = (await getProjects()).filter((p) => p.data.type === "product");
+const products = (await getListedProjects()).filter((p) => p.data.type === "product");
 const linkLabel = (slug: string, href?: string) =>
   !href ? undefined : slug === "cricnexa" ? "Join the waitlist" : "See the product";
 ---

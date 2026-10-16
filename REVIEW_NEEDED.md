@@ -42,7 +42,7 @@ None of the old copy names a client (the "Client Challenge" sections describe ge
 
 | Project | File | Type / status now | Notes |
 | --- | --- | --- | --- |
-| PosNexa: AI POS System (was SalesMint) | `posnexa.md` | product / in-development | Renamed from SalesMint at the owner's request; `/work/salesmint` redirects here. Confirm status (`live` if it is in use). `tech` is empty because the old page named no technologies; the screenshot looks like a Windows desktop app. Is this the Electron POS? (see draft f) |
+| PosNexa: AI POS System (was SalesMint) | `posnexa.md` | product / in-development | Keyboard-friendly Electron desktop POS (confirmed). Past MVP, not live yet. Switch `status: live` when it is in use. `/work/salesmint` redirects here. |
 | Clinify: Clinic Workflow Automation | `clinify.md` | demo / demo | `tech: [n8n]` taken from the old card tag "Automation / n8n". |
 | Ticket Automation | `ticket-automation.md` | demo / demo | Old copy said "n8n-style"; written here as n8n. Confirm. |
 | AI Resume Classification & Details Extraction | `resume-screener.md` | demo / demo | |
@@ -52,7 +52,21 @@ None of the old copy names a client (the "Client Challenge" sections describe ge
 | MediTranscribe | `meditranscribe.md` | demo / demo, card only | No images, no case study. |
 | AuditX | `auditx.md` | demo / demo, card only | No images, no case study. |
 | CricNexa | `cricnexa.md` | product / in-development | Links to /cricnexa. |
-| ProNexa | `pronexa.md` | product / in-development, card only | Owner described it only as a "personal app". **Add a one-line description** (what it does, who it is for); the site currently says "More details soon." |
+| Nizam by FlowNexa (was ProNexa) | `nizam.md` | product / in-development | Full page written from the owner's README (encrypted offline-first Android organiser). Past MVP, not live yet. Add screenshots as `cover`/`gallery` and a Play Store link (`links.demo`) when available. |
+
+### Projects refresh (Oct 2026)
+
+The /work list and home page now show, in this order: ResearchRAG, MediTranscribe, NeuroSymbolic VQA, AI Resume Classification, AI PR Reviewer & Auto-Fixer. Products: PosNexa, Nizam (renamed from ProNexa), CricNexa.
+
+Projects with `listed: false` are kept out of every listing but their files (and case-study pages, if any) still exist: AIPHA, Ticket Automation, AuditX, LeadScraper, Clinify, Fashion Stylist and the drafts in section 4. Set `listed: true` to bring one back.
+
+| To do | File |
+| --- | --- |
+| **Screenshots for PosNexa, Nizam and CricNexa** (owner will supply): add as `cover` / `gallery` | `posnexa.md`, `nizam.md`, `cricnexa.md` |
+| ResearchRAG cover: screenshot of the frontend chat + inspector | `research-rag.md` |
+| ResearchRAG numbers come from the 2026-10-03 eval run (60 questions, 50 papers). Update if you rerun on a bigger corpus. | `research-rag.md` |
+| AI PR Reviewer: built on Azure DevOps + Teams. Confirm it's fine to show (no org or repo names are on the site). | `pr-review-automation.md` |
+| MediTranscribe, NeuroSymbolic VQA: still card-only. Share details or screenshots to turn them into case studies. | |
 
 No dates, demo links, repos or videos existed for any project. Add `date`, `links.demo`, `links.repo` or `links.video` where you have them.
 
@@ -60,16 +74,14 @@ The old "Impact" bullets were rewritten as "designed to…" because no measured 
 
 ## 4. Draft case studies (hidden until you publish)
 
-Each has `status: draft` and TODO sections. They show in `npm run dev` only.
+Each has `status: draft`, `listed: false` and TODO sections. They are not in any listing; the pages exist in `npm run dev` only.
 
 | Draft | File |
 | --- | --- |
-| a. RAG chatbot for a business (demo placeholder) | `rag-chatbot-business.md` |
+| a. RAG chatbot for a business (likely superseded by ResearchRAG) | `rag-chatbot-business.md` |
 | b. n8n lead-capture automation | `n8n-lead-capture.md` |
-| c. Local business lead scraper + gap analysis (sanitised sample only) | `local-lead-scraper.md` |
-| d. Document extractor (PDF → JSON → Sheet) | `document-extractor.md` |
-| e. Sales insights & forecasting dashboard (demo data) | `sales-insights-dashboard.md` |
-| f. Offline/online POS (Electron) | `offline-online-pos.md` (likely overlaps PosNexa; merge into `posnexa.md` if so) |
+| c. Document extractor (PDF → JSON → Sheet) | `document-extractor.md` |
+| d. Sales insights & forecasting dashboard (demo data) | `sales-insights-dashboard.md` |
 
 ## 5. Missing assets
 

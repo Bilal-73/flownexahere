@@ -6,6 +6,7 @@ services: [workflow-automation, data-insights]
 tech: [Python, TODO]
 type: demo
 status: draft
+listed: false
 featured: false
 order: 330
 ---

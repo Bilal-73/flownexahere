@@ -28,6 +28,11 @@ export async function getProjects(): Promise<Project[]> {
   return all.sort((a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title));
 }
 
+/** Projects shown in listings (/work, home page, products), sorted like getProjects. */
+export async function getListedProjects(): Promise<Project[]> {
+  return (await getProjects()).filter((p) => p.data.listed);
+}
+
 /** Projects that get their own /work/[slug] page. */
 export async function getCaseStudies(): Promise<Project[]> {
   return (await getProjects()).filter((p) => p.data.caseStudy);
