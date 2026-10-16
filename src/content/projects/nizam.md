@@ -1,5 +1,5 @@
 ---
-title: "ProNexa: Private Personal Organiser for Android"
+title: "Nizam by FlowNexa: Private Personal Organiser for Android"
 summary: "A private, encrypted, offline-first personal organiser for Android: money, bike, notes, journal, habits, prayer and study in one app, with no account, no server and no ads."
 tag: "Android app"
 services: [custom-software]
@@ -7,7 +7,7 @@ tech: [Flutter, Dart, SQLite3 Multiple Ciphers, Android Keystore, AES-256-GCM, A
 type: product
 status: in-development
 order: 110
-# TODO(owner): add ProNexa screenshots as cover + gallery in src/assets/projects/pronexa/
+# TODO(owner): add Nizam screenshots as cover + gallery in src/assets/projects/nizam/
 facts:
   - { label: "Platform", value: "Android 7.0+ (Flutter)" }
   - { label: "Data", value: "On the phone only, encrypted (AES-256)" }
@@ -20,7 +20,7 @@ Personal life admin is spread across a dozen apps: an expense tracker, a notes a
 
 ## What we built
 
-ProNexa is one Android app for daily life that keeps everything on your phone, encrypted. There is no account, no server and no ads, and every feature works offline. It is a FlowNexa product, past its first version and still in active development.
+Nizam is one Android app for daily life that keeps everything on your phone, encrypted. There is no account, no server and no ads, and every feature works offline. It is a FlowNexa product, past its first version and still in active development.
 
 ### Private by design
 
@@ -57,4 +57,4 @@ ProNexa is one Android app for daily life that keeps everything on your phone, e
 
 ## Result
 
-ProNexa is past its first version and in active development. It shows the kind of engineering we bring to client work: privacy and security designed in from the start, offline-first data, safe backups, and a codebase organised so features can be added cleanly.
+Nizam is past its first version and in active development. It shows the kind of engineering we bring to client work: privacy and security designed in from the start, offline-first data, safe backups, and a codebase organised so features can be added cleanly.

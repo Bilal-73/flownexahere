@@ -8,6 +8,7 @@ type: demo
 status: demo
 caseStudy: false
 featured: false
+listed: false
 order: 90
 # TODO(owner): confirm the summary and tech, then add a case study (sanitised sample output only, no personal data).
 ---

@@ -6,6 +6,7 @@ services: [machine-learning, data-insights]
 tech: [Speech-to-text, Call analytics]
 type: demo
 status: demo
+listed: false
 order: 80
 caseStudy: false
 ---
