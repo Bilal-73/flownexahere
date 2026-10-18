@@ -1,0 +1,56 @@
+---
+/**
+ * One free tool. Live tools are a whole-card link; coming-soon tools show a
+ * badge and no link, so they never point at a page that doesn't exist yet.
+ */
+import Icon from "./Icon.astro";
+import { toolHref, type Tool } from "@/config/tools";
+
+interface Props {
+  tool: Tool;
+  headingLevel?: "h2" | "h3";
+  /** data-track prefix, e.g. "home_tool" or "hub_tool". */
+  track?: string;
+}
+const { tool, headingLevel = "h3", track = "tool" } = Astro.props;
+const Heading = headingLevel;
+const href = toolHref(tool);
+---
+
+<li
+  class:list={[
+    "relative flex flex-col rounded-[var(--radius-card)] border border-border bg-card p-6 sm:p-8",
+    href && "transition-colors hover:border-foreground/40",
+  ]}
+>
+  <div class="flex items-start justify-between gap-3">
+    <span class="flex h-11 w-11 items-center justify-center rounded-full bg-accent-soft text-accent">
+      <Icon name={tool.icon} class="h-5 w-5" />
+    </span>
+    <span
+      class:list={[
+        "rounded-full px-2.5 py-0.5 text-xs font-semibold",
+        href ? "bg-accent-soft text-accent" : "bg-muted text-muted-foreground",
+      ]}
+    >
+      {href ? "Free · live" : "Coming soon"}
+    </span>
+  </div>
+  <Heading class="mt-5 text-xl">{tool.title}</Heading>
+  <p class="mt-2 leading-relaxed text-muted-foreground">{tool.blurb}</p>
+  <div class="mt-auto pt-6">
+    {
+      href ? (
+        <a
+          href={href}
+          class="inline-flex items-center gap-1.5 font-semibold hover:text-accent after:absolute after:inset-0"
+          data-track={`${track}_${tool.slug}`}
+        >
+          Try it free <Icon name="arrow-right" class="h-4 w-4" />
+        </a>
+      ) : (
+        <span class="text-sm text-muted-foreground">In the works</span>
+      )
+    }
+  </div>
+</li>
